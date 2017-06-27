@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#F8E71C</color>
+    <color name="colorPrimaryDark">#F8E71C</color>
+    <color name="colorAccent">@android:color/holo_blue_light</color>
+    <color name="colorLine">#C8C7CC</color>
+
+    <color name="colorBackground">#FFFFFF</color>
+    <color name="textColor">#000000</color>
+    <color name="textColor_hit">#CCCCCC</color>
+    <color name="colorBtn_main">#F8E81C</color>
+    <color name="colorBtn_main_press">#FBF27D</color>
+    <color name="colorBtn_enabled">#F2F2F2</color>
+    <color name="textColor_enabled">#cccccc</color>
+    <color name="textColor_low">#9B9B9B</color>
+    <color name="textColor_link">#7ED321</color>
+    <color name="lineColor">#C8C7CC</color>
+    <color name="colorBtn_small">#7ED321</color>
+</resources>

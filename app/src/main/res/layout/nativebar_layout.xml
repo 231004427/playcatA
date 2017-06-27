@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="44dp"
+    xmlns:toolbar="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorPrimary"
+    android:fitsSystemWindows="true"
+    android:orientation="vertical">
+
+    <!--标题布局-->
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:minHeight="?attr/actionBarSize"
+        android:background="@color/colorPrimary"
+        toolbar:titleTextColor="@color/textColor"
+        android:theme="?attr/actionBarTheme">
+
+        <TextView
+            android:id="@+id/toolbar_title"
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="玩猫"
+            android:textColor="@color/textColor"
+            />
+
+    </android.support.v7.widget.Toolbar>
+</LinearLayout>

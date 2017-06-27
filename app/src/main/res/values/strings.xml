@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">玩猫</string>
+    <string name="app_desc">快乐游戏，轻松对战</string>
+    <string name="btn_login">登录</string>
+    <string name="pass_hint">密码(6-20字符 区分大小写)</string>
+    <string name="input_name_hint">用户名(3-20个字母、数字)</string>
+    <string name="forget"><u>忘记密码</u></string>
+    <string name="phonelogin"><u>验证码登录</u></string>
+    <string name="regist"><u>用户注册</u></string>
+    <string name="agree"><u>同意用户协议</u></string>
+    <string name="btn_next">下一步</string>
+    <string name="input_iphone_hint">11位手机号码</string>
+    <string name="code_hint">手机验证码</string>
+    <string name="btn_code">获取验证码</string>
+</resources>
