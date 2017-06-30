@@ -1,4 +1,4 @@
-package com.sunlin.playcat.Common;
+package com.sunlin.playcat.common;
 
 import android.text.TextUtils;
 
