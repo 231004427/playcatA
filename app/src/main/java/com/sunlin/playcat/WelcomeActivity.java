@@ -3,15 +3,17 @@ package com.sunlin.playcat;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.widget.TextView;
 
-public class WelcomeActivity extends MyActivtiy {
-
+public class WelcomeActivity extends AppCompatActivity {
+    private String TAG="WelcomeActivity";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_welcome);
 
         final TextView logo=(TextView) findViewById(R.id.logo);
 
@@ -41,10 +43,5 @@ public class WelcomeActivity extends MyActivtiy {
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
         finish();
-    }
-    @Override
-    protected int getLayoutResId() {
-        //onCreate的方法中不需要写setContentView()
-        return R.layout.activity_welcome;
     }
 }

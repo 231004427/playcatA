@@ -1,0 +1,176 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.sunlin.playcat.RegistNextActivity">
+    <include
+        layout="@layout/nativebar_layout"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/include" />
+
+
+    <RelativeLayout
+        android:id="@+id/relativeLayoutImg"
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include">
+
+        <com.sunlin.playcat.view.CircleImageView
+            android:id="@+id/imgHead"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:src="@mipmap/boy45"
+            app:border_color="@color/black"
+            app:border_width="2dp" />
+
+        <ImageView
+            android:id="@+id/btnRrightHead"
+            android:layout_marginLeft="15dp"
+            android:layout_width="13dp"
+            android:layout_height="13dp"
+            app:srcCompat="@drawable/right13"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/imgHead"
+            android:layout_toEndOf="@+id/imgHead" />
+
+    </RelativeLayout>
+    <RelativeLayout
+        android:id="@+id/relativeLayout"
+        android:layout_width="110dp"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="0dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="15dp"
+        android:divider="@drawable/downline"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        android:showDividers="end|middle"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayoutImg">
+
+        <RadioGroup
+            android:id="@+id/rgSex"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rbBoy"
+                style="@style/radioBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@null"
+                android:checked="true"
+
+                android:text="男" />
+
+            <RadioButton
+                android:id="@+id/rbGirl"
+                style="@style/radioBtn"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:button="@null"
+                android:text="女" />
+        </RadioGroup>
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="280dp"
+        android:layout_height="100dp"
+        android:layout_marginTop="30dp"
+        android:divider="@drawable/downline"
+        android:focusable="true"
+        android:focusableInTouchMode="true"
+        android:orientation="vertical"
+        android:showDividers="end|middle"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:divider="@drawable/spacer15"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:showDividers="middle"
+            android:layout_marginLeft="0dp">
+
+            <ImageView
+                android:id="@+id/imageView3"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                app:srcCompat="@mipmap/user" />
+
+            <EditText
+                android:id="@+id/nameEdit"
+                style="@style/textInput"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:ems="10"
+                android:hint="@string/input_name_hint" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:divider="@drawable/spacer15"
+            android:gravity="center_vertical"
+            android:orientation="horizontal"
+            android:showDividers="middle">
+
+            <ImageView
+                android:id="@+id/imageView4"
+                android:layout_width="25dp"
+                android:layout_height="25dp"
+                app:srcCompat="@mipmap/pass" />
+
+            <EditText
+                android:id="@+id/passEdit"
+                style="@style/textInput"
+                android:layout_width="match_parent"
+                android:layout_height="25dp"
+                android:ellipsize="end"
+                android:ems="10"
+                android:inputType="textPassword"
+                android:hint="@string/pass_hint" />
+        </LinearLayout>
+    </LinearLayout>
+    <Button
+        android:id="@+id/btnNext"
+        style="@style/btnMain"
+        android:layout_width="280dp"
+        android:layout_height="48dp"
+        android:text="@string/btn_regit"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginTop="30dp"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+
+</android.support.constraint.ConstraintLayout>

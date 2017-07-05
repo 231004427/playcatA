@@ -8,6 +8,7 @@
     android:orientation="vertical">
 
     <!--标题布局-->
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
@@ -16,6 +17,12 @@
         android:background="@color/colorPrimary"
         toolbar:titleTextColor="@color/textColor"
         android:theme="?attr/actionBarTheme">
+        <ImageView
+            android:id="@+id/btnBack"
+            android:layout_gravity="left"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            toolbar:srcCompat="@mipmap/back22" />
 
         <TextView
             android:id="@+id/toolbar_title"
@@ -26,6 +33,12 @@
             android:text="玩猫"
             android:textColor="@color/textColor"
             />
-
+        <ImageView
+            android:id="@+id/btnSet"
+            android:layout_gravity="right"
+            android:layout_marginRight="15dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            toolbar:srcCompat="@drawable/more22" />
     </android.support.v7.widget.Toolbar>
 </LinearLayout>

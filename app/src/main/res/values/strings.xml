@@ -2,6 +2,7 @@
     <string name="app_name">玩猫</string>
     <string name="app_desc">快乐游戏，轻松对战</string>
     <string name="btn_login">登录</string>
+    <string name="btn_login_back"><u>返回登录</u></string>
     <string name="pass_hint">密码(6-20字符 区分大小写)</string>
     <string name="input_name_hint">用户名(3-20个字母、数字)</string>
     <string name="forget"><u>忘记密码</u></string>
@@ -15,4 +16,5 @@
     <string name="error_net">网络错误</string>
     <string name="cancel">取消</string>
     <string name="submit">提交</string>
+    <string name="btn_regit">注册</string>
 </resources>

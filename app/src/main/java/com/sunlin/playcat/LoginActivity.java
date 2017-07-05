@@ -12,13 +12,13 @@ import android.widget.TextView;
 
 import java.io.Console;
 
-public class LoginActivity extends MyActivtiy implements View.OnClickListener {
-    private String logName="LoginActivity";
+public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+    private String TAG="LoginActivity";
     private TextView registBtn;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        setContentView(R.layout.activity_login);
         registBtn=(TextView)findViewById(R.id.regist);
         registBtn.setClickable(true);
         registBtn.setFocusable(true);
@@ -29,7 +29,7 @@ public class LoginActivity extends MyActivtiy implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Log.d(logName,""+v.getId());
+        Log.d(TAG,""+v.getId());
         switch (v.getId()){
             case R.id.regist:
                 //打开注册页面
@@ -47,10 +47,5 @@ public class LoginActivity extends MyActivtiy implements View.OnClickListener {
             case R.id.weixinlogin:
                 break;
         }
-    }
-    @Override
-    protected int getLayoutResId() {
-        //onCreate的方法中不需要写setContentView()
-        return R.layout.activity_login;
     }
 }

@@ -100,7 +100,7 @@
             android:id="@+id/btnLogin"
             style="@style/btnMain"
             android:layout_width="280dp"
-            android:layout_height="48dp"
+            android:layout_height="@dimen/btn_h_l"
             android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:text="@string/btn_login" />

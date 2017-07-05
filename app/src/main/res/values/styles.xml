@@ -1,4 +1,4 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.AppCompat.NoActionBar">
@@ -21,6 +21,11 @@
         <item name="android:background">@drawable/btns</item>
         <item name="android:textSize">@dimen/text_small</item>
         <item name="android:textColor">@drawable/btncolorwhite</item>
+    </style>
+    <style name="btn_pop">
+        <item name="android:textSize">@dimen/text_btn_l</item>
+        <item name="android:textColor">@drawable/btnbigtext</item>
+        <item name="android:background">@drawable/btnb</item>
     </style>
     <style name="textLink1">
         <item name="android:textColor">@color/textColor_low</item>
@@ -46,5 +51,20 @@
         <!--背景透明-->
         <item name="android:backgroundDimEnabled">true</item>
         <!--模糊-->
+    </style>
+
+    <style name="radioBtn">
+        <item name="android:textSize">@dimen/text_l</item>
+        <item name="android:textColor">@color/textColor_low</item>
+        <item name="android:drawableLeft">@drawable/radiobutton</item>
+        <item name="android:drawablePadding">10dp</item>
+    </style>
+
+    <style name="popWindow_animation">
+        <item name="android:windowEnterAnimation">@anim/menushow</item>
+        <item name="android:windowExitAnimation">@anim/menuhide</item>
+    </style>
+    <style name="backWindow_animation">
+        <item name="android:windowShowAnimation">@anim/alpha_in</item>
     </style>
 </resources>

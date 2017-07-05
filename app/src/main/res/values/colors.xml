@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#F8E71C</color>
     <color name="colorPrimaryDark">#F8E71C</color>
-    <color name="colorAccent">@android:color/holo_blue_light</color>
+    <color name="colorAccent">#FBF27D</color>
     <color name="colorLine">#C8C7CC</color>
 
     <color name="colorBackground">#FFFFFF</color>
@@ -19,4 +19,5 @@
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="dialog_background">#000000</color>
+    <color name="highlight">#FBF27D</color>
 </resources>

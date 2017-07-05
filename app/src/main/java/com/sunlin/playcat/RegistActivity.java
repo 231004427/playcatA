@@ -1,43 +1,32 @@
 package com.sunlin.playcat;
 
 import android.app.Dialog;
-import android.app.ProgressDialog;
 import android.content.Context;
-import android.content.res.Resources;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sunlin.playcat.common.Check;
-import com.sunlin.playcat.common.NameValuePair;
 import com.sunlin.playcat.common.RestTask;
-import com.sunlin.playcat.common.RestUtil;
 import com.sunlin.playcat.common.ShowMessage;
-import com.sunlin.playcat.service.UserRESTful;
+import com.sunlin.playcat.json.BaseResult;
+import com.sunlin.playcat.json.UserRESTful;
 import com.sunlin.playcat.view.CommomDialog;
 import com.sunlin.playcat.view.LoadingDialog;
 
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class RegistActivity extends MyActivtiy implements View.OnClickListener,
-        RestTask.ProgressCallback,RestTask.ResponseCallback {
-
-    private Toolbar toolbar;
+public class RegistActivity extends MyActivtiy implements View.OnClickListener,RestTask.ResponseCallback {
+    private String TAG="RegistActivity";
 
     private Button btnSendCode;
     private Button btnNext;
@@ -47,25 +36,17 @@ public class RegistActivity extends MyActivtiy implements View.OnClickListener,
     private Timer timer = new Timer();
     private int recnum = 30;
 
+    //提示框
+    LoadingDialog loadingDialog;
+
     private UserRESTful userRESTful=new UserRESTful();
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         //初始化导航栏
-        toolbar=(Toolbar) findViewById(R.id.toolbar);
-        toolbar.setNavigationIcon(R.mipmap.back22);
-        toolbar.setTitle("");
-        TextView textView = (TextView) findViewById(R.id.toolbar_title);
-        textView.setText("注册");
-        setSupportActionBar(toolbar);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
-
+        ToolbarBuild("注册",true,false);
+        ToolbarBackListense();
 
         //绑定对象
         btnSendCode=(Button) findViewById(R.id.btnSendCode);
@@ -100,14 +81,12 @@ public class RegistActivity extends MyActivtiy implements View.OnClickListener,
         if(imm != null) {
             imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
         }
-        //产生背景变暗效果
-        new LoadingDialog(this, R.style.dialog).show();
-
-            //提交服务器
-        /*
-        userRESTful.setProgressCallback(this);
+        //显示加载框
+        loadingDialog=new LoadingDialog(this,R.style.dialog);
+        loadingDialog.show();
+        //提交服务器
         userRESTful.setResponseCallback(this);
-        userRESTful.phoneCheck(phone,code);*/
+        userRESTful.phoneCheck(phone,code);
 
     }
     //发送验证码
@@ -156,16 +135,25 @@ public class RegistActivity extends MyActivtiy implements View.OnClickListener,
     }
     @Override
     public void onRequestSuccess(String response) {
-        ShowMessage.taskShow(getApplicationContext(),response);
+        //返回结果
+        loadingDialog.dismiss();
+        //处理结果
+        BaseResult result= UserRESTful.getResult(response);
+
+        if(result!=null) {
+            ShowMessage.taskShow(getApplicationContext(), result.getText());
+        }else{
+            ShowMessage.taskShow(getApplicationContext(), "服务器错误");
+        }
+
     }
 
     @Override
     public void onRequestError(Exception error) {
+        loadingDialog.dismiss();
         ShowMessage.taskShow(getApplicationContext(), this.getString(R.string.error_net));
-    }
-
-    @Override
-    public void onProgressUpdate(int progress) {
-
+        //打开下一步页面
+        Intent intent = new Intent(this, RegistNextActivity.class);
+        startActivity(intent);
     }
 }

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.sunlin.playcat.MainActivity">
+    tools:context="com.sunlin.playcat.RegistActivity">
 
     <include
         layout="@layout/nativebar_layout"
@@ -117,7 +117,7 @@
             android:layout_below="@+id/btnNext"
             android:paddingTop="10dp"
             android:paddingBottom="10dp"
-            android:text="@string/btn_login" />
+            android:text="@string/btn_login_back" />
 
         <TextView
             android:id="@+id/agree"
@@ -135,13 +135,13 @@
 
         <ImageView
             android:id="@+id/imageView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:srcCompat="@mipmap/agree16"
+            android:layout_width="13dp"
+            android:layout_height="13dp"
             android:layout_below="@+id/btnNext"
-            android:layout_marginTop="9dp"
+            android:layout_marginTop="13dp"
             android:layout_toLeftOf="@+id/agree"
-            android:layout_toStartOf="@+id/agree" />
+            android:layout_toStartOf="@+id/agree"
+            app:srcCompat="@drawable/agree13" />
 
 
     </RelativeLayout>
