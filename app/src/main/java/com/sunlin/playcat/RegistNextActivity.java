@@ -2,11 +2,17 @@ package com.sunlin.playcat;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Message;
 import android.support.annotation.IdRes;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -18,38 +24,67 @@ import com.soundcloud.android.crop.Crop;
 import com.sunlin.playcat.MyActivtiy;
 import com.sunlin.playcat.R;
 import com.sunlin.playcat.common.ImageHelp;
+import com.sunlin.playcat.common.LogC;
+import com.sunlin.playcat.common.MD5;
+import com.sunlin.playcat.common.RestTask;
+import com.sunlin.playcat.common.ShowMessage;
+import com.sunlin.playcat.domain.User;
+import com.sunlin.playcat.domain.UserLocal;
+import com.sunlin.playcat.json.BaseResult;
+import com.sunlin.playcat.json.City;
+import com.sunlin.playcat.json.ServerTask;
+import com.sunlin.playcat.json.UserRESTful;
 import com.sunlin.playcat.view.BottomPopView;
 import com.sunlin.playcat.view.CircleImageView;
-import com.sunlin.playcat.view.RoundImgeView;
+import com.sunlin.playcat.view.LoadingDialog;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 
-public class RegistNextActivity extends MyActivtiy implements RadioGroup.OnCheckedChangeListener {
-    private String TAG="RegistNextActivity";
+public class RegistNextActivity extends MyActivtiy implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, RestTask.ResponseCallback {
+    private String TAG = "RegistNextActivity";
     private Toolbar toolbar;
     private CircleImageView imgHead;
     private RadioGroup sexGroup;
     private RadioButton sexSelect;
-    private String headImgUrl="";
-    private int sex=1;
+    private String headImgUrl = "";
+    private String phone;
+    private int sex = 1;
+    private EditText nameEdit;
+    private EditText passEdit;
+    private Button btnNext;
+    private TextView cityText;
 
     private RelativeLayout relativeLayoutImg;
     private BottomPopView bottomPopView;
     private static String paiImgUrl;
     private Uri headUri;
-    Bitmap photoBmp;
+    Bitmap photoBmp = null;
+
+    private UserLocal userLocal=new UserLocal();
+    private boolean isLocal=false;
+
+    private LocationManager locationManager;
+    LoadingDialog loadingDialog;
+    private UserRESTful userRESTful = new UserRESTful();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        imgHead=(CircleImageView)findViewById(R.id.imgHead);
-        sexGroup=(RadioGroup) findViewById(R.id.rgSex);
-        relativeLayoutImg=(RelativeLayout)findViewById(R.id.relativeLayoutImg);
+        imgHead = (CircleImageView) findViewById(R.id.imgHead);
+        sexGroup = (RadioGroup) findViewById(R.id.rgSex);
+        relativeLayoutImg = (RelativeLayout) findViewById(R.id.relativeLayoutImg);
+        nameEdit = (EditText) findViewById(R.id.nameEdit);
+        passEdit = (EditText) findViewById(R.id.passEdit);
+        btnNext = (Button) findViewById(R.id.btnNext);
+        cityText=(TextView) findViewById(R.id.cityText);
+
+        phone = this.getIntent().getStringExtra("phone");
 
         //事件绑定
-         sexGroup.setOnCheckedChangeListener(this);
+        sexGroup.setOnCheckedChangeListener(this);
         relativeLayoutImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -57,15 +92,39 @@ public class RegistNextActivity extends MyActivtiy implements RadioGroup.OnCheck
                 showMenuItem(v);
             }
         });
+        btnNext.setOnClickListener(this);
 
         //初始化导航栏
-        ToolbarBuild("注册",true,false);
+        ToolbarBuild("注册", true, false);
         ToolbarBackListense();
 
         //设置默认头像
         //Bitmap defaultHead = BitmapFactory.decodeResource(getResources(), R.mipmap.boy45);
 
+        //获取地址位置
+        userLocal.setUpdateTime(new Date());
+        boolean getCity=City.GetCityJson(userLocal,this,new RestTask.ResponseCallback() {
+            @Override
+            public void onRequestSuccess(String response) {
+                if(City.GetCityFromJson(userLocal,response)){
+                    isLocal=true;
+                    cityText.setText(userLocal.getCity());
+                }else{
+                    cityText.setText("位置：定位失败");
+                }
+            }
+            @Override
+            public void onRequestError(Exception error) {
+                cityText.setText("位置：定位失败");
+            }
+        });
+        if(getCity){
+            cityText.setText("位置：定位中...");
+        }else{
+            cityText.setText("位置：定位失败");
+        }
     }
+
     public void showMenuItem(View parent)
     {
         bottomPopView = new BottomPopView(this, parent) {
@@ -99,13 +158,13 @@ public class RegistNextActivity extends MyActivtiy implements RadioGroup.OnCheck
         switch (checkedId){
             case R.id.rbGirl:
                 sex=2;
-                if(headImgUrl.isEmpty()){
+                if(photoBmp==null){
                     imgHead.setImageResource(R.mipmap.girl45);
                 }
                 break;
             case R.id.rbBoy:
                 sex=1;
-                if(headImgUrl.isEmpty()){
+                if(photoBmp==null){
                     imgHead.setImageResource(R.mipmap.boy45);
                 }
                 break;
@@ -126,7 +185,6 @@ protected void onActivityResult(int requestCode, int resultCode, Intent result) 
         Uri destination = Uri.fromFile(new File(getCacheDir(), "cropped"));
         Crop.of(source, destination).asSquare().start(RegistNextActivity.this);
     }
-
     private void handleCrop(int resultCode, Intent result) {
         if (resultCode == RESULT_OK) {
 
@@ -134,14 +192,96 @@ protected void onActivityResult(int requestCode, int resultCode, Intent result) 
             headUri=Crop.getOutput(result);
             imgHead.setImageBitmap(null);
             try {
-                photoBmp = ImageHelp.getBitmapFormUri(RegistNextActivity.this, headUri);
+                photoBmp = ImageHelp.getBitmapFormUri(RegistNextActivity.this, headUri,150,150);;
                 imgHead.setImageBitmap(photoBmp);
+
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
         } else if (resultCode == Crop.RESULT_ERROR) {
             Toast.makeText(this, Crop.getError(result).getMessage(), Toast.LENGTH_SHORT).show();
+        }
+    }
+    private void submit(){
+
+        String nameStr=nameEdit.getText().toString();
+        String passStr=passEdit.getText().toString();
+        if(TextUtils.isEmpty(nameStr))
+        {
+            Toast.makeText(getApplicationContext(), "请输入昵称", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if(TextUtils.isEmpty(passStr))
+        {
+            Toast.makeText(getApplicationContext(), "请输入密码", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        String passMD5="";
+        try {
+            passMD5=MD5.getMD5(passStr);
+        } catch (Exception e) {
+            LogC.write(e,TAG+":submit");
+            Toast.makeText(getApplicationContext(), "密码错误", Toast.LENGTH_SHORT).show();
+            e.printStackTrace();
+        }
+        //显示加载框
+        loadingDialog=new LoadingDialog(this,R.style.dialog);
+        loadingDialog.show();
+        //提交服务器
+        Date date=new Date();
+        User user=new User();
+        user.setCity(userLocal.getCity());
+        user.setLocal(userLocal);
+        user.setCount(0);
+        user.setCreate(date);
+        user.setGold(0);
+        user.setLevel(1);
+        user.setName(nameStr);
+        user.setPassword(passMD5);
+        user.setPhone(phone);
+        //自定义头像
+        if(photoBmp!=null){
+            user.setPhoto(ImageHelp.Bitmap2StrByBase64(photoBmp));
+        }else{
+            user.setPhoto("");
+        }
+        user.setSex(sex);
+        user.setStatus(1);
+        user.setUpdate(date);
+        user.setZhuan(0);
+        user.setId(-1);
+        userRESTful.regist(user,this);
+    }
+    @Override
+    public void onRequestSuccess(String response) {
+        //返回结果
+        loadingDialog.dismiss();
+        //处理结果
+        BaseResult result= UserRESTful.getResult(response);
+
+        if(result!=null) {
+            ShowMessage.taskShow(getApplicationContext(), result.getText());
+        }else{
+            ShowMessage.taskShow(getApplicationContext(), "服务器错误");
+        }
+    }
+
+    @Override
+    public void onRequestError(Exception error) {
+        //返回结果
+        loadingDialog.dismiss();
+        ShowMessage.taskShow(this, "网络错误");
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId())
+        {
+            case R.id.btnNext:
+                //
+                submit();
+                break;
         }
     }
 }

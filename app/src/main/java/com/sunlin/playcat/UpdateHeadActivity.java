@@ -262,7 +262,7 @@ public class UpdateHeadActivity extends MyActivtiy implements View.OnClickListen
     }
     private void submitUploadFile(){
         try {
-            Bitmap photoBmp = ImageHelp.getBitmapFormUri(UpdateHeadActivity.this, headUri);
+            Bitmap photoBmp = ImageHelp.getBitmapFormUri(UpdateHeadActivity.this, headUri,480,480);
             if (photoBmp == null) {
                 return;
             }

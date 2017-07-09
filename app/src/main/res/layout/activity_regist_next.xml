@@ -96,7 +96,7 @@
         android:id="@+id/linearLayout"
         android:layout_width="280dp"
         android:layout_height="100dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginTop="8dp"
         android:divider="@drawable/downline"
         android:focusable="true"
         android:focusableInTouchMode="true"
@@ -104,7 +104,7 @@
         android:showDividers="end|middle"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout">
+        app:layout_constraintTop_toBottomOf="@+id/cityText">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -171,6 +171,17 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginTop="30dp"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <TextView
+        style="@style/textTipLow"
+        android:id="@+id/cityText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text=""
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

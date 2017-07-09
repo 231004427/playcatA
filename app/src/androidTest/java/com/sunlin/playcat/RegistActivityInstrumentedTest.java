@@ -26,11 +26,6 @@ public class RegistActivityInstrumentedTest implements RestTask.ResponseCallback
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        String phone="13588045452";
-        String code="111111";
-        UserRESTful userRESTful=new UserRESTful();
-        userRESTful.setResponseCallback(this);
-        userRESTful.phoneCheck(phone,code);
         //assertEquals("com.sunlin.playcat", appContext.getPackageName());
     }
 

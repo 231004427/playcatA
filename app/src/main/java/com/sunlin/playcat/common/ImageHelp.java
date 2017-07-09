@@ -9,9 +9,11 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Matrix;
 import android.media.ExifInterface;
+import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Base64;
 
 import com.sunlin.playcat.UpdateHeadActivity;
 
@@ -33,24 +35,23 @@ public class ImageHelp {
      *
      * @param uri
      */
-    public static Bitmap getBitmapFormUri(Activity ac, Uri uri) throws FileNotFoundException, IOException {
+    public static Bitmap getBitmapFormUri(Activity ac, Uri uri,int hh,int ww) throws FileNotFoundException, IOException {
         InputStream input = ac.getContentResolver().openInputStream(uri);
         BitmapFactory.Options onlyBoundsOptions = new BitmapFactory.Options();
-        onlyBoundsOptions.inJustDecodeBounds = true;
+        //onlyBoundsOptions.inJustDecodeBounds = true;
         onlyBoundsOptions.inDither = true;//optional
         onlyBoundsOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;//optional
-        BitmapFactory.decodeStream(input, null, onlyBoundsOptions);
+        Bitmap bitmapSource=BitmapFactory.decodeStream(input, null, onlyBoundsOptions);
         input.close();
         int originalWidth = onlyBoundsOptions.outWidth;
         int originalHeight = onlyBoundsOptions.outHeight;
         if ((originalWidth == -1) || (originalHeight == -1))
             return null;
         //图片分辨率以480x800为标准
-        float hh = 800f;//这里设置高度为800f
-        float ww = 480f;//这里设置宽度为480f
         //缩放比。由于是固定比例缩放，只用高或者宽其中一个数据进行计算即可
+        /*
         int be = 1;//be=1表示不缩放
-        if (originalWidth > originalHeight && originalWidth > ww) {//如果宽度大的话根据宽度固定大小缩放
+        if (originalWidth >=originalHeight && originalWidth > ww) {//如果宽度大的话根据宽度固定大小缩放
             be = (int) (originalWidth / ww);
         } else if (originalWidth < originalHeight && originalHeight > hh) {//如果高度高的话根据宽度固定大小缩放
             be = (int) (originalHeight / hh);
@@ -59,12 +60,28 @@ public class ImageHelp {
             be = 1;
         //比例压缩
         BitmapFactory.Options bitmapOptions = new BitmapFactory.Options();
+        bitmapOptions.inJustDecodeBounds=true;
         bitmapOptions.inSampleSize = be;//设置缩放比例
         bitmapOptions.inDither = true;//optional
         bitmapOptions.inPreferredConfig = Bitmap.Config.ARGB_8888;//optional
         input = ac.getContentResolver().openInputStream(uri);
         Bitmap bitmap = BitmapFactory.decodeStream(input, null, bitmapOptions);
-        input.close();
+        input.close();*/
+
+        //得到缩略图
+        double be = 1;
+        be = originalWidth/originalHeight;
+        int toalWidth=originalWidth;
+        int toalHeight=originalHeight;
+        if (originalWidth >=originalHeight&& originalWidth > ww) {//如果宽度大的话根据宽度固定大小缩放
+            toalWidth=ww;
+            toalHeight=(int)(toalWidth/be);
+
+        } else if (originalWidth < originalHeight && originalHeight > hh) {//如果高度高的话根据宽度固定大小缩放
+            toalHeight=hh;
+            toalWidth=(int)(toalHeight*be);
+        }
+        Bitmap bitmap = ThumbnailUtils.extractThumbnail(bitmapSource, toalWidth, toalHeight);
 
         return compressImage(bitmap);//再进行质量压缩
     }
@@ -89,7 +106,17 @@ public class ImageHelp {
         Bitmap bitmap = BitmapFactory.decodeStream(isBm, null, null);//把ByteArrayInputStream数据生成图片
         return bitmap;
     }
-
+    /**
+     * 通过Base32将Bitmap转换成Base64字符串
+     * @param bit
+     * @return
+     */
+    public static  String Bitmap2StrByBase64(Bitmap bit){
+        ByteArrayOutputStream bos=new ByteArrayOutputStream();
+        bit.compress(Bitmap.CompressFormat.JPEG, 100, bos);//参数100表示不压缩
+        byte[] bytes=bos.toByteArray();
+        return Base64.encodeToString(bytes, Base64.DEFAULT);
+    }
     /**
      * 读取图片的旋转的角度
      *
@@ -169,7 +196,7 @@ public class ImageHelp {
         }
         return null;
     }
-
+    //获取文件路径
     public static String getAbsolutePath(final Context context, final Uri uri) {
         if (null == uri) return null;
         final String scheme = uri.getScheme();

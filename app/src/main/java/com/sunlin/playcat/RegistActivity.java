@@ -32,14 +32,17 @@ public class RegistActivity extends MyActivtiy implements View.OnClickListener,R
     private Button btnNext;
     private EditText phoneEdit;
     private EditText codeEdit;
+
+    String phone;
+    String code;
+
     //倒计时秒
     private Timer timer = new Timer();
     private int recnum = 30;
 
-    //提示框
-    LoadingDialog loadingDialog;
-
+    //提交服务器
     private UserRESTful userRESTful=new UserRESTful();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -59,12 +62,11 @@ public class RegistActivity extends MyActivtiy implements View.OnClickListener,R
 
 
     }
-
     //发送数据
     private void sendServer(){
 
-        String phone=phoneEdit.getText().toString();
-        String code=codeEdit.getText().toString();
+        phone=phoneEdit.getText().toString();
+        code=codeEdit.getText().toString();
 
         if(TextUtils.isEmpty(phone))
         {
@@ -76,17 +78,15 @@ public class RegistActivity extends MyActivtiy implements View.OnClickListener,R
             Toast.makeText(getApplicationContext(), "请输入验证码", Toast.LENGTH_SHORT).show();
             return;
         }
+
         //关闭软键盘
         InputMethodManager imm =  (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         if(imm != null) {
             imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
         }
-        //显示加载框
-        loadingDialog=new LoadingDialog(this,R.style.dialog);
-        loadingDialog.show();
         //提交服务器
-        userRESTful.setResponseCallback(this);
-        userRESTful.phoneCheck(phone,code);
+        loadingDialog.show();
+        userRESTful.phoneCheck(phone,code,this);
 
     }
     //发送验证码
@@ -141,7 +141,11 @@ public class RegistActivity extends MyActivtiy implements View.OnClickListener,R
         BaseResult result= UserRESTful.getResult(response);
 
         if(result!=null) {
-            ShowMessage.taskShow(getApplicationContext(), result.getText());
+            //ShowMessage.taskShow(getApplicationContext(), result.getText());
+            //打开下一步页面
+            Intent intent = new Intent(this, RegistNextActivity.class);
+            intent.putExtra("phone",phone);
+            startActivity(intent);
         }else{
             ShowMessage.taskShow(getApplicationContext(), "服务器错误");
         }
@@ -154,6 +158,7 @@ public class RegistActivity extends MyActivtiy implements View.OnClickListener,R
         ShowMessage.taskShow(getApplicationContext(), this.getString(R.string.error_net));
         //打开下一步页面
         Intent intent = new Intent(this, RegistNextActivity.class);
+        intent.putExtra("phone",phone);
         startActivity(intent);
     }
 }

@@ -49,12 +49,13 @@
                 app:srcCompat="@mipmap/user" />
 
             <EditText
-                android:id="@+id/nameEdit"
+                android:id="@+id/phoneEdit"
                 style="@style/textInput"
                 android:layout_width="match_parent"
                 android:layout_height="25dp"
+                android:inputType="phone"
                 android:ems="10"
-                android:hint="@string/input_name_hint" />
+                android:hint="@string/input_iphone_hint" />
         </LinearLayout>
 
         <LinearLayout
@@ -117,7 +118,7 @@
 
         <TextView
             style="@style/textLink2"
-            android:id="@+id/phonelogin"
+            android:id="@+id/codelogin"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/regist"
@@ -176,8 +177,7 @@
             android:paddingRight="8dp"
             android:text="第三方登录"
             android:background="@android:color/white"
-            android:textColor="@color/textColor_low"
-            android:textSize="@dimen/text_small" />
+            style="@style/textTipLow" />
 
         <LinearLayout
             android:layout_width="match_parent"

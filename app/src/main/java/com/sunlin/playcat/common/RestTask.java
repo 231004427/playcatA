@@ -11,6 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.net.HttpRetryException;
 import java.net.HttpURLConnection;
@@ -37,6 +38,7 @@ public class RestTask extends AsyncTask<Void,Integer,Object> {
     private File mUploadFile;
     private String mUploadFileName;
     private String contentType;
+    private String charset="UTF-8";;
     private WeakReference<ResponseCallback> mResponseCallback;
     private WeakReference<ProgressCallback> mProgressCallback;
 
@@ -46,29 +48,40 @@ public class RestTask extends AsyncTask<Void,Integer,Object> {
     public void setmContentType(String contentType_){
         contentType=contentType_;
     }
-    public void setmFormBody(String data){
-        if(data==null){
-            mFormBody=null;
-            return;
-        }
-        mFormBody=data;
-    }
+
     public void setmFormBody(List<NameValuePair> formData){
         if(formData==null){
             mFormBody=null;
             return;
         }
         StringBuilder sb=new StringBuilder();
+        try {
         for(int i=0;i<formData.size();i++){
             NameValuePair item=formData.get(i);
-            sb.append(URLEncoder.encode(item.getName()));
+
+                sb.append(URLEncoder.encode(item.getName(),charset));
+
             sb.append("=");
-            sb.append(URLEncoder.encode(item.getValue()));
+            sb.append(URLEncoder.encode(item.getValue(),charset));
             if(i!=(formData.size()-1)){
                 sb.append("&");
             }
         }
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
         mFormBody=sb.toString();
+    }
+    public void setmFormBody(String json){
+        if(json == null){
+            mFormBody=null;
+            return;
+        }
+        try {
+            mFormBody=URLEncoder.encode(json,charset);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
     }
     public void setmUploadFile(File file,String fileName){
         mUploadFile=file;
@@ -166,7 +179,6 @@ public class RestTask extends AsyncTask<Void,Integer,Object> {
     protected Object doInBackground(Void... params) {
         //生成用来标识界限的随机字符
         String boundary=Long.toHexString(System.currentTimeMillis());
-        String charset=Charset.defaultCharset().displayName();
 
         try{
             if(mUploadFile!=null){

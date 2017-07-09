@@ -11,6 +11,9 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.sunlin.playcat.json.UserRESTful;
+import com.sunlin.playcat.view.LoadingDialog;
+
 /**
  * Created by sunlin on 2017/6/24.
  */
@@ -20,6 +23,10 @@ public abstract class MyActivtiy extends AppCompatActivity {
     public TextView toolText;
     public ImageView toolBack;
     public ImageView toolSet;
+
+    //提交服务器
+    public LoadingDialog loadingDialog;
+
     //初始化导航栏
     public void ToolbarBuild(String title, boolean isBack, boolean isSet)
     {
@@ -55,6 +62,8 @@ public abstract class MyActivtiy extends AppCompatActivity {
         toolBack=(ImageView)findViewById(R.id.btnBack);
         toolSet=(ImageView)findViewById(R.id.btnSet);
         setSupportActionBar(toolbar);
+        loadingDialog=new LoadingDialog(this,R.style.dialog);
+
 
 
 /*

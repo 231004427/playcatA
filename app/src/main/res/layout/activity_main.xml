@@ -5,15 +5,122 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.sunlin.playcat.MainActivity">
+    <include
+        layout="@layout/nativebar_layout"
+        android:layout_width="0dp"
+        android:layout_height="44dp"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/include" />
 
-    <TextView
-        android:id="@+id/sample_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello World!"
-        app:layout_constraintBottom_toBottomOf="parent"
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="75dp"
+        android:layout_marginTop="0dp"
+        android:background="@color/colorPrimary"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toBottomOf="@+id/include">
+
+        <com.sunlin.playcat.view.CircleImageView
+            android:id="@+id/imgHead"
+            android:layout_width="55dp"
+            android:layout_height="55dp"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="15dp"
+            android:src="@mipmap/boy45"
+            app:border_color="@color/black"
+            app:border_width="2dp" />
+
+        <TextView
+            android:id="@+id/nameText"
+            style="@style/titleHead"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/imgHead"
+            android:layout_marginLeft="10dp"
+            android:layout_toEndOf="@+id/imgHead"
+            android:layout_toRightOf="@+id/imgHead"
+            android:text="SomeThing" />
+
+        <com.sunlin.playcat.view.CircleTitleView
+            android:id="@+id/goldText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/imgHead"
+            android:layout_alignLeft="@+id/nameText"
+            android:layout_alignStart="@+id/nameText"
+            app:drawable_left="@drawable/gold16"
+            app:show_red="true"
+            app:text="123"
+            app:text_color="@color/black"
+            app:text_size="@dimen/text_small">
+
+        </com.sunlin.playcat.view.CircleTitleView>
+
+        <com.sunlin.playcat.view.CircleTitleView
+            android:id="@+id/zhuanText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/goldText"
+            android:layout_alignBottom="@+id/goldText"
+            android:layout_marginLeft="10dp"
+            android:layout_toEndOf="@+id/goldText"
+            android:layout_toRightOf="@+id/goldText"
+            app:drawable_left="@drawable/zhuan16"
+            app:show_red="true"
+            app:text="123"
+            app:text_color="@color/black"
+            app:text_size="@dimen/text_small"></com.sunlin.playcat.view.CircleTitleView>
+
+        <com.sunlin.playcat.view.CircleTitleView
+            android:id="@+id/missonText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/zhuanText"
+            android:layout_alignBottom="@+id/zhuanText"
+            android:layout_marginLeft="10dp"
+            android:layout_toEndOf="@+id/zhuanText"
+            android:layout_toRightOf="@+id/zhuanText"
+            app:drawable_left="@drawable/misson16"
+            app:show_red="true"
+            app:text="赚金币"
+            app:text_color="@color/black"
+            app:text_size="@dimen/text_small"></com.sunlin.playcat.view.CircleTitleView>
+
+        <TextView
+            android:id="@+id/redText"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:layout_alignBaseline="@+id/zhuanText"
+            android:layout_alignTop="@+id/zhuanText"
+            android:layout_marginLeft="22dp"
+            android:layout_marginTop="-2dp"
+            android:layout_toRightOf="@+id/zhuanText"
+            android:background="@drawable/reddot"
+            android:text="" />
+
+        <com.sunlin.playcat.view.DrawableCenterButton
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="28dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="15dp"
+
+            android:textColor="@color/black"
+            android:background="@drawable/btns2"
+            android:drawableRight="@drawable/rightb13"
+            android:drawablePadding="5dp"
+            android:textSize="@dimen/text_small"
+            android:text="创建房间" />
+
+
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

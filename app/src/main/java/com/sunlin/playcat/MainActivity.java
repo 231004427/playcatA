@@ -1,30 +1,37 @@
 package com.sunlin.playcat;
 
+import android.graphics.Color;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.widget.TextView;
+import android.view.animation.AlphaAnimation;
+import com.sunlin.playcat.view.CircleTitleView;
 
 public class MainActivity extends MyActivtiy {
 
-    // Used to load the 'native-lib' library on application startup.
-    static {
-        System.loadLibrary("native-lib");
-    }
+    private CircleTitleView goldText;
+    private CircleTitleView zhuanText;
+    private CircleTitleView missonText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        // Example of a call to a native method
-        TextView tv = (TextView) findViewById(R.id.sample_text);
-        tv.setText(stringFromJNI());
-    }
+        //绑定对象
+        goldText=(CircleTitleView)findViewById(R.id.goldText);
+        zhuanText=(CircleTitleView)findViewById(R.id.zhuanText);
+        missonText=(CircleTitleView)findViewById(R.id.missonText);
 
+        //显示红点
+
+        //初始化导航栏
+        ToolbarBuild("玩猫",false,false);
+        ToolbarBackListense();
+
+    }
     /**
      * A native method that is implemented by the 'native-lib' native library,
      * which is packaged with this application.
      */
-    public native String stringFromJNI();
 
     @Override
     protected int getLayoutResId() {

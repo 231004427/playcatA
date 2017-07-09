@@ -19,13 +19,14 @@ import com.sunlin.playcat.R;
 public class LoadingDialog extends Dialog implements View.OnClickListener {
 
     private ImageView loading;
+    private TextView loadTitle;
 
     private Context mContext;
     private String content;
     private CommomDialog.OnCloseListener listener;
     private String positiveName;
     private String negativeName;
-    private String title;
+    private String title="";
     private AnimationDrawable animLoading;
 
     public LoadingDialog(Context context) {
@@ -79,9 +80,12 @@ public class LoadingDialog extends Dialog implements View.OnClickListener {
     }
 
     private void initView(){
+        if(this.title!="") {
+            this.loadTitle = (TextView) findViewById(R.id.loadingTitle);
+            loadTitle.setText(this.title);
+        }
 
         loading=(ImageView)findViewById(R.id.loading);
-
         loading.setImageResource(R.drawable.loading);
         animLoading = (AnimationDrawable) loading.getDrawable();
         animLoading.start();

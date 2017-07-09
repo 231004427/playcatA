@@ -20,4 +20,5 @@
     <color name="black">#000000</color>
     <color name="dialog_background">#000000</color>
     <color name="highlight">#FBF27D</color>
+    <color name="red">#FF0606</color>
 </resources>

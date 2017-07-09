@@ -7,21 +7,28 @@ import java.util.Date;
  */
 
 public class User {
-    private int id;
-    private String uid;
-    private String name;
-    private String phone;
-    private String password;
-    private int sex;
-    private String controy;
-    private String photo;
-    private int gold;
-    private int zhuan;
-    private int level;
-    private int count;
+    private int id=-1;
+    private String name="";
+    private String phone="";
+    private String password="";
+    private int sex=1;
+    private String city="";
+    private String photo="";
+    private int gold=0;
+    private int zhuan=0;
+    private int level=1;
+    private int count=0;
     private Date create;
     private Date update;
-    private int status;
+    private int status=1;
+    private UserLocal local;
+
+    public void setLocal(UserLocal local) {
+        this.local = local;
+    }
+    public UserLocal getLocal() {
+        return local;
+    }
 
     public int getStatus() {
         return status;
@@ -85,12 +92,12 @@ public class User {
         return photo;
     }
 
-    public void setControy(String controy) {
-        this.controy = controy;
+    public void setCity(String controy) {
+        this.city = controy;
     }
 
-    public String getControy() {
-        return controy;
+    public String getCity() {
+        return city;
     }
 
     public int getSex() {
@@ -114,13 +121,6 @@ public class User {
         this.id = id;
     }
 
-    public String getUid() {
-        return uid;
-    }
-    public void setUid(String uid) {
-        this.uid = uid;
-    }
-
     public String getPhone() {
         return phone;
     }
@@ -138,6 +138,6 @@ public class User {
 
     @Override
     public String toString() {
-        return "User [id=" + id + ", uid=" + uid + "]";
+        return "User [id=" + id + ", name="+name+"]";
     }
 }
