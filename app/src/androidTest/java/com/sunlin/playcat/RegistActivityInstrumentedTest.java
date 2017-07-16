@@ -7,8 +7,7 @@ import android.util.Log;
 
 import com.google.gson.Gson;
 import com.sunlin.playcat.common.RestTask;
-import com.sunlin.playcat.json.BaseResult;
-import com.sunlin.playcat.json.UserRESTful;
+import com.sunlin.playcat.domain.BaseResult;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

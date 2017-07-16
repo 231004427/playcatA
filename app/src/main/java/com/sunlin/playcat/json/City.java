@@ -10,14 +10,11 @@ import android.support.v4.app.ActivityCompat;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
-import com.sunlin.playcat.RegistNextActivity;
 import com.sunlin.playcat.common.LogC;
 import com.sunlin.playcat.common.RestTask;
 import com.sunlin.playcat.domain.MapsGoogle;
 import com.sunlin.playcat.domain.MapsGoogleResultAddress;
-import com.sunlin.playcat.domain.UserLocal;
-
-import java.util.Date;
+import com.sunlin.playcat.domain.Local;
 
 /**
  * Created by sunlin on 2017/7/7.
@@ -25,13 +22,15 @@ import java.util.Date;
 
 public class City {
     public static String TAG="City";
-    public static boolean GetCityJson(UserLocal reustlCity,Activity activity, RestTask.ResponseCallback responseCallback)
+    public static boolean GetCityJson(Local reustlCity, Activity activity, RestTask.ResponseCallback responseCallback)
     {
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             LocationManager locationManager = (LocationManager) activity.getSystemService(Context.LOCATION_SERVICE);
             double latitude = 0;
             double longitude = 0;
+
             Location location = locationManager.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
+
             if (location != null) {
                 latitude = location.getLatitude(); // 经度
                 longitude = location.getLongitude(); // 纬度
@@ -48,7 +47,7 @@ public class City {
             return false;
         }
     }
-    public static boolean GetCityFromJson(UserLocal reustlCity,String json){
+    public static boolean GetCityFromJson(Local reustlCity, String json){
         try {
             Gson gson = new GsonBuilder().create();
             //address_components

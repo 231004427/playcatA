@@ -87,7 +87,7 @@ public abstract class BottomPopView {
             public void onDismiss() {
                 //params.alpha = 1.0f;
                 //window.setAttributes(params);
-                //window.setWindowAnimations(R.style.backWindow_animation);
+                //window.setWindowAnimations(CValues.style.backWindow_animation);
                 //ObjectAnimator anim = ObjectAnimator.ofFloat(view, "alpha", 1.0F,  0.0F).setDuration(500);//
                 //anim.start();
                 ObjectAnimator anim = ObjectAnimator.ofFloat(backLayout, "alpha", 0.6F,  0.0F).setDuration(500);

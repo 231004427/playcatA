@@ -1,23 +1,22 @@
 package com.sunlin.playcat;
 
 import android.content.Intent;
-import android.os.Build;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.sunlin.playcat.common.LogC;
 import com.sunlin.playcat.common.RestTask;
 import com.sunlin.playcat.common.ShowMessage;
+import com.sunlin.playcat.json.ActionType;
+import com.sunlin.playcat.domain.BaseResult;
+import com.sunlin.playcat.json.BaseRESTful;
 import com.sunlin.playcat.json.UserRESTful;
 import com.sunlin.playcat.view.LoadingDialog;
-
-import java.io.Console;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
     private String TAG="LoginActivity";
@@ -72,12 +71,27 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         userRESTful.login(phoneStr, passStr, new RestTask.ResponseCallback() {
             @Override
             public void onRequestSuccess(String response) {
-                loadingDialog.dismiss();
-                //进入首页
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-            }
+                try {
+                    loadingDialog.dismiss();
+                    //处理结果
+                    BaseResult result = BaseRESTful.getResult(response);
+                    if(result!=null){
+                    if (result.getErrcode() <= 0 && result.getType() == ActionType.GAME_SEARCH) {
+                        //进入首页
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        startActivity(intent);
+                    }
+                    if(result.getErrcode()>0&&result.getType()==ActionType.LOGIN){
+                        ShowMessage.taskShow(getApplicationContext(), result.getErrmsg());}
 
+                    }else{
+                        ShowMessage.taskShow(LoginActivity.this,getString(R.string.error_server));
+                    }
+                }catch (Exception e){
+                    LogC.write(e,TAG);
+                    ShowMessage.taskShow(LoginActivity.this,getString(R.string.error_server));
+                }
+            }
             @Override
             public void onRequestError(Exception error) {
                 loadingDialog.dismiss();
@@ -106,7 +120,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.codelogin:
                 break;
             case R.id.btnLogin:
-                loginServer();
+                //进入首页
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+                //loginServer();
                 break;
             case R.id.qqlogin:
                 break;

@@ -8,6 +8,7 @@
     <color name="colorBackground">#FFFFFF</color>
     <color name="textColor">#000000</color>
     <color name="textColor_hit">#CCCCCC</color>
+    <color name="textColor_select">#F5A623</color>
     <color name="colorBtn_main">#F8E81C</color>
     <color name="colorBtn_main_press">#FBF27D</color>
     <color name="colorBtn_enabled">#F2F2F2</color>
@@ -21,4 +22,7 @@
     <color name="dialog_background">#000000</color>
     <color name="highlight">#FBF27D</color>
     <color name="red">#FF0606</color>
+    <color name="tab_background">#f2f2f2</color>
+    <color name="line">#CCCCCC</color>
+    <color name="whiteApath">#Bfffffff</color>
 </resources>

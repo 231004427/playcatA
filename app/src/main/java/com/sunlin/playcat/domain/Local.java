@@ -6,7 +6,7 @@ import java.util.Date;
  * Created by sunlin on 2017/7/8.
  */
 
-public class UserLocal {
+public class Local {
     private int uid=-1;
     private String country="";
     private String province="";

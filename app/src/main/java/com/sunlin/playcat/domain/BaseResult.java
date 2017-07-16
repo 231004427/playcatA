@@ -1,4 +1,4 @@
-package com.sunlin.playcat.json;
+package com.sunlin.playcat.domain;
 
 /**
  * Created by sunlin on 2017/7/2.

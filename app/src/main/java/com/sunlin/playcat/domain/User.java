@@ -21,12 +21,12 @@ public class User {
     private Date create;
     private Date update;
     private int status=1;
-    private UserLocal local;
+    private Local local;
 
-    public void setLocal(UserLocal local) {
+    public void setLocal(Local local) {
         this.local = local;
     }
-    public UserLocal getLocal() {
+    public Local getLocal() {
         return local;
     }
 

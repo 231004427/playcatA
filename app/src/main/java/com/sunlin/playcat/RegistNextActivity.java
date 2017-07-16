@@ -5,15 +5,12 @@ import android.graphics.Bitmap;
 import android.location.LocationManager;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Message;
 import android.support.annotation.IdRes;
-import android.support.v4.app.ActivityCompat;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
@@ -21,18 +18,17 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.soundcloud.android.crop.Crop;
-import com.sunlin.playcat.MyActivtiy;
-import com.sunlin.playcat.R;
 import com.sunlin.playcat.common.ImageHelp;
 import com.sunlin.playcat.common.LogC;
 import com.sunlin.playcat.common.MD5;
 import com.sunlin.playcat.common.RestTask;
 import com.sunlin.playcat.common.ShowMessage;
 import com.sunlin.playcat.domain.User;
-import com.sunlin.playcat.domain.UserLocal;
-import com.sunlin.playcat.json.BaseResult;
+import com.sunlin.playcat.domain.Local;
+import com.sunlin.playcat.json.ActionType;
+import com.sunlin.playcat.domain.BaseResult;
+import com.sunlin.playcat.json.BaseRESTful;
 import com.sunlin.playcat.json.City;
-import com.sunlin.playcat.json.ServerTask;
 import com.sunlin.playcat.json.UserRESTful;
 import com.sunlin.playcat.view.BottomPopView;
 import com.sunlin.playcat.view.CircleImageView;
@@ -62,7 +58,8 @@ public class RegistNextActivity extends MyActivtiy implements View.OnClickListen
     private Uri headUri;
     Bitmap photoBmp = null;
 
-    private UserLocal userLocal=new UserLocal();
+    private User user;
+    private Local userLocal=new Local();
     private boolean isLocal=false;
 
     private LocationManager locationManager;
@@ -99,7 +96,7 @@ public class RegistNextActivity extends MyActivtiy implements View.OnClickListen
         ToolbarBackListense();
 
         //设置默认头像
-        //Bitmap defaultHead = BitmapFactory.decodeResource(getResources(), R.mipmap.boy45);
+        //Bitmap defaultHead = BitmapFactory.decodeResource(getResources(), CValues.mipmap.boy45);
 
         //获取地址位置
         userLocal.setUpdateTime(new Date());
@@ -230,7 +227,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent result) 
         loadingDialog.show();
         //提交服务器
         Date date=new Date();
-        User user=new User();
+        user=new User();
         user.setCity(userLocal.getCity());
         user.setLocal(userLocal);
         user.setCount(0);
@@ -255,15 +252,30 @@ protected void onActivityResult(int requestCode, int resultCode, Intent result) 
     }
     @Override
     public void onRequestSuccess(String response) {
+        try {
         //返回结果
         loadingDialog.dismiss();
         //处理结果
-        BaseResult result= UserRESTful.getResult(response);
-
+        BaseResult result= BaseRESTful.getResult(response);
         if(result!=null) {
-            ShowMessage.taskShow(getApplicationContext(), result.getText());
+
+            if(result.getErrcode()<=0&&result.getType()== ActionType.REGIST)
+            {
+                //打开下一步页面
+                Intent intent = new Intent(this, MainActivity.class);
+                intent.putExtra("name",user.getName());
+                startActivity(intent);
+            }else
+            {
+                ShowMessage.taskShow(getApplicationContext(), result.getErrmsg());
+            }
+
         }else{
-            ShowMessage.taskShow(getApplicationContext(), "服务器错误");
+            ShowMessage.taskShow(RegistNextActivity.this,getString(R.string.error_server));
+        }
+        }catch (Exception e){
+            LogC.write(e,TAG);
+            ShowMessage.taskShow(RegistNextActivity.this,getString(R.string.error_server));
         }
     }
 
@@ -271,7 +283,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent result) 
     public void onRequestError(Exception error) {
         //返回结果
         loadingDialog.dismiss();
-        ShowMessage.taskShow(this, "网络错误");
+        ShowMessage.taskShow(this, getString(R.string.error_net));
     }
 
     @Override

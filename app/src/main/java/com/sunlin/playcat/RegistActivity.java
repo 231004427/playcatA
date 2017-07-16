@@ -1,26 +1,23 @@
 package com.sunlin.playcat;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.sunlin.playcat.common.Check;
+import com.sunlin.playcat.common.LogC;
 import com.sunlin.playcat.common.RestTask;
 import com.sunlin.playcat.common.ShowMessage;
-import com.sunlin.playcat.json.BaseResult;
+import com.sunlin.playcat.json.ActionType;
+import com.sunlin.playcat.domain.BaseResult;
+import com.sunlin.playcat.json.BaseRESTful;
 import com.sunlin.playcat.json.UserRESTful;
-import com.sunlin.playcat.view.CommomDialog;
-import com.sunlin.playcat.view.LoadingDialog;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -37,8 +34,8 @@ public class RegistActivity extends MyActivtiy implements View.OnClickListener,R
     String code;
 
     //倒计时秒
-    private Timer timer = new Timer();
-    private int recnum = 30;
+    private Timer timer;
+    private int recnum = 60;
 
     //提交服务器
     private UserRESTful userRESTful=new UserRESTful();
@@ -96,26 +93,14 @@ public class RegistActivity extends MyActivtiy implements View.OnClickListener,R
             Toast.makeText(getApplicationContext(), "请输入有效手机号码", Toast.LENGTH_SHORT).show();
         }else {
             btnSendCode.setEnabled(false);
-            timer.schedule(taskSend, 1000, 1000);
+            phone=phoneEdit.getText().toString();
+            //提交服务器
+            loadingDialog.show();
+            userRESTful.sendCode(phone,this);
+
+
         }
     }
-    TimerTask taskSend = new TimerTask() {
-        @Override
-        public void run() {
-            runOnUiThread(new Runnable() {      // UI thread
-                @Override
-                public void run() {
-                    recnum--;
-                    btnSendCode.setText("重新发送("+recnum+")s");
-                    if(recnum <= 0){
-                        timer.cancel();
-                        btnSendCode.setText("重新发送");
-                        btnSendCode.setEnabled(true);
-                    }
-                }
-            });
-        }
-    };
     @Override
     protected int getLayoutResId() {
         //onCreate的方法中不需要写setContentView()
@@ -135,30 +120,64 @@ public class RegistActivity extends MyActivtiy implements View.OnClickListener,R
     }
     @Override
     public void onRequestSuccess(String response) {
-        //返回结果
-        loadingDialog.dismiss();
-        //处理结果
-        BaseResult result= UserRESTful.getResult(response);
+        try {
+            //返回结果
+            loadingDialog.dismiss();
+            //处理结果
+            BaseResult result= BaseRESTful.getResult(response);
 
-        if(result!=null) {
-            //ShowMessage.taskShow(getApplicationContext(), result.getText());
-            //打开下一步页面
-            Intent intent = new Intent(this, RegistNextActivity.class);
-            intent.putExtra("phone",phone);
-            startActivity(intent);
-        }else{
-            ShowMessage.taskShow(getApplicationContext(), "服务器错误");
+            if(result!=null) {
+                //手机验证码认证成功
+                if(result.getErrcode()<=0 && result.getType()== ActionType.PHONE_CHECK) {
+                    Intent intent = new Intent(this, RegistNextActivity.class);
+                    intent.putExtra("phone", phone);
+                    startActivity(intent);
+                    return;
+                }
+                if(result.getErrcode()>0&&result.getType()==ActionType.PHONE_CHECK){
+                    ShowMessage.taskShow(getApplicationContext(), result.getErrmsg());
+                }
+                //手机发送验证码成功
+                if(result.getErrcode()<=0&&result.getType()==ActionType.SEND_CODE){
+                    timer= new Timer();
+                    timer.schedule(new TimerTask() {
+                        @Override
+                        public void run() {
+                            runOnUiThread(new Runnable() {      // UI thread
+                                @Override
+                                public void run() {
+                                    recnum--;
+                                    btnSendCode.setText("重新发送("+recnum+")s");
+                                    if(recnum <= 0){
+                                        timer.cancel();
+                                        recnum=60;
+                                        btnSendCode.setText("重新发送");
+                                        btnSendCode.setEnabled(true);
+                                    }
+                                }
+                            });
+                        }
+                    }, 1000, 1000);
+                    ShowMessage.taskShow(getApplicationContext(), result.getText());
+                }
+                //手机验证码发送失败
+                if(result.getErrcode()>0&& result.getType()==ActionType.SEND_CODE){
+                    btnSendCode.setEnabled(true);
+                    ShowMessage.taskShow(getApplicationContext(), result.getErrmsg());
+                }
+            }else{
+                ShowMessage.taskShow(RegistActivity.this,getString(R.string.error_server));
+            }
+        }catch (Exception e){
+            LogC.write(e,TAG);
+            ShowMessage.taskShow(RegistActivity.this,getString(R.string.error_server));
         }
-
     }
 
     @Override
     public void onRequestError(Exception error) {
+        btnSendCode.setEnabled(true);
         loadingDialog.dismiss();
         ShowMessage.taskShow(getApplicationContext(), this.getString(R.string.error_net));
-        //打开下一步页面
-        Intent intent = new Intent(this, RegistNextActivity.class);
-        intent.putExtra("phone",phone);
-        startActivity(intent);
     }
 }

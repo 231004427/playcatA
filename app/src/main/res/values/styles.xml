@@ -9,7 +9,7 @@
     <style  name="textInput">
         <item name="android:textColor">@color/textColor</item>
         <item name="android:textColorHint">@color/textColor_hit</item>
-        <item name="android:textSize">@dimen/text_small</item>
+        <item name="android:textSize">@dimen/text_l</item>
         <item name="android:textCursorDrawable">@drawable/color_cursor</item>
     </style>
     <style name="btnMain">
@@ -78,5 +78,22 @@
     <style name="titleHead">
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/text_l</item>
+    </style>
+    <style name="tabBottom">
+        <item name="android:gravity">center</item>
+        <item name="android:paddingTop">8dp</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:textColor">@color/textColor_low</item>
+        <item name="android:textSize">@dimen/text_ss</item>
+    </style>
+
+    <style name="listTitleWhite">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_title</item>
+    </style>
+
+    <style name="listTitleWhiteNote">
+        <item name="android:textColor">@color/whiteApath</item>
+        <item name="android:textSize">@dimen/text_small</item>
     </style>
 </resources>
