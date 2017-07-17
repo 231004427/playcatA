@@ -3,6 +3,7 @@ package com.sunlin.playcat.view;
 import android.content.Context;
 import android.support.v4.view.ViewPager;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 
 /**
@@ -16,6 +17,23 @@ public class WrapContentHeightViewPager extends ViewPager {
 
     public WrapContentHeightViewPager(Context context, AttributeSet attrs) {
         super(context, attrs);
+    }
+
+    @Override
+    public boolean onInterceptHoverEvent(MotionEvent event) {
+        boolean interceptTouchEvent = super.onInterceptTouchEvent(event);
+        double preX = 0;
+        if(event.getAction() == MotionEvent.ACTION_DOWN) {
+            preX = event.getX();
+
+        } else {
+            if( Math.abs(event.getX() - preX)>4) {
+                return true;
+            } else {
+                preX = event.getX();
+            }
+        }
+        return interceptTouchEvent;
     }
 
     @Override

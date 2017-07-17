@@ -46,17 +46,14 @@ public class ScreenUtil {
 
     /** 获取状态栏高度 */
     public static int getStatusHeight(Context context) {
-        int statusHeight = -1;
-        try {
-            Class<?> clazz = Class.forName("com.android.internal.CValues$dimen");
-            Object object = clazz.newInstance();
-            int height = Integer.parseInt(clazz.getField("status_bar_height")
-                    .get(object).toString());
-            statusHeight = context.getResources().getDimensionPixelSize(height);
-        } catch (Exception e) {
-            e.printStackTrace();
+        int statusBarHeight1 = -1;
+        //获取status_bar_height资源的ID
+        int resourceId = context.getResources().getIdentifier("status_bar_height", "dimen", "android");
+        if (resourceId > 0) {
+            //根据资源ID获取响应的尺寸值
+            statusBarHeight1 = context.getResources().getDimensionPixelSize(resourceId);
         }
-        return statusHeight;
+        return statusBarHeight1;
     }
 
     /**

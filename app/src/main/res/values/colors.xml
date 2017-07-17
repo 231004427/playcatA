@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#F8E71C</color>
-    <color name="colorPrimaryDark">#F8E71C</color>
+    <color name="colorPrimary">#F8E81C</color>
+    <color name="colorPrimaryDark">#F8E81C</color>
     <color name="colorAccent">#FBF27D</color>
     <color name="colorLine">#C8C7CC</color>
 
@@ -23,6 +23,6 @@
     <color name="highlight">#FBF27D</color>
     <color name="red">#FF0606</color>
     <color name="tab_background">#f2f2f2</color>
-    <color name="line">#CCCCCC</color>
+    <color name="line">#f0f0f0</color>
     <color name="whiteApath">#Bfffffff</color>
 </resources>
