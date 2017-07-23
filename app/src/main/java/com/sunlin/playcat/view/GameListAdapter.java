@@ -94,6 +94,7 @@ public class GameListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                 }
                 ((ListHolder) holder).nameText.setText(gameInfo.getName());
                 ((ListHolder) holder).noteText.setText(gameInfo.getNote());
+                ((ListHolder) holder).nameText.setTag(gameInfo.getId());
 
                 ImageWorker.loadImage(((ListHolder) holder).gameImg, CValues.SERVER_IMG+gameInfo.getImg(),mHandler);
 
@@ -106,12 +107,16 @@ public class GameListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             return;
         }
     }
-
+    private OnItemClickListener mListener;
+    public void setOnItemClickListener(OnItemClickListener listener) {
+        mListener = listener;
+    }
     //在这里面加载ListView中的每个item的布局
-    class ListHolder extends RecyclerView.ViewHolder{
+    class ListHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         TextView nameText;
         TextView noteText;
         ImageView gameImg;
+
         public ListHolder(View itemView) {
             super(itemView);
             //如果是headerview或者是footerview,直接返回
@@ -124,7 +129,19 @@ public class GameListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
             nameText = (TextView)itemView.findViewById(R.id.nameText);
             noteText=(TextView)itemView.findViewById(R.id.noteText);
             gameImg=(ImageView)itemView.findViewById(R.id.gameImg);
+
+            itemView.setOnClickListener(this);
         }
+
+        @Override
+        public void onClick(View v) {
+            if(mListener!=null){
+                mListener.onItemClick(v);
+            }
+        }
+    }
+    public interface OnItemClickListener{
+        void onItemClick(View view);
     }
 
     //返回View中Item的个数，这个时候，总的个数应该是ListView中Item的个数加上HeaderView和FooterView

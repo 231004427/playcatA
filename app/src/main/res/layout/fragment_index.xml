@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+    <LinearLayout
+                android:id="@+id/topBarLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/backgournd_tab"
+                android:orientation="vertical"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="75dp"
+                    android:layout_marginTop="0dp">
+
+                    <com.sunlin.playcat.view.CircleImageView
+                        android:id="@+id/imgHead"
+                        android:layout_width="55dp"
+                        android:layout_height="55dp"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginLeft="15dp"
+                        android:src="@mipmap/boy45"
+                        app:border_color="@color/black"
+                        app:border_width="2dp" />
+
+                    <TextView
+                        android:id="@+id/nameText"
+                        style="@style/titleHead"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignTop="@+id/imgHead"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toEndOf="@+id/imgHead"
+                        android:layout_toRightOf="@+id/imgHead"
+                        android:text="SomeThing" />
+
+                    <com.sunlin.playcat.view.CircleTitleView
+                        android:id="@+id/goldText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@+id/imgHead"
+                        android:layout_alignLeft="@+id/nameText"
+                        android:layout_alignStart="@+id/nameText"
+                        app:drawable_left="@drawable/gold16"
+                        app:show_red="true"
+                        app:text="123"
+                        app:text_color="@color/black"
+                        app:text_size="@dimen/text_small">
+
+                    </com.sunlin.playcat.view.CircleTitleView>
+
+                    <com.sunlin.playcat.view.CircleTitleView
+                        android:id="@+id/zhuanText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/goldText"
+                        android:layout_alignBottom="@+id/goldText"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toEndOf="@+id/goldText"
+                        android:layout_toRightOf="@+id/goldText"
+                        app:drawable_left="@drawable/zhuan16"
+                        app:show_red="true"
+                        app:text="123"
+                        app:text_color="@color/black"
+                        app:text_size="@dimen/text_small"></com.sunlin.playcat.view.CircleTitleView>
+
+                    <com.sunlin.playcat.view.CircleTitleView
+                        android:id="@+id/missonText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBaseline="@+id/zhuanText"
+                        android:layout_alignBottom="@+id/zhuanText"
+                        android:layout_marginLeft="10dp"
+                        android:layout_toEndOf="@+id/zhuanText"
+                        android:layout_toRightOf="@+id/zhuanText"
+                        app:drawable_left="@drawable/misson16"
+                        app:show_red="true"
+                        app:text="赚金币"
+                        app:text_color="@color/black"
+                        app:text_size="@dimen/text_small"></com.sunlin.playcat.view.CircleTitleView>
+
+                    <TextView
+                        android:id="@+id/redText"
+                        android:layout_width="6dp"
+                        android:layout_height="6dp"
+                        android:layout_alignBaseline="@+id/zhuanText"
+                        android:layout_alignTop="@+id/zhuanText"
+                        android:layout_marginLeft="22dp"
+                        android:layout_marginTop="-2dp"
+                        android:layout_toRightOf="@+id/zhuanText"
+                        android:background="@drawable/reddot"
+                        android:text="" />
+
+                    <com.sunlin.playcat.view.DrawableCenterButton
+                        android:id="@+id/button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="28dp"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_centerVertical="true"
+                        android:layout_marginRight="15dp"
+
+                        android:background="@drawable/btns2"
+                        android:drawablePadding="5dp"
+                        android:drawableRight="@drawable/rightb13"
+                        android:text="创建房间"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/text_small" />
+                </RelativeLayout>
+            </LinearLayout>
+    <LinearLayout
+            android:id="@+id/tabsLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal">
+            <android.support.design.widget.TabLayout
+                android:id="@+id/tabs"
+                android:layout_width="match_parent"
+                android:layout_height="44dp"
+                app:tabGravity="fill"
+                app:tabIndicatorColor="@color/textColor_select"
+                app:tabIndicatorHeight="3dp"
+                app:tabMode="scrollable"
+                app:tabSelectedTextColor="@color/textColor_select"
+                app:tabTextColor="@android:color/background_dark" />
+        </LinearLayout>
+        <android.support.v4.view.ViewPager
+            android:id="@+id/viewPager"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"></android.support.v4.view.ViewPager>
+</LinearLayout>

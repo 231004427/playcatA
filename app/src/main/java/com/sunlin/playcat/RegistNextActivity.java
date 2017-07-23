@@ -78,7 +78,16 @@ public class RegistNextActivity extends MyActivtiy implements View.OnClickListen
         btnNext = (Button) findViewById(R.id.btnNext);
         cityText=(TextView) findViewById(R.id.cityText);
 
+        //初始化导航栏
+        ToolbarBuild("注册", true, false);
+        ToolbarBackListense();
+        //获取参数
         phone = this.getIntent().getStringExtra("phone");
+        if(phone=="")
+        {
+            ShowMessage.taskShow(this,getString(R.string.error_param));
+            return;
+        }
 
         //事件绑定
         sexGroup.setOnCheckedChangeListener(this);
@@ -90,10 +99,6 @@ public class RegistNextActivity extends MyActivtiy implements View.OnClickListen
             }
         });
         btnNext.setOnClickListener(this);
-
-        //初始化导航栏
-        ToolbarBuild("注册", true, false);
-        ToolbarBackListense();
 
         //设置默认头像
         //Bitmap defaultHead = BitmapFactory.decodeResource(getResources(), CValues.mipmap.boy45);

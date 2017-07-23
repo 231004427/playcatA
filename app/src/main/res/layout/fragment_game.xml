@@ -1,16 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.cjj.MaterialRefreshLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/colorBtn_enabled"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:id="@+id/swipe_refresh_widget"
-    app:overlay="true"
-    app:wave_height_type="normal">
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/my_recycler_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+    android:layout_height="match_parent">
+
     <com.sunlin.playcat.view.CircleTitleView
         android:id="@+id/netoffText"
         android:layout_width="match_parent"
@@ -18,10 +13,10 @@
         android:layout_centerVertical="true"
         android:background="@color/colorBtn_enabled"
         android:gravity="center"
-        android:visibility="gone"
         app:text="@string/loading"
         app:text_color="@color/textColor_low"
         app:text_size="@dimen/text_small"
         app:drawable_left="@drawable/cat22">
     </com.sunlin.playcat.view.CircleTitleView>
-</com.cjj.MaterialRefreshLayout>
+
+</FrameLayout>

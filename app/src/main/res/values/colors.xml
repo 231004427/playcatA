@@ -11,7 +11,7 @@
     <color name="textColor_select">#F5A623</color>
     <color name="colorBtn_main">#F8E81C</color>
     <color name="colorBtn_main_press">#FBF27D</color>
-    <color name="colorBtn_enabled">#F2F2F2</color>
+    <color name="colorBtn_enabled">#EFEFF4</color>
     <color name="textColor_enabled">#cccccc</color>
     <color name="textColor_low">#9B9B9B</color>
     <color name="textColor_link">#7ED321</color>

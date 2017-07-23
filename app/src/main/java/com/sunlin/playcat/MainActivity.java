@@ -14,6 +14,7 @@ import android.widget.TextView;
 
 import com.sunlin.playcat.fragment.FriendFragment;
 import com.sunlin.playcat.fragment.HomeFragment;
+import com.sunlin.playcat.fragment.IndexFragment;
 import com.sunlin.playcat.fragment.SetFragment;
 import com.sunlin.playcat.fragment.ShopFragment;
 import com.sunlin.playcat.fragment.TalkFragment;
@@ -90,7 +91,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case 0:
                 setTabState(tb_home, R.drawable.home25,R.color.black);
                 if(fragment1==null){
-                    Fragment fragment = HomeFragment.newInstance("Home");
+                    Fragment fragment = IndexFragment.newInstance("Home");
                     ft.add(R.id.layFrame, fragment,fragment1Tag);
                 }else{
                     ft.show(fragment1);

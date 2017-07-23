@@ -4,11 +4,12 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
     <TextView
-        android:id="@+id/header"
+        android:id="@+id/footText"
         android:layout_width="match_parent"
-        android:layout_height="44dp"
-        android:text="加载更多..."
-        android:textSize="11sp"
+        android:layout_height="24dp"
+        android:layout_marginBottom="@dimen/ui_10_dip"
+        android:text="@string/nextpage"
+        android:textSize="@dimen/text_m"
         android:textColor="@color/textColor_low"
         android:gravity="center"/>
 </LinearLayout>

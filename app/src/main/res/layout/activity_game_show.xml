@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <include
+        layout="@layout/nativebar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nav_h"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/include" />
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_weight="1">
+        <RelativeLayout
+        android:background="@color/black"
+        android:layout_width="match_parent"
+        android:layout_height="120dp">
+        <ImageView
+            android:id="@+id/gameImg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:scaleType="centerCrop"
+            app:srcCompat="@drawable/game1"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true" />
+        <TextView
+            style="@style/listTitleWhite"
+            android:id="@+id/nameText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/gameImg"
+            android:layout_alignParentTop="true"
+            android:layout_alignStart="@+id/gameImg"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="18dp"
+            android:layout_marginTop="10dp"
+            android:text="飞行棋" />
+
+        <TextView
+            style="@style/listTitleWhiteNote"
+            android:id="@+id/noteText"
+            android:layout_width="180dp"
+            android:layout_height="wrap_content"
+            android:text="noteText"
+            android:layout_below="@+id/nameText"
+            android:layout_alignLeft="@+id/nameText"
+            android:layout_marginTop="4dp"
+            android:layout_alignStart="@+id/nameText" />
+
+        <com.sunlin.playcat.view.CircleTitleView
+            android:id="@+id/goldText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="10dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignLeft="@+id/noteText"
+            android:layout_alignStart="@+id/noteText"
+            app:drawable_left="@drawable/swords13"
+            app:show_red="true"
+            app:text="123"
+            app:text_color="@color/white"
+            app:text_size="@dimen/text_small">
+        </com.sunlin.playcat.view.CircleTitleView>
+    </RelativeLayout>
+        <android.support.design.widget.TabLayout
+                android:id="@+id/tabs"
+
+                android:layout_width="match_parent"
+                android:background="@color/white"
+                android:layout_height="44dp"
+                app:tabGravity="fill"
+                app:tabIndicatorColor="@color/textColor_select"
+                app:tabIndicatorHeight="3dp"
+                app:tabMode="fixed"
+                app:tabSelectedTextColor="@color/textColor_select"
+                app:tabTextColor="@android:color/background_dark" />
+        <android.support.v4.view.ViewPager
+                android:id="@+id/viewPager"
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"></android.support.v4.view.ViewPager>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bBar_h"
+        android:background="@drawable/my_tab_back"
+        android:orientation="horizontal">
+        <LinearLayout
+            android:layout_width="0dp"
+            android:id="@+id/gBtnLove"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center|center_horizontal|center_vertical">
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:background="@drawable/love22_2" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/gBtnPlay"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:background="@color/colorBtn_main"
+            android:layout_weight="1"
+            android:gravity="center">
+            <com.sunlin.playcat.view.CircleTitleView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:drawable_left="@drawable/game16"
+                app:show_red="true"
+                app:text="开始游戏"
+                app:text_color="@color/black"
+                app:text_size="@dimen/text_small"></com.sunlin.playcat.view.CircleTitleView>
+        </LinearLayout>
+        <LinearLayout
+            android:id="@+id/gBtnTalk"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center|center_horizontal|center_vertical">
+            <ImageView
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:background="@drawable/talk22" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
