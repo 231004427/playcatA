@@ -7,6 +7,8 @@ import android.os.Handler;
 import android.support.v4.util.LruCache;
 import android.widget.ImageView;
 
+import com.sunlin.playcat.R;
+
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -63,6 +65,7 @@ public class ImageWorker {
                 addBitmapToLruCache(imgUrl,bitmapDisk);
                 mImageView.setImageBitmap(bitmapDisk);
             }else{
+                //从网络下载图片
                 loadImageFromNetwork(mImageView,imgUrl,mHandler,mLruCache,bitmapPath);
             }
         }

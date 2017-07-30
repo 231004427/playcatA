@@ -6,6 +6,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class WelcomeActivity extends AppCompatActivity {
@@ -15,12 +16,12 @@ public class WelcomeActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_welcome);
 
-        final TextView logo=(TextView) findViewById(R.id.logo);
+        final ImageView logo=(ImageView) findViewById(R.id.imageView);
 
         //渐变展示启动屏
 
         AlphaAnimation aa = new AlphaAnimation(0.3f,1.0f);
-        aa.setDuration(3000);
+        aa.setDuration(2000);
         logo.startAnimation(aa);
 
         aa.setAnimationListener(new Animation.AnimationListener()

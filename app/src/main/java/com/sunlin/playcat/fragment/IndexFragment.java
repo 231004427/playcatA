@@ -2,30 +2,16 @@ package com.sunlin.playcat.fragment;
 
 import android.content.Context;
 import android.os.Bundle;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
-import android.widget.TextView;
 
-import com.cjj.MaterialRefreshLayout;
-import com.cjj.MaterialRefreshListener;
 import com.sunlin.playcat.R;
-import com.sunlin.playcat.view.MyFragment;
 import com.sunlin.playcat.view.MyFragmentPageAdapter;
-import com.sunlin.playcat.view.MyViewPagerAdapter;
-import com.sunlin.playcat.view.WrapContentHeightViewPager;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by sunlin on 2017/7/19.

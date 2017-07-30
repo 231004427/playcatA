@@ -14,15 +14,15 @@ import com.sunlin.playcat.common.Check;
 import com.sunlin.playcat.common.LogC;
 import com.sunlin.playcat.common.RestTask;
 import com.sunlin.playcat.common.ShowMessage;
-import com.sunlin.playcat.json.ActionType;
+import com.sunlin.playcat.domain.ActionType;
 import com.sunlin.playcat.domain.BaseResult;
-import com.sunlin.playcat.json.BaseRESTful;
+import com.sunlin.playcat.json.RESTfulHelp;
 import com.sunlin.playcat.json.UserRESTful;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-public class RegistActivity extends MyActivtiy implements View.OnClickListener,RestTask.ResponseCallback {
+public class RegistActivity extends MyActivtiyToolBar implements View.OnClickListener,RestTask.ResponseCallback {
     private String TAG="RegistActivity";
 
     private Button btnSendCode;
@@ -38,7 +38,7 @@ public class RegistActivity extends MyActivtiy implements View.OnClickListener,R
     private int recnum = 60;
 
     //提交服务器
-    private UserRESTful userRESTful=new UserRESTful();
+    private UserRESTful userRESTful;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,6 +53,8 @@ public class RegistActivity extends MyActivtiy implements View.OnClickListener,R
         btnNext=(Button) findViewById(R.id.btnNext);
         phoneEdit=(EditText)findViewById(R.id.phoneEdit);
         codeEdit=(EditText)findViewById(R.id.codeEdit);
+
+        userRESTful=new UserRESTful(baseRequest);
 
         btnSendCode.setOnClickListener(this);
         btnNext.setOnClickListener(this);
@@ -124,8 +126,7 @@ public class RegistActivity extends MyActivtiy implements View.OnClickListener,R
             //返回结果
             loadingDialog.dismiss();
             //处理结果
-            BaseResult result= BaseRESTful.getResult(response);
-
+            BaseResult result= RESTfulHelp.getResult(response);
             if(result!=null) {
                 //手机验证码认证成功
                 if(result.getErrcode()<=0 && result.getType()== ActionType.PHONE_CHECK) {
@@ -133,9 +134,6 @@ public class RegistActivity extends MyActivtiy implements View.OnClickListener,R
                     intent.putExtra("phone", phone);
                     startActivity(intent);
                     return;
-                }
-                if(result.getErrcode()>0&&result.getType()==ActionType.PHONE_CHECK){
-                    ShowMessage.taskShow(getApplicationContext(), result.getErrmsg());
                 }
                 //手机发送验证码成功
                 if(result.getErrcode()<=0&&result.getType()==ActionType.SEND_CODE){
@@ -159,6 +157,9 @@ public class RegistActivity extends MyActivtiy implements View.OnClickListener,R
                         }
                     }, 1000, 1000);
                     ShowMessage.taskShow(getApplicationContext(), result.getText());
+                }
+                if(result.getErrcode()>0&&result.getType()==ActionType.PHONE_CHECK){
+                    ShowMessage.taskShow(getApplicationContext(), result.getErrmsg());
                 }
                 //手机验证码发送失败
                 if(result.getErrcode()>0&& result.getType()==ActionType.SEND_CODE){

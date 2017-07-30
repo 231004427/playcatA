@@ -1,13 +1,10 @@
 package com.sunlin.playcat.view;
 
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.app.FragmentStatePagerAdapter;
-import android.support.v4.widget.NestedScrollView;
 
-import java.util.List;
+import com.sunlin.playcat.fragment.MyFragment;
 
 /**
  * Created by sunlin on 2017/7/11.

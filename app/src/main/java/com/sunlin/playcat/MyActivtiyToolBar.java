@@ -11,6 +11,7 @@ import android.view.Window;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.sunlin.playcat.domain.BaseRequest;
 import com.sunlin.playcat.json.UserRESTful;
 import com.sunlin.playcat.view.LoadingDialog;
 
@@ -18,12 +19,15 @@ import com.sunlin.playcat.view.LoadingDialog;
  * Created by sunlin on 2017/6/24.
  */
 
-public abstract class MyActivtiy extends AppCompatActivity {
+public abstract class MyActivtiyToolBar extends AppCompatActivity {
     public Toolbar toolbar;
     public TextView toolText;
     public ImageView toolBack;
     public ImageView toolSet;
-
+    public BaseRequest baseRequest;
+    public int userId=1;
+    public String token="123456";
+    public int appId=111;
     //提交服务器
     public LoadingDialog loadingDialog;
 
@@ -55,18 +59,21 @@ public abstract class MyActivtiy extends AppCompatActivity {
         super.onCreate(savedInstanceState);
 
         setContentView(getLayoutResId());//把设置布局文件的操作交给继承的子类
-
-        toolbar=(Toolbar) findViewById(R.id.toolbar);
+        toolbar=(Toolbar)findViewById(R.id.toolbar);
         toolbar.setTitle("");
         toolText = (TextView) findViewById(R.id.toolbar_title);
         toolBack=(ImageView)findViewById(R.id.btnBack);
         toolSet=(ImageView)findViewById(R.id.btnSet);
         setSupportActionBar(toolbar);
-        loadingDialog=new LoadingDialog(this,R.style.dialog);
+        loadingDialog=new LoadingDialog(this);
 
+        //用户信息初始化
+        baseRequest=new BaseRequest();
+        baseRequest.setUserid(1);
+        baseRequest.setToken("123456");
+        baseRequest.setAppid(111);
 
-
-/*
+        /*
         //这一行注意！看本文最后的说明！！！！
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
 

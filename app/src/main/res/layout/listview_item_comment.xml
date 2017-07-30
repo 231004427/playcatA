@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="5dp"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <com.sunlin.playcat.view.CircleImageView
+        android:id="@+id/imgHead"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:src="@mipmap/boy45"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
+
+    <TextView
+        android:id="@+id/nameText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="name"
+        android:textColor="@color/textColor_link2"
+        android:textSize="@dimen/text_small"
+        android:layout_alignParentTop="true"
+        android:layout_marginLeft="10dp"
+        android:layout_toRightOf="@+id/imgHead"
+        android:layout_toEndOf="@+id/imgHead" />
+    <ImageView
+        android:id="@+id/imgLevel"
+        android:layout_marginLeft="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="16dp"
+        android:layout_marginTop="2dp"
+        android:layout_toEndOf="@+id/nameText"
+        android:layout_toRightOf="@+id/nameText"
+        app:srcCompat="@drawable/leve1_16" />
+    <TextView
+        style="@style/textNote2"
+        android:id="@+id/contentText"
+        android:layout_marginTop="10dp"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="text"
+        android:layout_below="@+id/nameText"
+        android:layout_alignLeft="@+id/nameText"
+        android:layout_alignStart="@+id/nameText" />
+    <TextView
+        android:textSize="@dimen/text_small"
+        android:textColor="@color/textColor_low"
+        android:id="@+id/timeText"
+        android:layout_marginTop="4dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/contentText"
+        android:layout_alignStart="@+id/contentText"
+        android:layout_below="@+id/contentText"
+        android:text="25分钟前" />
+</RelativeLayout>

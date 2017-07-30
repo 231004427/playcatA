@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+<com.sunlin.playcat.view.NestedScrollWebView
+    android:id="@+id/webView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+</com.sunlin.playcat.view.NestedScrollWebView>
+    <com.sunlin.playcat.view.CircleTitleView
+        android:id="@+id/loadTextView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerVertical="true"
+        android:visibility="gone"
+        android:background="@color/colorBtn_enabled"
+        android:gravity="center"
+        app:text="@string/loading"
+        app:text_color="@color/textColor_low"
+        app:text_size="@dimen/text_small"
+        app:drawable_left="@drawable/cat22">
+    </com.sunlin.playcat.view.CircleTitleView>
+</FrameLayout>

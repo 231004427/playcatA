@@ -12,9 +12,10 @@ import android.widget.TextView;
 import com.sunlin.playcat.common.LogC;
 import com.sunlin.playcat.common.RestTask;
 import com.sunlin.playcat.common.ShowMessage;
-import com.sunlin.playcat.json.ActionType;
+import com.sunlin.playcat.domain.ActionType;
+import com.sunlin.playcat.domain.BaseRequest;
 import com.sunlin.playcat.domain.BaseResult;
-import com.sunlin.playcat.json.BaseRESTful;
+import com.sunlin.playcat.json.RESTfulHelp;
 import com.sunlin.playcat.json.UserRESTful;
 import com.sunlin.playcat.view.LoadingDialog;
 
@@ -30,7 +31,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     //提交服务器
     LoadingDialog loadingDialog;
-    private UserRESTful userRESTful=new UserRESTful();
+    private UserRESTful userRESTful;
+    private BaseRequest baseRequest;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +44,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         phoneEdit=(EditText)findViewById(R.id.phoneEdit);
         passEdit=(EditText)findViewById(R.id.passEdit);
 
+        //请求信息
+        baseRequest=new BaseRequest();
+        baseRequest.setUserid(1);
+        baseRequest.setToken("123456");
+        baseRequest.setAppid(111);
+        userRESTful=new UserRESTful(baseRequest);
 
         registBtn.setClickable(true);
         registBtn.setFocusable(true);
@@ -66,7 +74,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
 
         //提交服务器
-        loadingDialog=new LoadingDialog(this,R.style.dialog);
+        loadingDialog=new LoadingDialog(this);
         loadingDialog.show();
         userRESTful.login(phoneStr, passStr, new RestTask.ResponseCallback() {
             @Override
@@ -74,7 +82,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 try {
                     loadingDialog.dismiss();
                     //处理结果
-                    BaseResult result = BaseRESTful.getResult(response);
+                    BaseResult result = RESTfulHelp.getResult(response);
                     if(result!=null){
                     if (result.getErrcode() <= 0 && result.getType() == ActionType.GAME_SEARCH) {
                         //进入首页

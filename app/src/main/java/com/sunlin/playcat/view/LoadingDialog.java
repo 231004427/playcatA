@@ -7,10 +7,13 @@ import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.sunlin.playcat.R;
+import com.sunlin.playcat.common.ScreenUtil;
 
 /**
  * Created by sunlin on 2017/6/29.
@@ -19,37 +22,23 @@ import com.sunlin.playcat.R;
 public class LoadingDialog extends Dialog implements View.OnClickListener {
 
     private ImageView loading;
-    private TextView loadTitle;
+    private CircleTitleTopView loadTitle;
+    private Button btnAgain;
 
     private Context mContext;
     private String content;
-    private CommomDialog.OnCloseListener listener;
+    private OnClickListener listener;
     private String positiveName;
     private String negativeName;
     private String title="";
     private AnimationDrawable animLoading;
+    private TextView cancelTitle;
+    private boolean cancelable=false;
 
     public LoadingDialog(Context context) {
-        super(context);
+        super(context,R.style.dialog);
         this.mContext = context;
     }
-
-    public LoadingDialog(Context context, int themeResId) {
-        super(context, themeResId);
-        this.mContext = context;
-    }
-
-    public LoadingDialog(Context context, int themeResId, CommomDialog.OnCloseListener listener) {
-        super(context, themeResId);
-        this.mContext = context;
-        this.listener = listener;
-    }
-
-    protected LoadingDialog(Context context, boolean cancelable, DialogInterface.OnCancelListener cancelListener) {
-        super(context, cancelable, cancelListener);
-        this.mContext = context;
-    }
-
     public LoadingDialog setTitle(String title){
         this.title = title;
         return this;
@@ -66,6 +55,31 @@ public class LoadingDialog extends Dialog implements View.OnClickListener {
     }
 
     @Override
+    public void setCancelable(boolean cancelable) {
+        this.cancelable = cancelable;
+    }
+
+    //显示错误信息
+    public void showText(String text){
+        animLoading.stop();
+        loading.setVisibility(View.INVISIBLE);
+        loadTitle.setText(text);
+
+        btnAgain.setVisibility(View.VISIBLE);
+        loadTitle.setVisibility(View.VISIBLE);
+        cancelTitle.setVisibility(cancelable?View.VISIBLE:View.INVISIBLE);
+    }
+    public void again()
+    {
+        loading.setVisibility(View.VISIBLE);
+        btnAgain.setVisibility(View.INVISIBLE);
+        loadTitle.setVisibility(View.INVISIBLE);
+        cancelTitle.setVisibility(this.cancelable?View.INVISIBLE:View.VISIBLE);
+        animLoading.start();
+
+    }
+
+    @Override
     public void dismiss() {
         animLoading.stop();
         super.dismiss();
@@ -79,36 +93,50 @@ public class LoadingDialog extends Dialog implements View.OnClickListener {
         initView();
     }
 
+
     private void initView(){
-        if(this.title!="") {
-            this.loadTitle = (TextView) findViewById(R.id.loadingTitle);
-            loadTitle.setText(this.title);
-        }
 
         loading=(ImageView)findViewById(R.id.loading);
+        cancelTitle=(TextView)findViewById(R.id.cancelTitle);
+        btnAgain=(Button)findViewById(R.id.btnAgain);
+        loadTitle=(CircleTitleTopView)findViewById(R.id.loadTitle);
+
         loading.setImageResource(R.drawable.loading);
         animLoading = (AnimationDrawable) loading.getDrawable();
         animLoading.start();
+        cancelTitle.setOnClickListener(this);
+        btnAgain.setOnClickListener(this);
+
+
+
+        //ViewGroup.LayoutParams lay=loadTitle.getLayoutParams();
+        //lay.height= (int)ScreenUtil.getScreenHeightPixels(getContext());
+        //lay.width=(int)ScreenUtil.getScreenWidthPixels(getContext());
+        //loadTitle.setLayoutParams(lay);
 
     }
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.cancel:
+            case R.id.cancelTitle:
                 if(listener != null){
-                    listener.onClick(this, false);
+                    listener.onClick(this, 1);
                 }
                 this.dismiss();
                 break;
-            case R.id.submit:
+            case R.id.btnAgain:
                 if(listener != null){
-                    listener.onClick(this, true);
+                    listener.onClick(this, 2);
                 }
                 break;
         }
     }
+    public void setOnClickListener(LoadingDialog.OnClickListener listener)
+    {
+        this.listener=listener;
+    }
 
-    public interface OnCloseListener{
-        void onClick(Dialog dialog, boolean confirm);
+    public interface OnClickListener{
+        void onClick(Dialog dialog, int type);
     }
 }

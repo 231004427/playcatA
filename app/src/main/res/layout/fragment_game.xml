@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <com.sunlin.playcat.view.CircleTitleView
-        android:id="@+id/netoffText"
+        android:id="@+id/loadTextView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerVertical="true"

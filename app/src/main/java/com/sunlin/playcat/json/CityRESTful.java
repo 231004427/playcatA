@@ -12,16 +12,17 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sunlin.playcat.common.LogC;
 import com.sunlin.playcat.common.RestTask;
-import com.sunlin.playcat.domain.MapsGoogle;
-import com.sunlin.playcat.domain.MapsGoogleResultAddress;
+import com.sunlin.playcat.common.ServerTask;
+import com.sunlin.playcat.common.MapsGoogle;
+import com.sunlin.playcat.common.MapsGoogleResultAddress;
 import com.sunlin.playcat.domain.Local;
 
 /**
  * Created by sunlin on 2017/7/7.
  */
 
-public class City {
-    public static String TAG="City";
+public class CityRESTful {
+    public static String TAG="CityRESTful";
     public static boolean GetCityJson(Local reustlCity, Activity activity, RestTask.ResponseCallback responseCallback)
     {
         if (ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {

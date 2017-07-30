@@ -13,17 +13,20 @@
     <string name="input_iphone_hint">请输入11位手机号码</string>
     <string name="code_hint">手机验证码</string>
     <string name="btn_code">获取验证码</string>
-    <string name="error_net">网络异常(点击重试)</string>
+    <string name="error_net">网络异常</string>
+    <string name="try_again">重试</string>
     <string name="error_server">服务异常</string>
     <string name="error_param">参数错误</string>
     <string name="cancel">取消</string>
+    <string name="success_add">添加成功</string>
     <string name="submit">提交</string>
     <string name="btn_regit">注册</string>
     <string name="loading">加载中...</string>
     <string name="nextpage">加载中...</string>
-    <string name="nodata_r">暂无数据,点击重试</string>
+    <string name="nodata_r">暂无数据</string>
     <string name="nodata">:( 没数据了</string>
     <string name="tip_phone">请输入手机号码</string>
     <string name="tip_pass">请输入密码</string>
-    <string name="title_activity_game_show">GameShowActivity</string>
+    <string name="input_comment_hint">请输入内容</string>
+    <string name="point">积分:</string>
 </resources>

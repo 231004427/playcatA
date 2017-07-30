@@ -1,9 +1,10 @@
-package com.sunlin.playcat.json;
+package com.sunlin.playcat.common;
 
 import com.sunlin.playcat.common.CValues;
 import com.sunlin.playcat.common.LogC;
 import com.sunlin.playcat.common.RestTask;
 import com.sunlin.playcat.common.RestUtil;
+import com.sunlin.playcat.domain.ActionType;
 
 import java.io.IOException;
 
@@ -14,11 +15,11 @@ import java.io.IOException;
 public class ServerTask {
     private static String TAG="ServerTask";
 
-    public static void  Post(String apiName,
+    public static void  Post(
                        String jsonStr,
                        RestTask.ProgressCallback progressCallback,
                        RestTask.ResponseCallback responseCallback){
-        String url=CValues.POST_URL.replace("{action}",apiName).replace("{version}","1");
+        String url=CValues.POST_URL;
         try{
             //List<NameValuePair> parameters=new ArrayList<NameValuePair>();
             //parameters.add(new NameValuePair("title","Android Recipes"));

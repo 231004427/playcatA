@@ -10,5 +10,6 @@
         <attr name="text_color" format="color" />
         <attr name="text_size" format="dimension" />
         <attr name="drawable_left" format="reference|integer"></attr>
+        <attr name="drawable_top" format="reference|integer"></attr>
     </declare-styleable>
 </resources>

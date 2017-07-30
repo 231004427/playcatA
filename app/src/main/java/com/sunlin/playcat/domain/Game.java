@@ -9,18 +9,45 @@ public class Game {
     private int id;
     private String name;
     private String note;
+    private String note2;
     private int type;
     private String ico;
     private String img;
-    private int onlineNum;
-    private int playerNum;
+    private String img_big;
+    private int online_num;
+    private int player_num;
     private int version;
     private String down;
-    private Date createTime;
+    private Date create_time;
     private int status;
-    private int okNum;
+    private int ok_num;
     private int isgood;
-    private int sortNum;
+    private int sort_num;
+    private int collect;
+
+    public int getCollect() {
+        return collect;
+    }
+
+    public void setCollect(int collect) {
+        this.collect = collect;
+    }
+
+    public String getImgBig() {
+        return img_big;
+    }
+
+    public void setImgBig(String imgBig) {
+        this.img_big = imgBig;
+    }
+
+    public void setNote2(String note2) {
+        this.note2 = note2;
+    }
+
+    public String getNote2() {
+        return note2;
+    }
 
     public void setIsgood(int isgood) {
         this.isgood = isgood;
@@ -31,19 +58,19 @@ public class Game {
     }
 
     public void setOkNum(int okNum) {
-        this.okNum = okNum;
+        this.ok_num = okNum;
     }
 
     public int getOkNum() {
-        return okNum;
+        return ok_num;
     }
 
     public void setSortNum(int sortNum) {
-        this.sortNum = sortNum;
+        this.sort_num = sortNum;
     }
 
     public int getSortNum() {
-        return sortNum;
+        return sort_num;
     }
 
     public void setId(int id) {
@@ -71,11 +98,11 @@ public class Game {
     }
 
     public void setCreateTime(Date createTime) {
-        this.createTime = createTime;
+        this.create_time = createTime;
     }
 
     public Date getCreateTime() {
-        return createTime;
+        return create_time;
     }
 
     public void setDown(String down) {
@@ -119,19 +146,19 @@ public class Game {
     }
 
     public void setOnlineNum(int onlineNum) {
-        this.onlineNum = onlineNum;
+        this.online_num = onlineNum;
     }
 
     public int getOnlineNum() {
-        return onlineNum;
+        return online_num;
     }
 
     public void setPlayerNum(int playerNum) {
-        this.playerNum = playerNum;
+        this.player_num = playerNum;
     }
 
     public int getPlayerNum() {
-        return playerNum;
+        return player_num;
     }
 
     public void setVersion(int version) {

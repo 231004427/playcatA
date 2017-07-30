@@ -5,6 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="android:windowBackground">@android:color/white</item>
         <item name="editTextBackground">@null</item>
+        <item name="android:listDivider">@drawable/downline</item>
     </style>
 
     <style name="textInput">
@@ -20,10 +21,16 @@
         <item name="android:textColor">@drawable/btnbigtext</item>
     </style>
 
+
     <style name="btnSmall">
         <item name="android:background">@drawable/btns</item>
         <item name="android:textSize">@dimen/text_small</item>
         <item name="android:textColor">@drawable/btncolorwhite</item>
+    </style>
+    <style name="btnSmall2">
+        <item name="android:background">@drawable/btns_y</item>
+        <item name="android:textSize">@dimen/text_small</item>
+        <item name="android:textColor">@drawable/btncolor_black</item>
     </style>
 
     <style name="btn_pop">
@@ -58,6 +65,7 @@
         <item name="android:windowBackground">@android:color/transparent</item>
         <!--背景透明-->
         <item name="android:backgroundDimEnabled">true</item>
+        <item name="android:backgroundDimAmount">0.7</item>
         <!--模糊-->
     </style>
 
@@ -91,7 +99,10 @@
         <item name="android:textColor">@color/black</item>
         <item name="android:textSize">@dimen/text_l</item>
     </style>
-
+    <style name="titleHeadWhite">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_l</item>
+    </style>
     <style name="tabBottom">
         <item name="android:gravity">center</item>
         <item name="android:paddingTop">8dp</item>
@@ -99,18 +110,31 @@
         <item name="android:textColor">@color/textColor_low</item>
         <item name="android:textSize">@dimen/text_ss</item>
     </style>
-
     <style name="listTitleWhite">
         <item name="android:textColor">@color/white</item>
-        <item name="android:textSize">@dimen/text_title</item>
+        <item name="android:textSize">@dimen/text_l</item>
     </style>
-
+    <style name="listTitleWhiteBig">
+        <item name="android:textColor">@color/white</item>
+        <item name="android:textSize">@dimen/text_big</item>
+    </style>
     <style name="listTitleWhiteNote">
         <item name="android:textColor">@color/whiteApath</item>
         <item name="android:textSize">@dimen/text_small</item>
     </style>
-
-    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
-
-    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="textNote">
+        <item name="android:textColor">@color/textColor</item>
+        <item name="android:textSize">@dimen/text_m</item>
+        <item name="android:lineSpacingExtra">4dp</item>
+        <item name="android:textScaleX">1.0</item>
+    </style>
+    <style name="textNote2">
+        <item name="android:textColor">@color/textColorM</item>
+        <item name="android:textSize">@dimen/text_m</item>
+        <item name="android:lineSpacingExtra">4dp</item>
+        <item name="android:textScaleX">1.0</item>
+    </style>
+    <style name="tabLayoutText">
+        <item name="android:textSize">@dimen/text_m</item>
+    </style>
 </resources>

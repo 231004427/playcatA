@@ -25,10 +25,10 @@ import com.sunlin.playcat.common.RestTask;
 import com.sunlin.playcat.common.ShowMessage;
 import com.sunlin.playcat.domain.User;
 import com.sunlin.playcat.domain.Local;
-import com.sunlin.playcat.json.ActionType;
+import com.sunlin.playcat.domain.ActionType;
 import com.sunlin.playcat.domain.BaseResult;
-import com.sunlin.playcat.json.BaseRESTful;
-import com.sunlin.playcat.json.City;
+import com.sunlin.playcat.json.RESTfulHelp;
+import com.sunlin.playcat.json.CityRESTful;
 import com.sunlin.playcat.json.UserRESTful;
 import com.sunlin.playcat.view.BottomPopView;
 import com.sunlin.playcat.view.CircleImageView;
@@ -38,7 +38,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Date;
 
-public class RegistNextActivity extends MyActivtiy implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, RestTask.ResponseCallback {
+public class RegistNextActivity extends MyActivtiyToolBar implements View.OnClickListener, RadioGroup.OnCheckedChangeListener, RestTask.ResponseCallback {
     private String TAG = "RegistNextActivity";
     private Toolbar toolbar;
     private CircleImageView imgHead;
@@ -64,7 +64,7 @@ public class RegistNextActivity extends MyActivtiy implements View.OnClickListen
 
     private LocationManager locationManager;
     LoadingDialog loadingDialog;
-    private UserRESTful userRESTful = new UserRESTful();
+    private UserRESTful userRESTful;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,6 +77,9 @@ public class RegistNextActivity extends MyActivtiy implements View.OnClickListen
         passEdit = (EditText) findViewById(R.id.passEdit);
         btnNext = (Button) findViewById(R.id.btnNext);
         cityText=(TextView) findViewById(R.id.cityText);
+
+
+        userRESTful=new UserRESTful(baseRequest);
 
         //初始化导航栏
         ToolbarBuild("注册", true, false);
@@ -105,10 +108,10 @@ public class RegistNextActivity extends MyActivtiy implements View.OnClickListen
 
         //获取地址位置
         userLocal.setUpdateTime(new Date());
-        boolean getCity=City.GetCityJson(userLocal,this,new RestTask.ResponseCallback() {
+        boolean getCity= CityRESTful.GetCityJson(userLocal,this,new RestTask.ResponseCallback() {
             @Override
             public void onRequestSuccess(String response) {
-                if(City.GetCityFromJson(userLocal,response)){
+                if(CityRESTful.GetCityFromJson(userLocal,response)){
                     isLocal=true;
                     cityText.setText(userLocal.getCity());
                 }else{
@@ -228,7 +231,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent result) 
             e.printStackTrace();
         }
         //显示加载框
-        loadingDialog=new LoadingDialog(this,R.style.dialog);
+        loadingDialog=new LoadingDialog(this);
         loadingDialog.show();
         //提交服务器
         Date date=new Date();
@@ -261,7 +264,7 @@ protected void onActivityResult(int requestCode, int resultCode, Intent result) 
         //返回结果
         loadingDialog.dismiss();
         //处理结果
-        BaseResult result= BaseRESTful.getResult(response);
+        BaseResult result= RESTfulHelp.getResult(response);
         if(result!=null) {
 
             if(result.getErrcode()<=0&&result.getType()== ActionType.REGIST)

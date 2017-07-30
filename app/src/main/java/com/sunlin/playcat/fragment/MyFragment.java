@@ -1,12 +1,10 @@
-package com.sunlin.playcat.view;
+package com.sunlin.playcat.fragment;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.app.Fragment;
-import android.support.v4.widget.NestedScrollView;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -14,9 +12,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.FrameLayout;
-import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.TextView;
 
 import com.cjj.MaterialRefreshLayout;
@@ -24,18 +19,20 @@ import com.cjj.MaterialRefreshListener;
 import com.google.gson.Gson;
 import com.sunlin.playcat.GameShowActivity;
 import com.sunlin.playcat.R;
-import com.sunlin.playcat.RegistNextActivity;
 import com.sunlin.playcat.common.LogC;
 import com.sunlin.playcat.common.RestTask;
-import com.sunlin.playcat.common.ScreenUtil;
 import com.sunlin.playcat.common.ShowMessage;
+import com.sunlin.playcat.domain.BaseRequest;
 import com.sunlin.playcat.domain.BaseResult;
+import com.sunlin.playcat.domain.Game;
 import com.sunlin.playcat.domain.GameList;
-import com.sunlin.playcat.fragment.HomeFragment;
-import com.sunlin.playcat.json.ActionType;
+import com.sunlin.playcat.domain.ActionType;
 import com.sunlin.playcat.json.GameRESTful;
+import com.sunlin.playcat.view.CircleTitleView;
+import com.sunlin.playcat.view.GameListAdapter;
 
-import static android.content.ContentValues.TAG;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by sunlin on 2017/7/11.
@@ -46,13 +43,14 @@ public class MyFragment extends Fragment implements GameListAdapter.OnItemClickL
     private Context myContext;
     int typeId;
     RecyclerView mRecyclerView;
-
     private GameList dataList;
-    boolean baseBuild;
     boolean isLoading=false;
     LinearLayoutManager mLayoutManager;
     private GameListAdapter listAdapter;
     int getType=1;
+
+    private GameRESTful gameRESTful;
+    private BaseRequest baseRequest;
 
     CircleTitleView loadTextView;
     private MaterialRefreshLayout swipe_refresh_widget;
@@ -74,6 +72,12 @@ public class MyFragment extends Fragment implements GameListAdapter.OnItemClickL
         myContext=MyFragment.this.getContext();
 
         typeId = getArguments() != null ? getArguments().getInt("type") : 1;
+
+        baseRequest=new BaseRequest();
+        baseRequest.setUserid(1);
+        baseRequest.setToken("123456");
+        baseRequest.setAppid(111);
+        gameRESTful=new GameRESTful(baseRequest);
     }
     public  boolean isSlideToBottom(RecyclerView recyclerView) {
         if (recyclerView == null) return false;
@@ -95,7 +99,7 @@ public class MyFragment extends Fragment implements GameListAdapter.OnItemClickL
         loadTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tabSelect();
+                BuildData();
             }
         });
 
@@ -111,8 +115,8 @@ public class MyFragment extends Fragment implements GameListAdapter.OnItemClickL
                     @Override
                     public void run() {
                         //重新加载
-                        getType=baseBuild?2:1;
-                        tabSelect();
+                        getType=2;
+                        BuildData();
                     }
                 }, 1000);
             }
@@ -136,13 +140,24 @@ public class MyFragment extends Fragment implements GameListAdapter.OnItemClickL
         //viewList[i].setBackgroundColor(ContextCompat.getColor(getActivity(), CValues.color.textColor_low));
         dataList=new GameList();
         dataList.setCount(0);
+        List<Game> games = new ArrayList<Game>();
+        dataList.setGames(games);
         dataList.setType(typeId);
         dataList.setStart(0);
         dataList.setPageNum(4);
 
+        mLayoutManager=new LinearLayoutManager(myContext);
+        mRecyclerView.setLayoutManager(mLayoutManager);
+        mRecyclerView.setHasFixedSize(true);
+        listAdapter = new GameListAdapter(dataList.getGames());
+        listAdapter.setOnItemClickListener(MyFragment.this);
+        setFooterView(mRecyclerView);
+        mRecyclerView.setAdapter(listAdapter);
+
+
         //初始化加载
         getType=1;
-        tabSelect();
+        BuildData();
 
         return view;
     }
@@ -164,32 +179,33 @@ public class MyFragment extends Fragment implements GameListAdapter.OnItemClickL
                 y1 = event.getY();
             }
             if(event.getAction() == MotionEvent.ACTION_UP) {
+                //是否到页尾
+                if(isSlideToBottom(mRecyclerView))
+                {
+                    Log.e("scroll","底部");
+                    getType=3;
+                    BuildData();
+
+                }
                 //当手指离开的时候
+                /*
                 x2 = event.getX();
                 y2 = event.getY();
-                if(y1-y2 > 50) {
+                if(y1-y2 > 30) {
                     //Log.e("scroll","向上滑动");
-                    //是否到页尾
-                    if(isSlideToBottom(mRecyclerView))
-                    {
-                        //Log.e("scroll","底部");
-                        getType=3;
-                        tabSelect();
-
-                    }
                 } else if(y2 - y1 > 50) {
                     //Log.e("scroll","向下滑动");
                 } else if(x1 - x2 > 50) {
                     //Log.e("scroll","向左滑动");
                 } else if(x2 - x1 > 50) {
                     //Log.e("scroll","向右滑动");
-                }
+                }*/
             }
             return false;
         }
     };
     //加载数据
-    private void tabSelect()
+    private void BuildData()
     {
         //判断是否在加载中
         if(isLoading){
@@ -209,7 +225,7 @@ public class MyFragment extends Fragment implements GameListAdapter.OnItemClickL
         }
         //初始加载提示
         if(getType==1){
-            loadTextView.setTitleText(myContext.getString(R.string.loading));
+            loadTextView.setText(myContext.getString(R.string.loading));
             loadTextView.setVisibility(View.VISIBLE);
             //mRecyclerView.setVisibility(View.VISIBLE);
         }
@@ -219,63 +235,46 @@ public class MyFragment extends Fragment implements GameListAdapter.OnItemClickL
             footText.setText(myContext.getString(R.string.nextpage));
         }
 
-        GameRESTful gameRESTful=new GameRESTful();
         gameRESTful.search(dataList, new RestTask.ResponseCallback() {
             @Override
             public void onRequestSuccess(String response) {
                 try {
                     Gson gson = new Gson();
                     //处理结果
-                    GameList gameList = gson.fromJson(response, GameList.class);
-                    if (gameList != null) {
-                        BaseResult result = gameList.getResult();
-                        if (result.getErrcode() <= 0 && result.getType() == ActionType.GAME_SEARCH) {
-
-                            if (gameList != null && gameList.getGames().size() > 0) {
-
-                                //初始化数据
-                                if(getType==1) {
-                                    dataList=gameList;
-                                    mLayoutManager=new LinearLayoutManager(myContext);
-                                    mRecyclerView.setLayoutManager(mLayoutManager);
-                                    mRecyclerView.setHasFixedSize(true);
-                                    listAdapter = new GameListAdapter(dataList.getGames());
-                                    listAdapter.setOnItemClickListener(MyFragment.this);
-                                    setFooterView(mRecyclerView);
-                                    mRecyclerView.setAdapter(listAdapter);
-                                    baseBuild=true;
-                                }
-                                //重头更新数据
-                                if(getType==2)
-                                {
-                                    dataList.setCount(gameList.getCount());
-                                    dataList.getGames().clear();
-                                    dataList.getGames().addAll(gameList.getGames());
-                                    listAdapter.notifyDataSetChanged();
-                                }
-                                //分页数据
-                                if(getType==3)
-                                {
-                                    dataList.getGames().addAll(gameList.getGames());
-                                    listAdapter.notifyDataSetChanged();
-                                }
-                                //判断是否到页尾
-                                int start=dataList.getStart();
-                                int pageNum=dataList.getPageNum();
-                                dataList.setStart(start+pageNum);
-                                if(dataList.getStart()>=dataList.getCount()){
-                                    TextView footText=(TextView)listAdapter.getFooterView().findViewById(R.id.footText);
-                                    footText.setText(myContext.getString(R.string.nodata));
-                                }
-                                //隐藏加载提示
-                                loadTextView.setVisibility(View.GONE);
-                            }else{
-
-                                loadTextView.setTitleText(myContext.getString(R.string.nodata_r));
+                    BaseResult result=gson.fromJson(response,BaseResult.class);
+                    if (result.getErrcode() <= 0 && result.getType() == ActionType.GAME_SEARCH)
+                    {
+                        GameList gameList = gson.fromJson(result.getData(), GameList.class);
+                        if (gameList != null && gameList.getGames().size() > 0) {
+                            //初始化数据
+                            if(getType==1 ||getType==2) {
+                                dataList.setCount(gameList.getCount());
+                                dataList.getGames().clear();
+                                dataList.getGames().addAll(gameList.getGames());
+                                listAdapter.notifyDataSetChanged();
                             }
+                            //分页数据
+                            if(getType==3)
+                            {
+                                dataList.getGames().addAll(gameList.getGames());
+                                listAdapter.notifyDataSetChanged();
+                            }
+                            //判断是否到页尾
+                            int start=dataList.getStart();
+                            int pageNum=dataList.getPageNum();
+                            dataList.setStart(start+pageNum);
+                            if(dataList.getStart()>=dataList.getCount()){
+                                TextView footText=(TextView)listAdapter.getFooterView().findViewById(R.id.footText);
+                                footText.setText(myContext.getString(R.string.nodata));
+                            }
+                            //隐藏加载提示
+                            loadTextView.setVisibility(View.GONE);
+                        }else{
+                            loadTextView.setText(myContext.getString(R.string.nodata_r));
                         }
-                    } else {
-                        ShowMessage.taskShow(myContext, getString(R.string.error_server));
+                    }
+                    if(result.getErrcode() >0){
+                        ShowMessage.taskShow(myContext, result.getErrmsg());
                     }
                 }catch (Exception e)
                 {
@@ -291,7 +290,7 @@ public class MyFragment extends Fragment implements GameListAdapter.OnItemClickL
             @Override
             public void onRequestError(Exception error) {
                 //网络异常提示
-                loadTextView.setTitleText(myContext.getString(R.string.error_net));
+                loadTextView.setText(myContext.getString(R.string.error_net));
                 loadTextView.setVisibility(View.VISIBLE);
 
                 swipe_refresh_widget.finishRefresh();

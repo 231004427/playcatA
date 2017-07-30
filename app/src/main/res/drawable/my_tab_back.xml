@@ -9,7 +9,7 @@
     <item
         android:left="0dp"
         android:right="0dp"
-        android:top="1dp"
+        android:top="1px"
         android:bottom="0dp">
         <shape android:shape="rectangle">
             <gradient

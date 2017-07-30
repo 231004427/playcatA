@@ -125,6 +125,7 @@
             <android.support.design.widget.TabLayout
                 android:id="@+id/tabs"
                 android:layout_width="match_parent"
+                android:background="@drawable/my_tab_back2"
                 android:layout_height="44dp"
                 app:tabGravity="fill"
                 app:tabIndicatorColor="@color/textColor_select"

@@ -6,21 +6,13 @@ import java.util.List;
  * Created by sunlin on 2017/7/16.
  */
 public class GameList {
+
     int count;
     int start;
     int pageNum;
     int isGood;
     int type;
     List<Game> games;
-    BaseResult result;
-
-    public BaseResult getResult() {
-        return result;
-    }
-
-    public void setResult(BaseResult result) {
-        this.result = result;
-    }
 
     public int getCount() {
         return count;

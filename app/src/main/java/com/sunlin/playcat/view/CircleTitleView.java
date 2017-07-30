@@ -52,11 +52,11 @@ public class CircleTitleView extends RelativeLayout {
             }
             //文本
             String leftButtonText = attributes.getString(R.styleable.CircleTitleView_text);
+            //设置左边按钮文字颜色
+            int textColor = attributes.getColor(R.styleable.CircleTitleView_text_color, Color.WHITE);
+            mTitleTv.setTextColor(textColor);
             if (!TextUtils.isEmpty(leftButtonText)) {
                 mTitleTv.setText(leftButtonText);
-                //设置左边按钮文字颜色
-                int textColor = attributes.getColor(R.styleable.CircleTitleView_text_color, Color.WHITE);
-                mTitleTv.setTextColor(textColor);
                 float textSize = attributes.getDimension(R.styleable.CircleTitleView_text_size,0);
                 mTitleTv.setTextSize(TypedValue.COMPLEX_UNIT_PX,textSize);
             }
@@ -69,7 +69,7 @@ public class CircleTitleView extends RelativeLayout {
     }
 
     // 设置标题的方法
-    public void setTitleText(String title) {
+    public void setText(String title) {
         mTitleTv.setText(title);
     }
 }

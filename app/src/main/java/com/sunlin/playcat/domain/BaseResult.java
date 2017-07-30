@@ -9,6 +9,7 @@ public class BaseResult {
     private String errmsg;
     private int type;
     private String text;
+    private String data;
 
     public void setErrcode(int errcode) {
         this.errcode = errcode;
@@ -40,5 +41,13 @@ public class BaseResult {
 
     public String getText() {
         return text;
+    }
+
+    public String getData() {
+        return data;
+    }
+
+    public void setData(String data) {
+        this.data = data;
     }
 }

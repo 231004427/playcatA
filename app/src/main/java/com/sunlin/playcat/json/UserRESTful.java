@@ -1,20 +1,26 @@
 package com.sunlin.playcat.json;
 
-import android.support.annotation.Nullable;
-
 import com.google.gson.Gson;
-import com.sunlin.playcat.common.LogC;
 import com.sunlin.playcat.common.MD5;
 import com.sunlin.playcat.common.RestTask;
-import com.sunlin.playcat.domain.BaseResult;
+import com.sunlin.playcat.common.ServerTask;
+import com.sunlin.playcat.domain.ActionType;
+import com.sunlin.playcat.domain.BaseRequest;
 import com.sunlin.playcat.domain.PCode;
 import com.sunlin.playcat.domain.User;
+
+import java.util.Date;
 
 /**
  * Created by sunlin on 2017/6/29.
  */
-public class UserRESTful {
+public class UserRESTful extends ObjRESTful {
     private static final String TAG="UserRESTful";
+
+    public UserRESTful(BaseRequest _baseRequest) {
+        super(_baseRequest);
+    }
+
     //发送手机验证码
     public void sendCode(String phone,RestTask.ResponseCallback responseCallback){
         Gson gson=new Gson();
@@ -22,8 +28,11 @@ public class UserRESTful {
         PCode pCode=new PCode();
         pCode.setPhone(phone);
 
-        String jsonStr=gson.toJson(pCode);
-        ServerTask.Post("sendCode",jsonStr,null,responseCallback);
+        String dataStr=gson.toJson(pCode);
+        baseRequest.setData(dataStr);
+        baseRequest.setActionType(ActionType.SEND_CODE);
+        baseRequest.setDateTime(new Date());
+        ServerTask.Post(gson.toJson(baseRequest),null,responseCallback);
     }
     //登录
     public void login(String phone, String password, RestTask.ResponseCallback responseCallback){
@@ -32,14 +41,20 @@ public class UserRESTful {
         User user=new User();
         user.setPhone(phone);
         user.setPassword(MD5.getMD5(password));
-        String jsonStr=gson.toJson(user);
-        ServerTask.Post("login",jsonStr,null,responseCallback);
+        String dataStr=gson.toJson(user);
+        baseRequest.setData(dataStr);
+        baseRequest.setActionType(ActionType.LOGIN);
+        baseRequest.setDateTime(new Date());
+        ServerTask.Post(gson.toJson(baseRequest),null,responseCallback);
     }
     //注册
     public void regist(User user,RestTask.ResponseCallback responseCallback){
         Gson gson=new Gson();
-        String jsonStr=gson.toJson(user);
-        ServerTask.Post("registUser",jsonStr,null,responseCallback);
+        String dataStr=gson.toJson(user);
+        baseRequest.setData(dataStr);
+        baseRequest.setActionType(ActionType.REGIST);
+        baseRequest.setDateTime(new Date());
+        ServerTask.Post(gson.toJson(baseRequest),null,responseCallback);
     }
     //手机验证
     public  void phoneCheck(String phone,String code,RestTask.ResponseCallback responseCallback){
@@ -48,8 +63,11 @@ public class UserRESTful {
         PCode pCode=new PCode();
         pCode.setPhone(phone);
         pCode.setCode(code);
+        String dataStr=gson.toJson(pCode);
 
-        String jsonStr=gson.toJson(pCode);
-        ServerTask.Post("phoneCheck",jsonStr,null,responseCallback);
+        baseRequest.setData(dataStr);
+        baseRequest.setActionType(ActionType.PHONE_CHECK);
+        baseRequest.setDateTime(new Date());
+        ServerTask.Post(gson.toJson(baseRequest),null,responseCallback);
     }
 }

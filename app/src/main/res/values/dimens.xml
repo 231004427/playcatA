@@ -9,8 +9,10 @@
     <dimen name="text_l">16sp</dimen>
     <dimen name="text_btn_l">17sp</dimen>
     <dimen name="text_title">17sp</dimen>
+    <dimen name="text_big">24sp</dimen>
     <dimen name="red_point_radius_small">4dp</dimen>
     <dimen name="ui_5_dip">5dp</dimen>
+    <dimen name="ui_slip_small">5dp</dimen>
     <dimen name="ui_10_dip">10dp</dimen>
     <dimen name="nav_h">56dp</dimen>
     <dimen name="bBar_h">44dp</dimen>

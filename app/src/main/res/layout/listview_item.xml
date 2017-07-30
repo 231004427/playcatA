@@ -8,7 +8,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:scaleType="centerCrop"
-        app:srcCompat="@drawable/game1"
+        android:background="@color/imgBack"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true" />
     <TextView
@@ -22,7 +22,7 @@
         android:layout_marginLeft="10dp"
         android:layout_marginStart="18dp"
         android:layout_marginTop="10dp"
-        android:text="飞行棋" />
+        android:text="" />
 
     <TextView
         style="@style/listTitleWhiteNote"

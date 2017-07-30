@@ -41,7 +41,6 @@
         <activity android:name=".WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -50,11 +49,8 @@
         <activity android:name=".RegistNextActivity" />
         <activity android:name=".UpdateHeadActivity" />
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
-        <activity android:name=".Regist2Activity" />
-        <activity
-            android:name=".GameShowActivity"
-            android:label="@string/title_activity_game_show"
-            android:theme="@style/AppTheme"></activity>
+        <activity android:name=".GameShowActivity" android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
+        </activity>
     </application>
 
 </manifest>

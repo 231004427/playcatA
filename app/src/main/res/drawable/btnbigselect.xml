@@ -7,7 +7,14 @@
 </item>
 <item android:bottom="1dp" android:right="1dp" android:top="1dp" android:left="1dp">
     <shape>
-        <solid android:color="@color/colorBtn_main" />
+        <gradient
+            android:angle="270"
+            android:centerColor="@color/colorBtn_main"
+            android:centerX="0.5"
+            android:centerY="0.8"
+            android:endColor="@color/colorBtn_shadow"
+            android:startColor="@color/colorBtn_main"
+            android:type="linear" />
         <padding android:left="2dp" android:top="2dp" android:right="2dp"
             android:bottom="2dp" />
         <!-- 应该是圆角 -->

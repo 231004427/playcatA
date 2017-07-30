@@ -2,92 +2,136 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mainLayout"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <include
-        layout="@layout/nativebar_layout"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/nav_h"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:id="@+id/include" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:layout_weight="1">
-        <RelativeLayout
-        android:background="@color/black"
-        android:layout_width="match_parent"
-        android:layout_height="120dp">
-        <ImageView
-            android:id="@+id/gameImg"
+        <android.support.design.widget.CoordinatorLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:scaleType="centerCrop"
-            app:srcCompat="@drawable/game1"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true" />
-        <TextView
-            style="@style/listTitleWhite"
-            android:id="@+id/nameText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/gameImg"
-            android:layout_alignParentTop="true"
-            android:layout_alignStart="@+id/gameImg"
-            android:layout_marginLeft="10dp"
-            android:layout_marginStart="18dp"
-            android:layout_marginTop="10dp"
-            android:text="飞行棋" />
-
-        <TextView
-            style="@style/listTitleWhiteNote"
-            android:id="@+id/noteText"
-            android:layout_width="180dp"
-            android:layout_height="wrap_content"
-            android:text="noteText"
-            android:layout_below="@+id/nameText"
-            android:layout_alignLeft="@+id/nameText"
-            android:layout_marginTop="4dp"
-            android:layout_alignStart="@+id/nameText" />
-
-        <com.sunlin.playcat.view.CircleTitleView
-            android:id="@+id/goldText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="10dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignLeft="@+id/noteText"
-            android:layout_alignStart="@+id/noteText"
-            app:drawable_left="@drawable/swords13"
-            app:show_red="true"
-            app:text="123"
-            app:text_color="@color/white"
-            app:text_size="@dimen/text_small">
-        </com.sunlin.playcat.view.CircleTitleView>
-    </RelativeLayout>
-        <android.support.design.widget.TabLayout
-                android:id="@+id/tabs"
-
+            android:layout_height="match_parent">
+            <android.support.design.widget.AppBarLayout
+                android:id="@+id/mAppBarLayout"
                 android:layout_width="match_parent"
-                android:background="@color/white"
-                android:layout_height="44dp"
-                app:tabGravity="fill"
-                app:tabIndicatorColor="@color/textColor_select"
-                app:tabIndicatorHeight="3dp"
-                app:tabMode="fixed"
-                app:tabSelectedTextColor="@color/textColor_select"
-                app:tabTextColor="@android:color/background_dark" />
-        <android.support.v4.view.ViewPager
-                android:id="@+id/viewPager"
-                android:layout_weight="1"
+                android:layout_height="wrap_content"
+                android:fitsSystemWindows="true">
+                <android.support.design.widget.CollapsingToolbarLayout
+                    android:id="@+id/collapsing_toolbar_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:contentScrim="@color/colorPrimary"
+                    app:collapsedTitleGravity="left"
+                    app:toolbarId="@+id/toolbar"
+                    app:titleEnabled="false"
+                    app:expandedTitleMarginEnd="10dp"
+                    app:expandedTitleMarginStart="10dp"
+                    app:expandedTitleGravity="left"
+                    app:layout_scrollFlags="scroll|exitUntilCollapsed">
+                    <RelativeLayout
+                            android:background="@color/black"
+                            android:layout_width="match_parent"
+                            app:layout_collapseMode="parallax"
+                            app:layout_collapseParallaxMultiplier="0.5"
+                            android:layout_height="160dp">
+                            <ImageView
+                                android:id="@+id/gameImg"
+                                android:layout_width="match_parent"
+                                android:layout_height="160dp"
+                                android:scaleType="centerCrop"
+                                android:background="@color/imgBack"
+                                android:layout_alignParentTop="true"
+                                android:layout_centerHorizontal="true" />
+                            <TextView
+                                style="@style/listTitleWhiteBig"
+                                android:id="@+id/nameText"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text=""
+                                android:layout_marginLeft="16dp"
+                                android:layout_marginStart="16dp"
+                                android:layout_marginBottom="5dp"
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentLeft="true"
+                                android:layout_alignParentStart="true" />
+                            <com.sunlin.playcat.view.CircleTitleView
+                                android:id="@+id/onLineText"
+                                android:layout_marginRight="5dp"
+                                android:layout_marginBottom="5dp"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                app:drawable_left="@drawable/swords13"
+                                app:show_red="true"
+                                app:text="0"
+                                app:text_color="@color/white"
+                                app:text_size="@dimen/text_small"
+                                android:layout_alignParentBottom="true"
+                                android:layout_alignParentRight="true"
+                                android:layout_alignParentEnd="true">
+                            </com.sunlin.playcat.view.CircleTitleView>
+                        </RelativeLayout>
+                    <android.support.v7.widget.Toolbar
+                        android:layout_width="match_parent"
+                        app:layout_collapseMode="pin"
+                        android:layout_height="44dp"
+                        android:id="@+id/toolbar"
+                        android:minHeight="?attr/actionBarSize"
+                        android:theme="?attr/actionBarTheme">
+                        <ImageView
+                            android:id="@+id/btnBack"
+                            android:layout_gravity="left"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp"/>
+                        <TextView
+                            android:id="@+id/toolbar_title"
+                            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center"
+                            android:text=""
+                            android:textColor="@color/textColor"
+                            />
+                        <ImageView
+                            android:id="@+id/btnSet"
+                            android:layout_gravity="right"
+                            android:layout_marginRight="15dp"
+                            android:layout_width="22dp"
+                            android:layout_height="22dp" />
+                    </android.support.v7.widget.Toolbar>
+                </android.support.design.widget.CollapsingToolbarLayout>
+                <android.support.design.widget.TabLayout
+                    android:id="@+id/tabs"
+                    android:layout_width="match_parent"
+                    android:background="@drawable/my_tab_back2"
+                    android:layout_height="@dimen/bBar_h"
+                    app:tabTextAppearance="@style/tabLayoutText"
+                    app:tabGravity="fill"
+                    app:tabIndicatorColor="@color/textColor_select"
+                    app:tabIndicatorHeight="3dp"
+                    app:tabMode="fixed"
+                    app:tabSelectedTextColor="@color/textColor_select"
+                    app:tabTextColor="@color/textColor" />
+            </android.support.design.widget.AppBarLayout>
+
+            <android.support.v4.widget.NestedScrollView
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"></android.support.v4.view.ViewPager>
+                android:layout_height="match_parent"
+                android:fillViewport="true"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                <android.support.v4.view.ViewPager
+                    android:id="@+id/viewPager"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+
+                </android.support.v4.view.ViewPager>
+            </android.support.v4.widget.NestedScrollView>
+        </android.support.design.widget.CoordinatorLayout>
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/btnLayout"
         android:layout_width="match_parent"
         android:layout_height="@dimen/bBar_h"
         android:background="@drawable/my_tab_back"
@@ -99,11 +143,10 @@
             android:layout_weight="1"
             android:gravity="center|center_horizontal|center_vertical">
             <ImageView
+                android:id="@+id/loveImg"
                 android:layout_width="22dp"
-                android:layout_height="22dp"
-                android:background="@drawable/love22_2" />
+                android:layout_height="22dp" />
         </LinearLayout>
-
         <LinearLayout
             android:id="@+id/gBtnPlay"
             android:layout_width="0dp"
@@ -118,7 +161,7 @@
                 app:show_red="true"
                 app:text="开始游戏"
                 app:text_color="@color/black"
-                app:text_size="@dimen/text_small"></com.sunlin.playcat.view.CircleTitleView>
+                app:text_size="@dimen/text_l"></com.sunlin.playcat.view.CircleTitleView>
         </LinearLayout>
         <LinearLayout
             android:id="@+id/gBtnTalk"
@@ -131,5 +174,35 @@
                 android:layout_height="22dp"
                 android:background="@drawable/talk22" />
         </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/commentLayout"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/bBar_h"
+        android:padding="@dimen/ui_5_dip"
+        android:background="@drawable/my_tab_back"
+        android:orientation="horizontal">
+
+        <EditText
+            android:layout_marginLeft="@dimen/spacing_w"
+            android:id="@+id/commentEdit"
+            android:layout_gravity="center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            style="@style/textInput"
+            android:layout_weight="1"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:hint="@string/input_comment_hint" />
+
+        <Button
+            style="@style/btnSmall2"
+            android:layout_marginLeft="@dimen/ui_5_dip"
+            android:id="@+id/commentBtn"
+            android:layout_gravity="center"
+            android:layout_width="80dp"
+            android:layout_height="match_parent"
+            android:text="发布" />
     </LinearLayout>
 </LinearLayout>

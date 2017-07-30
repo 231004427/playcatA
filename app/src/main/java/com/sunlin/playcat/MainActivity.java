@@ -1,6 +1,5 @@
 package com.sunlin.playcat;
 
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -9,16 +8,13 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.view.animation.AlphaAnimation;
 import android.widget.TextView;
 
 import com.sunlin.playcat.fragment.FriendFragment;
-import com.sunlin.playcat.fragment.HomeFragment;
 import com.sunlin.playcat.fragment.IndexFragment;
 import com.sunlin.playcat.fragment.SetFragment;
 import com.sunlin.playcat.fragment.ShopFragment;
 import com.sunlin.playcat.fragment.TalkFragment;
-import com.sunlin.playcat.view.CircleTitleView;
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
     private TextView tb_home;
     private TextView tb_shop;
@@ -49,7 +45,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         tb_friend.setOnClickListener(this);
         tb_talk.setOnClickListener(this);
         tb_set.setOnClickListener(this);
-
 
         //显示红点
 

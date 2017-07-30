@@ -9,8 +9,8 @@ tools:context="com.sunlin.playcat.WelcomeActivity"
 
     <ImageView
         android:id="@+id/imageView"
-        android:layout_width="131dp"
-        android:layout_height="46dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_marginBottom="0dp"
         android:layout_marginTop="200dp"
         app:layout_constraintBottom_toBottomOf="parent"
@@ -20,19 +20,5 @@ tools:context="com.sunlin.playcat.WelcomeActivity"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintVertical_bias="0.0"
         app:srcCompat="@mipmap/wlogo" />
-
-    <TextView
-        android:id="@+id/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textColor="@color/textColor_low"
-        android:textSize="@dimen/text_m"
-        android:layout_marginTop="8dp"
-        android:text="@string/app_desc"
-        app:layout_constraintTop_toBottomOf="@+id/imageView"
-        android:layout_marginLeft="0dp"
-        app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginRight="0dp"
-        app:layout_constraintRight_toRightOf="parent" />
 
 </android.support.constraint.ConstraintLayout>
