@@ -128,6 +128,7 @@ public class GameFragmentInfo extends Fragment implements View.OnClickListener,R
                 {
                     //you are at the end of the list in scrollview
                     //Log.e(TAG,"到底部");
+                    loadType=2;
                     BuildData();
                 }
             }

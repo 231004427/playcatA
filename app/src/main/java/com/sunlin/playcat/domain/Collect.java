@@ -13,6 +13,15 @@ public class Collect {
     private int type;
     private int status;
     private Date create_time;
+    private String rule;
+
+    public String getRule() {
+        return rule;
+    }
+
+    public void setRule(String rule) {
+        this.rule = rule;
+    }
 
     public int getSid() {
         return sid;
