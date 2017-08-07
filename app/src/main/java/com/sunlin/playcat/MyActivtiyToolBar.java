@@ -8,9 +8,12 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.view.WindowManager;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.sunlin.playcat.common.ScreenUtil;
 import com.sunlin.playcat.domain.BaseRequest;
 import com.sunlin.playcat.json.UserRESTful;
 import com.sunlin.playcat.view.LoadingDialog;
@@ -57,8 +60,9 @@ public abstract class MyActivtiyToolBar extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         setContentView(getLayoutResId());//把设置布局文件的操作交给继承的子类
+
+
         toolbar=(Toolbar)findViewById(R.id.toolbar);
         toolbar.setTitle("");
         toolText = (TextView) findViewById(R.id.toolbar_title);
@@ -76,7 +80,6 @@ public abstract class MyActivtiyToolBar extends AppCompatActivity {
         /*
         //这一行注意！看本文最后的说明！！！！
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
-
         ViewGroup contentFrameLayout = (ViewGroup) findViewById(Window.ID_ANDROID_CONTENT);
         View parentView = contentFrameLayout.getChildAt(0);
         if (parentView != null && Build.VERSION.SDK_INT >= 14) {
@@ -90,6 +93,17 @@ public abstract class MyActivtiyToolBar extends AppCompatActivity {
             //透明导航栏
             getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION);
         }*/
+        //透明状态栏
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window window = getWindow();
+            // Translucent status bar
+            window.setFlags(
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+
+            toolbar.setPadding(0, ScreenUtil.getStatusHeight(this),0,0);
+            toolbar.getLayoutParams().height+=ScreenUtil.getStatusHeight(this);
+        }
     }
 
     /**

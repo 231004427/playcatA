@@ -36,7 +36,7 @@ import com.sunlin.playcat.json.RESTfulHelp;
 import com.sunlin.playcat.json.CommentRESTful;
 import com.sunlin.playcat.json.GameRESTful;
 import com.sunlin.playcat.view.CircleTitleView;
-import com.sunlin.playcat.view.GameFragmentPageAdapter;
+import com.sunlin.playcat.fragment.GameFragmentPageAdapter;
 import com.sunlin.playcat.view.LoadingDialog;
 
 import java.util.Date;

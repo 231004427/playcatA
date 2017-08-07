@@ -7,7 +7,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import com.google.gson.Gson;
 import com.sunlin.playcat.R;
@@ -21,7 +20,6 @@ import com.sunlin.playcat.domain.GamePlay;
 import com.sunlin.playcat.domain.GamePlayList;
 import com.sunlin.playcat.json.GamePlayRESTful;
 import com.sunlin.playcat.view.CircleTitleView;
-import com.sunlin.playcat.view.GameTopListAdapter;
 import com.sunlin.playcat.view.MyDecoration;
 
 import java.util.ArrayList;

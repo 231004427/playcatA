@@ -11,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.sunlin.playcat.R;
-import com.sunlin.playcat.view.MyFragmentPageAdapter;
 
 /**
  * Created by sunlin on 2017/7/19.

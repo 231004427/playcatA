@@ -49,8 +49,10 @@
         <activity android:name=".RegistNextActivity" />
         <activity android:name=".UpdateHeadActivity" />
         <activity android:name="com.soundcloud.android.crop.CropImageActivity" />
-        <activity android:name=".GameShowActivity" android:windowSoftInputMode="adjustResize|stateAlwaysHidden">
-        </activity>
+        <activity
+            android:name=".GameShowActivity"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden"></activity>
+        <activity android:name=".GoodsShowActivity"></activity>
     </application>
 
 </manifest>

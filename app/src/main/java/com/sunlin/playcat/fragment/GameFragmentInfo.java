@@ -3,12 +3,8 @@ package com.sunlin.playcat.fragment;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.widget.NestedScrollView;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,8 +28,6 @@ import com.sunlin.playcat.domain.CommentList;
 import com.sunlin.playcat.json.CommentRESTful;
 import com.sunlin.playcat.view.CircleImageView;
 import com.sunlin.playcat.view.CircleTitleView;
-import com.sunlin.playcat.view.CommentListAdapter;
-import com.sunlin.playcat.view.GameFragmentPageAdapter;
 
 import java.util.Date;
 

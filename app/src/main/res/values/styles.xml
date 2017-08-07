@@ -5,6 +5,7 @@
         <!-- Customize your theme here. -->
         <item name="android:windowBackground">@android:color/white</item>
         <item name="editTextBackground">@null</item>
+        <item name="windowNoTitle">true</item>
         <item name="android:listDivider">@drawable/downline</item>
     </style>
 

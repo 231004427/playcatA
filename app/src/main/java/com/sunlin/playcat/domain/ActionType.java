@@ -18,4 +18,5 @@ public class ActionType {
     public static final int COLLECT_ADD=10;
     public static final int COLLECT_DEL=11;
     public static final int GAME_PLAY_SEARCH=12;
+    public static final int GOODS_SEARCH=13;
 }

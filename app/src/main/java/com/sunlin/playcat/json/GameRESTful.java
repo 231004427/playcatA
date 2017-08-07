@@ -17,7 +17,6 @@ import java.util.Date;
 
 public class GameRESTful extends ObjRESTful {
     private static final String TAG="GameRESTful";
-
     public GameRESTful(BaseRequest _baseRequest) {
         super(_baseRequest);
     }

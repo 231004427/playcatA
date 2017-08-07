@@ -1,4 +1,4 @@
-package com.sunlin.playcat.view;
+package com.sunlin.playcat.fragment;
 
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;

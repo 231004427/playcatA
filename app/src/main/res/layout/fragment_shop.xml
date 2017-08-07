@@ -1,22 +1,80 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nav_h"
+        android:background="@drawable/backgournd_tab"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+        <TextView
+            android:id="@+id/toolbar_title"
+            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/app_name"
+            android:textColor="@color/textColor"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true" />
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tabs"
+        <com.sunlin.playcat.view.CircleTitleView
+            android:id="@+id/goldText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:drawable_left="@drawable/gold16"
+            app:show_red="true"
+            app:text="123"
+            app:text_color="@color/black"
+            app:text_size="@dimen/text_small"
+            android:layout_alignBaseline="@+id/zhuanText"
+            android:layout_alignBottom="@+id/zhuanText"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@+id/zhuanText">
+        </com.sunlin.playcat.view.CircleTitleView>
+
+        <com.sunlin.playcat.view.CircleTitleView
+            android:id="@+id/zhuanText"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/spacing_w"
+            android:layout_alignParentRight="true"
+
+            app:drawable_left="@drawable/zhuan16"
+            app:show_red="true"
+            app:text="123"
+            app:text_color="@color/black"
+            app:text_size="@dimen/text_small"></com.sunlin.playcat.view.CircleTitleView>
+
+    </RelativeLayout>
+    <LinearLayout
+        android:id="@+id/tabsLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:tabIndicatorColor="@color/red"
-        app:tabSelectedTextColor="@color/red"
-        app:tabTextColor="@color/black"/>
-
-    <!--可滑动的布局内容-->
+        android:background="@color/white"
+        android:orientation="horizontal">
+        <android.support.design.widget.TabLayout
+            android:id="@+id/tabs"
+            android:layout_width="match_parent"
+            android:background="@drawable/my_tab_back2"
+            android:layout_height="44dp"
+            app:tabGravity="fill"
+            app:tabIndicatorColor="@color/textColor_select"
+            app:tabIndicatorHeight="3dp"
+            app:tabMode="fixed"
+            app:tabSelectedTextColor="@color/textColor_select"
+            app:tabTextColor="@android:color/background_dark" />
+    </LinearLayout>
     <android.support.v4.view.ViewPager
-        android:background="@color/black"
         android:id="@+id/viewPager"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_height="match_parent">
+
+    </android.support.v4.view.ViewPager>
+
 </LinearLayout>

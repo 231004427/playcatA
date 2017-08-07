@@ -1,6 +1,7 @@
 package com.sunlin.playcat;
 
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -8,6 +9,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.sunlin.playcat.fragment.FriendFragment;
@@ -15,7 +18,7 @@ import com.sunlin.playcat.fragment.IndexFragment;
 import com.sunlin.playcat.fragment.SetFragment;
 import com.sunlin.playcat.fragment.ShopFragment;
 import com.sunlin.playcat.fragment.TalkFragment;
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends MyActivtiyBase implements View.OnClickListener {
     private TextView tb_home;
     private TextView tb_shop;
     private TextView tb_friend;
@@ -32,7 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+
         //绑定对象
         tb_home=(TextView)findViewById(R.id.tab_home);
         tb_shop=(TextView)findViewById(R.id.tab_shop);
@@ -48,10 +51,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //显示红点
 
-
         sIndex=0;
         switchFrgment(0);//设置默认显示Fragment
     }
+
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.activity_main;
+    }
+
     /**
      * A native method that is implemented by the 'native-lib' native library,
      * which is packaged with this application.

@@ -1,4 +1,4 @@
-package com.sunlin.playcat.view;
+package com.sunlin.playcat.fragment;
 
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +13,7 @@ import com.sunlin.playcat.common.CValues;
 import com.sunlin.playcat.common.ImageWorker;
 import com.sunlin.playcat.domain.Comment;
 import com.sunlin.playcat.domain.Game;
+import com.sunlin.playcat.view.CircleImageView;
 
 import java.util.List;
 

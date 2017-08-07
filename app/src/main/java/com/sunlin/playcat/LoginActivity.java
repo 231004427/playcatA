@@ -19,7 +19,7 @@ import com.sunlin.playcat.json.RESTfulHelp;
 import com.sunlin.playcat.json.UserRESTful;
 import com.sunlin.playcat.view.LoadingDialog;
 
-public class LoginActivity extends AppCompatActivity implements View.OnClickListener {
+public class LoginActivity extends MyActivtiyBase implements View.OnClickListener {
     private String TAG="LoginActivity";
     private TextView registBtn;
     private Button btnLogin;
@@ -37,7 +37,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_login);
 
         registBtn=(TextView)findViewById(R.id.regist);
         btnLogin=(Button)findViewById(R.id.btnLogin);
@@ -58,6 +57,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         registBtn.setOnClickListener(this);
         btnLogin.setOnClickListener(this);
     }
+
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.activity_login;
+    }
+
     public void loginServer()
     {
         //判断数据有效性

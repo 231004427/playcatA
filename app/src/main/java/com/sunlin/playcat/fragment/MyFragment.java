@@ -29,7 +29,6 @@ import com.sunlin.playcat.domain.GameList;
 import com.sunlin.playcat.domain.ActionType;
 import com.sunlin.playcat.json.GameRESTful;
 import com.sunlin.playcat.view.CircleTitleView;
-import com.sunlin.playcat.view.GameListAdapter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -163,7 +162,6 @@ public class MyFragment extends Fragment implements GameListAdapter.OnItemClickL
     }
     //滑动监控
     float x1=0,y1=0;
-    float x2=0,y2=0;
     private View.OnTouchListener  mRecyclerViewTouch=new View.OnTouchListener() {
         @Override
         public boolean onTouch(View v, MotionEvent event) {
