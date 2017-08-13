@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#F8E81C</color>
-    <color name="colorPrimaryDark">#F8E81C</color>
+    <color name="colorPrimaryDark">#F5B921</color>
     <color name="colorAccent">#FBF27D</color>
     <color name="colorLine">#C8C7CC</color>
     <color name="colorBackground">#FFFFFF</color>
@@ -24,6 +24,7 @@
     <color name="black">#000000</color>
     <color name="imgBack">#666666</color>
     <color name="dialog_background">#000000</color>
+    <color name="dialog_line">#D7D7D7</color>
     <color name="highlight">#FBF27D</color>
     <color name="goods_background">#FFFDDE</color>
     <color name="red">#FF0606</color>

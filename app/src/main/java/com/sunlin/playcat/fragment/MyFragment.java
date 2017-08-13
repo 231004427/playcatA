@@ -3,6 +3,7 @@ package com.sunlin.playcat.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -18,7 +19,10 @@ import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
 import com.google.gson.Gson;
 import com.sunlin.playcat.GameShowActivity;
+import com.sunlin.playcat.MyApp;
 import com.sunlin.playcat.R;
+import com.sunlin.playcat.common.CValues;
+import com.sunlin.playcat.common.ImageWorker;
 import com.sunlin.playcat.common.LogC;
 import com.sunlin.playcat.common.RestTask;
 import com.sunlin.playcat.common.ShowMessage;
@@ -27,7 +31,10 @@ import com.sunlin.playcat.domain.BaseResult;
 import com.sunlin.playcat.domain.Game;
 import com.sunlin.playcat.domain.GameList;
 import com.sunlin.playcat.domain.ActionType;
+import com.sunlin.playcat.domain.User;
 import com.sunlin.playcat.json.GameRESTful;
+import com.sunlin.playcat.json.UserRESTful;
+import com.sunlin.playcat.view.CircleImageView;
 import com.sunlin.playcat.view.CircleTitleView;
 
 import java.util.ArrayList;
@@ -37,21 +44,22 @@ import java.util.List;
  * Created by sunlin on 2017/7/11.
  */
 
-public class MyFragment extends Fragment implements GameListAdapter.OnItemClickListener {
+public class MyFragment extends Fragment implements GameListAdapter.OnItemClickListener,RestTask.ResponseCallback {
     private String TAG="MyFragment";
     private Context myContext;
     int typeId;
-    RecyclerView mRecyclerView;
+
+    private RecyclerView mRecyclerView;
     private GameList dataList;
-    boolean isLoading=false;
-    LinearLayoutManager mLayoutManager;
+    private boolean isLoading=false;
+    private LinearLayoutManager mLayoutManager;
     private GameListAdapter listAdapter;
-    int getType=1;
+    private int getType=1;
 
     private GameRESTful gameRESTful;
-    private BaseRequest baseRequest;
+    private MyApp myApp;
+    private CircleTitleView loadTextView;
 
-    CircleTitleView loadTextView;
     private MaterialRefreshLayout swipe_refresh_widget;
 
     public static MyFragment newInstance(int type) {
@@ -72,11 +80,6 @@ public class MyFragment extends Fragment implements GameListAdapter.OnItemClickL
 
         typeId = getArguments() != null ? getArguments().getInt("type") : 1;
 
-        baseRequest=new BaseRequest();
-        baseRequest.setUserid(1);
-        baseRequest.setToken("123456");
-        baseRequest.setAppid(111);
-        gameRESTful=new GameRESTful(baseRequest);
     }
     public  boolean isSlideToBottom(RecyclerView recyclerView) {
         if (recyclerView == null) return false;
@@ -89,10 +92,12 @@ public class MyFragment extends Fragment implements GameListAdapter.OnItemClickL
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pager_list, null);
         mRecyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
-
-        //获取对象
         loadTextView = (CircleTitleView) view.findViewById(R.id.netoffText);
         swipe_refresh_widget=(MaterialRefreshLayout) view.findViewById(R.id.swipe_refresh_widget);
+
+
+        myApp=(MyApp) this.getActivity().getApplication();
+        gameRESTful=new GameRESTful(myApp.getUser());
 
         //点击重试
         loadTextView.setOnClickListener(new View.OnClickListener() {
@@ -155,6 +160,7 @@ public class MyFragment extends Fragment implements GameListAdapter.OnItemClickL
 
 
         //初始化加载
+        isLoading=false;
         getType=1;
         BuildData();
 
@@ -232,70 +238,8 @@ public class MyFragment extends Fragment implements GameListAdapter.OnItemClickL
             TextView footText = (TextView) listAdapter.getFooterView().findViewById(R.id.footText);
             footText.setText(myContext.getString(R.string.nextpage));
         }
-
-        gameRESTful.search(dataList, new RestTask.ResponseCallback() {
-            @Override
-            public void onRequestSuccess(String response) {
-                try {
-                    Gson gson = new Gson();
-                    //处理结果
-                    BaseResult result=gson.fromJson(response,BaseResult.class);
-                    if (result.getErrcode() <= 0 && result.getType() == ActionType.GAME_SEARCH)
-                    {
-                        GameList gameList = gson.fromJson(result.getData(), GameList.class);
-                        if (gameList != null && gameList.getGames().size() > 0) {
-                            //初始化数据
-                            if(getType==1 ||getType==2) {
-                                dataList.setCount(gameList.getCount());
-                                dataList.getGames().clear();
-                                dataList.getGames().addAll(gameList.getGames());
-                                listAdapter.notifyDataSetChanged();
-                            }
-                            //分页数据
-                            if(getType==3)
-                            {
-                                dataList.getGames().addAll(gameList.getGames());
-                                listAdapter.notifyDataSetChanged();
-                            }
-                            //判断是否到页尾
-                            int start=dataList.getStart();
-                            int pageNum=dataList.getPageNum();
-                            dataList.setStart(start+pageNum);
-                            if(dataList.getStart()>=dataList.getCount()){
-                                TextView footText=(TextView)listAdapter.getFooterView().findViewById(R.id.footText);
-                                footText.setText(myContext.getString(R.string.nodata));
-                            }
-                            //隐藏加载提示
-                            loadTextView.setVisibility(View.GONE);
-                        }else{
-                            loadTextView.setText(myContext.getString(R.string.nodata_r));
-                        }
-                    }
-                    if(result.getErrcode() >0){
-                        ShowMessage.taskShow(myContext, result.getErrmsg());
-                    }
-                }catch (Exception e)
-                {
-                    LogC.write(e,TAG);
-                    ShowMessage.taskShow(myContext,getString(R.string.error_server));
-
-                }finally {
-                    isLoading=false;
-                    swipe_refresh_widget.finishRefresh();
-                }
-
-            }
-            @Override
-            public void onRequestError(Exception error) {
-                //网络异常提示
-                loadTextView.setText(myContext.getString(R.string.error_net));
-                loadTextView.setVisibility(View.VISIBLE);
-
-                swipe_refresh_widget.finishRefresh();
-                isLoading=false;
-                LogC.write(error,TAG);
-            }
-        });
+        Log.e(TAG,"type:"+dataList.getType()+"");
+        gameRESTful.search(dataList,this);
     }
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
@@ -318,5 +262,68 @@ public class MyFragment extends Fragment implements GameListAdapter.OnItemClickL
         intent.putExtra("id",(int)title.getTag());
 
         startActivity(intent);
+    }
+
+    @Override
+    public void onRequestSuccess(String response) {
+        try {
+            Gson gson = new Gson();
+            //处理结果
+            BaseResult result=gson.fromJson(response,BaseResult.class);
+            if (result.getErrcode() <= 0 && result.getType() == ActionType.GAME_SEARCH)
+            {
+                GameList gameList = gson.fromJson(result.getData(), GameList.class);
+                if (gameList != null && gameList.getGames().size() > 0) {
+                    //初始化数据
+                    if(getType==1 ||getType==2) {
+                        dataList.setCount(gameList.getCount());
+                        dataList.getGames().clear();
+                        dataList.getGames().addAll(gameList.getGames());
+                        listAdapter.notifyDataSetChanged();
+                    }
+                    //分页数据
+                    if(getType==3)
+                    {
+                        dataList.getGames().addAll(gameList.getGames());
+                        listAdapter.notifyDataSetChanged();
+                    }
+                    //判断是否到页尾
+                    int start=dataList.getStart();
+                    int pageNum=dataList.getPageNum();
+                    dataList.setStart(start+pageNum);
+                    if(dataList.getStart()>=dataList.getCount()){
+                        TextView footText=(TextView)listAdapter.getFooterView().findViewById(R.id.footText);
+                        footText.setText(myContext.getString(R.string.nodata));
+                    }
+                    //隐藏加载提示
+                    loadTextView.setVisibility(View.GONE);
+                }else{
+                    loadTextView.setText(myContext.getString(R.string.nodata_r));
+                }
+            }
+            if(result.getErrcode() >0){
+                ShowMessage.taskShow(myContext, result.getErrmsg());
+            }
+        }catch (Exception e)
+        {
+            LogC.write(e,TAG);
+            ShowMessage.taskShow(myContext,getString(R.string.error_server));
+
+        }finally {
+            isLoading=false;
+            swipe_refresh_widget.finishRefresh();
+        }
+
+    }
+
+    @Override
+    public void onRequestError(Exception error) {
+        //网络异常提示
+        loadTextView.setText(myContext.getString(R.string.error_net));
+        loadTextView.setVisibility(View.VISIBLE);
+
+        swipe_refresh_widget.finishRefresh();
+        isLoading=false;
+        LogC.write(error,TAG);
     }
 }

@@ -5,6 +5,7 @@ import com.sunlin.playcat.common.ServerTask;
 import com.sunlin.playcat.domain.ActionType;
 import com.sunlin.playcat.domain.BaseRequest;
 import com.sunlin.playcat.domain.GamePlayList;
+import com.sunlin.playcat.domain.User;
 
 import java.util.Date;
 
@@ -16,6 +17,9 @@ public class GamePlayRESTful extends ObjRESTful  {
     private String TAG="GamePlayRESTful";
     public GamePlayRESTful(BaseRequest _baseRequest) {
         super(_baseRequest);
+    }
+    public GamePlayRESTful(User user){
+        super(user);
     }
     public void search(GamePlayList gameList, RestTask.ResponseCallback responseCallback)
     {

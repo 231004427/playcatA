@@ -2,6 +2,7 @@ package com.sunlin.playcat;
 
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -13,12 +14,26 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.sunlin.playcat.common.CValues;
+import com.sunlin.playcat.common.ImageWorker;
+import com.sunlin.playcat.common.LogC;
+import com.sunlin.playcat.common.RestTask;
+import com.sunlin.playcat.common.ShowMessage;
+import com.sunlin.playcat.domain.ActionType;
+import com.sunlin.playcat.domain.BaseResult;
+import com.sunlin.playcat.domain.User;
 import com.sunlin.playcat.fragment.FriendFragment;
 import com.sunlin.playcat.fragment.IndexFragment;
 import com.sunlin.playcat.fragment.SetFragment;
 import com.sunlin.playcat.fragment.ShopFragment;
 import com.sunlin.playcat.fragment.TalkFragment;
+import com.sunlin.playcat.json.UserRESTful;
+import com.sunlin.playcat.view.CircleImageView;
+import com.sunlin.playcat.view.CircleTitleView;
+
 public class MainActivity extends MyActivtiyBase implements View.OnClickListener {
+    private String TAG="MainActivity";
     private TextView tb_home;
     private TextView tb_shop;
     private TextView tb_friend;
@@ -31,6 +46,8 @@ public class MainActivity extends MyActivtiyBase implements View.OnClickListener
     private  String fragment3Tag="Friend";
     private  String fragment4Tag="Talk";
     private  String fragment5Tag="Set";
+
+    private Handler myHandle=new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +67,6 @@ public class MainActivity extends MyActivtiyBase implements View.OnClickListener
         tb_set.setOnClickListener(this);
 
         //显示红点
-
         sIndex=0;
         switchFrgment(0);//设置默认显示Fragment
     }

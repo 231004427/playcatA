@@ -47,8 +47,6 @@ public class CircleTitleView extends RelativeLayout {
             if (leftButtonDrawable != -1) {
                 Drawable drawable = ResourcesCompat.getDrawable(getResources(), leftButtonDrawable, null);
                 mLeftBtn.setBackground(drawable);
-            }else{
-                mLeftBtn.setVisibility(View.INVISIBLE);
             }
             //文本
             String leftButtonText = attributes.getString(R.styleable.CircleTitleView_text);
@@ -66,8 +64,12 @@ public class CircleTitleView extends RelativeLayout {
     // 为左侧返回按钮添加自定义点击事件
     public void setLeftButtonListener(OnClickListener listener) {
         mLeftBtn.setOnClickListener(listener);
+        mLeftBtn.setVisibility(View.VISIBLE);
     }
-
+    public void setmLeftBtnImage(int resId)
+    {
+        mLeftBtn.setImageResource(resId);
+    }
     // 设置标题的方法
     public void setText(String title) {
         mTitleTv.setText(title);

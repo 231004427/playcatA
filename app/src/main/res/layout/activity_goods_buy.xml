@@ -6,7 +6,7 @@
     android:background="@color/colorBtn_enabled"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    tools:context="com.sunlin.playcat.GoodsShowActivity">
+    tools:context="com.sunlin.playcat.GoodsBuyActivity">
 
     <include
         layout="@layout/nativebar_layout"
@@ -24,7 +24,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:divider="@drawable/downline"
-        android:showDividers="end|middle"
+        android:showDividers="middle"
         android:orientation="vertical">
         <LinearLayout
             android:layout_width="match_parent"
@@ -39,8 +39,6 @@
                 android:layout_height="match_parent"
                 android:text="商品" />
         </LinearLayout>
-
-
         <LinearLayout
             android:layout_width="match_parent"
             android:background="@color/white"
@@ -53,7 +51,7 @@
                 android:layout_height="76dp">
 
                 <ImageView
-                    android:id="@+id/imageView5"
+                    android:id="@+id/goodsImg"
                     android:layout_width="45dp"
                     android:layout_height="45dp"
                     android:layout_alignParentLeft="true"
@@ -66,34 +64,38 @@
                     android:id="@+id/goodsTitle"
                     android:textColor="@color/textColor"
                     android:textSize="@dimen/text_l"
-                    android:layout_marginLeft="@dimen/ui_10_dip"
+                    android:layout_marginLeft="10dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignTop="@+id/imageView5"
-                    android:layout_toEndOf="@+id/imageView5"
-                    android:layout_toRightOf="@+id/imageView5"
-                    android:text="300金币" />
+                    android:width="160dp"
+                    android:ellipsize="end"
+                    android:maxLines="2"
+                    android:text="300金币"
+                    android:layout_alignTop="@+id/goodsImg"
+                    android:layout_toRightOf="@+id/goodsImg"
+                    android:layout_toEndOf="@+id/goodsImg"
+                    android:layout_marginStart="10dp" />
 
                 <TextView
-                    android:id="@+id/goodsPay"
-                    android:textColor="@color/textColor_low"
-                    android:textSize="@dimen/text_l"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignLeft="@+id/goodsTitle"
-                    android:layout_alignStart="@+id/goodsTitle"
-                    android:layout_below="@+id/goodsTitle"
-                    android:text="￥28" />
-
+                    android:textColor="@color/textColor_low"
+                    android:textSize="@dimen/text_small"
+                    android:text="数量"
+                    android:layout_alignTop="@+id/goodsTitle"
+                    android:layout_alignLeft="@+id/linearLayout2"
+                    android:layout_alignStart="@+id/linearLayout2"
+                    android:layout_marginLeft="55dp"
+                    android:layout_marginStart="55dp" />
                 <LinearLayout
-                    android:layout_width="122dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="28dp"
-                    android:layout_marginRight="@dimen/spacing_w"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
                     android:orientation="horizontal"
-                    android:id="@+id/linearLayout2">
+                    android:id="@+id/linearLayout2"
+                    android:layout_marginRight="@dimen/spacing_w"
+                    android:layout_below="@+id/goodsTitle"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true">
                     <LinearLayout
                         android:layout_width="48dp"
                         android:layout_height="match_parent">
@@ -106,13 +108,13 @@
                             app:srcCompat="@drawable/sub_16" />
                     </LinearLayout>
                     <TextView
+                        android:id="@+id/goodsNum"
                         android:text="1"
                         android:textSize="@dimen/text_m"
                         android:textColor="@color/textColor"
                         android:gravity="center"
                         android:background="@drawable/btn_add_middle"
-                        android:layout_width="wrap_content"
-                        android:minWidth="26dp"
+                        android:layout_width="40dp"
                         android:layout_height="match_parent" />
                     <LinearLayout
                         android:layout_width="48dp"
@@ -127,19 +129,8 @@
                     </LinearLayout>
                 </LinearLayout>
 
-                <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textColor="@color/textColor_low"
-                    android:textSize="@dimen/text_small"
-                    android:layout_marginRight="@dimen/ui_10_dip"
-                    android:layout_centerVertical="true"
-                    android:layout_toLeftOf="@+id/linearLayout2"
-                    android:layout_toStartOf="@+id/linearLayout2"
-                    android:text="数量" />
-
             </RelativeLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:gravity="right"
@@ -147,43 +138,82 @@
 
                 <TextView
                     android:id="@+id/textView5"
-                    android:gravity="center"
-                    android:textColor="@color/textColor_low"
-                    android:textSize="@dimen/text_small"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
                     android:layout_marginRight="@dimen/ui_10_dip"
+                    android:text="价格"
+                    android:textColor="@color/textColor_low"
+                    android:textSize="@dimen/text_small" />
+                <com.sunlin.playcat.view.CircleTitleView
+                    android:id="@+id/priceSum"
+                    android:layout_gravity="center_vertical"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="价格" />
-                <TextView
-                    android:id="@+id/priceSumText"
-                    android:gravity="center"
-                    android:textColor="@color/red"
+                    android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/spacing_w"
-                    android:textSize="@dimen/text_l"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:text="￥28" />
+                    app:show_red="true"
+                    app:text="28"
+                    app:text_color="@color/red"
+                    app:text_size="@dimen/text_title" />
+
             </LinearLayout>
         </LinearLayout>
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="30dp">
+
             <TextView
-                android:textColor="@color/textColor_low"
-                android:layout_marginLeft="@dimen/spacing_w"
-                android:textSize="@dimen/text_small"
-                android:gravity="center_vertical"
+                android:id="@+id/textView8"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:text="支付方式" />
+                android:layout_marginLeft="@dimen/spacing_w"
+                android:gravity="center_vertical"
+                android:text="支付方式"
+                android:textColor="@color/textColor_low"
+                android:textSize="@dimen/text_small" />
         </LinearLayout>
         <LinearLayout
             android:layout_width="match_parent"
-            android:background="@color/white"
             android:orientation="vertical"
+            android:background="@color/white"
             android:layout_height="wrap_content">
             <LinearLayout
+                android:id="@+id/payAliLayout"
+                android:layout_width="match_parent"
+                android:gravity="center_vertical"
+                android:paddingLeft="@dimen/spacing_w"
+                android:layout_height="@dimen/btn_h_l">
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:srcCompat="@drawable/alipay_29" />
+                <RelativeLayout
+                    android:background="@drawable/downline2"
+                    android:layout_marginLeft="@dimen/spacing_w"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent">
+                    <TextView
+                        android:textSize="@dimen/text_l"
+                        android:textColor="@color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:text="支付宝" />
+                    <RadioButton
+                        android:id="@+id/rbBoyAli"
+                        style="@style/radioBtn"
+                        android:layout_width="22dp"
+                        android:layout_height="22dp"
+                        android:button="@null"
+                        android:checked="true"
+                        android:layout_marginRight="@dimen/spacing_w"
+                        android:layout_centerVertical="true"
+                        android:layout_alignParentRight="true" />
+                </RelativeLayout>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/payWeixinLayout"
             android:layout_width="match_parent"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/spacing_w"
@@ -194,7 +224,6 @@
                 android:layout_height="wrap_content"
                 app:srcCompat="@drawable/weixin_29" />
             <RelativeLayout
-                android:background="@drawable/downline2"
                 android:layout_marginLeft="@dimen/spacing_w"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
@@ -213,40 +242,6 @@
                     android:layout_width="22dp"
                     android:layout_height="22dp"
                     android:button="@null"
-                    android:checked="true"
-                    android:layout_marginRight="@dimen/spacing_w"
-                    android:layout_centerVertical="true"
-                    android:layout_alignParentRight="true" />
-            </RelativeLayout>
-        </LinearLayout>
-            <LinearLayout
-            android:layout_width="match_parent"
-            android:gravity="center_vertical"
-            android:paddingLeft="@dimen/spacing_w"
-            android:layout_height="@dimen/btn_h_l">
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:srcCompat="@drawable/alipay_29" />
-            <RelativeLayout
-                android:background="@drawable/downline2"
-                android:layout_marginLeft="@dimen/spacing_w"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-                <TextView
-                    android:textSize="@dimen/text_l"
-                    android:textColor="@color/black"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="true"
-                    android:layout_centerVertical="true"
-                    android:text="支付宝" />
-                <RadioButton
-                    android:id="@+id/rbBoyAli"
-                    style="@style/radioBtn"
-                    android:layout_width="22dp"
-                    android:layout_height="22dp"
-                    android:button="@null"
                     android:checked="false"
                     android:layout_marginRight="@dimen/spacing_w"
                     android:layout_centerVertical="true"
@@ -254,6 +249,53 @@
             </RelativeLayout>
         </LinearLayout>
             <LinearLayout
+            android:id="@+id/payGoldLayout"
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/spacing_w"
+            android:layout_height="@dimen/btn_h_l">
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/good_29" />
+            <RelativeLayout
+                android:layout_marginLeft="@dimen/spacing_w"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <TextView
+                    android:id="@+id/textView7"
+                    android:textSize="@dimen/text_l"
+                    android:textColor="@color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:text="金币" />
+                <TextView
+                    android:id="@+id/goldText"
+                    android:layout_marginLeft="@dimen/spacing_w"
+                    android:textSize="@dimen/text_small"
+                    android:textColor="@color/textColor_select"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="(0)"
+                    android:layout_centerVertical="true"
+                    android:layout_toRightOf="@+id/textView7"
+                    android:layout_toEndOf="@+id/textView7" />
+                <RadioButton
+                    android:id="@+id/rbBoyGold"
+                    style="@style/radioBtn"
+                    android:layout_width="22dp"
+                    android:layout_height="22dp"
+                    android:button="@null"
+                    android:checked="true"
+                    android:layout_marginRight="@dimen/spacing_w"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true" />
+            </RelativeLayout>
+        </LinearLayout>
+            <LinearLayout
+                android:id="@+id/payZhuanLayout"
                 android:layout_width="match_parent"
                 android:gravity="center_vertical"
                 android:paddingLeft="@dimen/spacing_w"
@@ -261,7 +303,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    app:srcCompat="@drawable/good_29" />
+                    app:srcCompat="@drawable/zhuan_29" />
                 <RelativeLayout
                     android:layout_marginLeft="@dimen/spacing_w"
                     android:layout_width="match_parent"
@@ -273,14 +315,26 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentLeft="true"
                         android:layout_centerVertical="true"
-                        android:text="金币" />
+                        android:text="钻石"
+                        android:id="@+id/textView4" />
+                    <TextView
+                        android:id="@+id/zhuanText"
+                        android:layout_marginLeft="@dimen/spacing_w"
+                        android:textSize="@dimen/text_small"
+                        android:textColor="@color/textColor_select"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="(0)"
+                        android:layout_centerVertical="true"
+                        android:layout_toRightOf="@+id/textView4"
+                        android:layout_toEndOf="@+id/textView4" />
                     <RadioButton
-                        android:id="@+id/rbBoyGold"
+                        android:id="@+id/rbBoyZhuan"
                         style="@style/radioBtn"
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         android:button="@null"
-                        android:checked="false"
+                        android:checked="true"
                         android:layout_marginRight="@dimen/spacing_w"
                         android:layout_centerVertical="true"
                         android:layout_alignParentRight="true" />
@@ -288,80 +342,52 @@
             </LinearLayout>
         </LinearLayout>
         <LinearLayout
+            android:id="@+id/toUserTitleLayout"
+            android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="30dp">
         <TextView
+            android:id="@+id/toUserTitle"
             android:textColor="@color/textColor_low"
             android:layout_marginLeft="@dimen/spacing_w"
             android:textSize="@dimen/text_small"
             android:gravity="center_vertical"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="充值手机号" />
-    </LinearLayout>
+            android:text="" />
+        </LinearLayout>
         <LinearLayout
+            android:id="@+id/toUserValueLayout"
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:background="@color/white"
             android:orientation="horizontal"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/spacing_w"
-            android:paddingRight="@dimen/spacing_w"
             android:layout_height="@dimen/toolBar">
             <TextView
+                android:id="@+id/toUserValue"
                 android:layout_width="0dp"
                 android:layout_weight="1"
                 android:gravity="center_vertical"
                 android:textSize="@dimen/text_l"
-                android:textColor="@color/black"
-                android:text="13588045452"
-                android:layout_marginRight="@dimen/spacing_w"
-                android:layout_height="match_parent" />
-            <ImageView
-                app:srcCompat="@drawable/right13"
-                android:layout_width="13dp"
-                android:layout_height="13dp" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="30dp">
-            <TextView
-                android:textColor="@color/textColor_low"
-                android:layout_marginLeft="@dimen/spacing_w"
-                android:textSize="@dimen/text_small"
-                android:gravity="center_vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:text="收货地址" />
-        </LinearLayout>
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:background="@color/white"
-            android:orientation="horizontal"
-            android:gravity="center_vertical"
-            android:paddingLeft="@dimen/spacing_w"
-            android:paddingRight="@dimen/spacing_w"
-            android:layout_height="@dimen/toolBar">
-            <TextView
-                android:layout_width="0dp"
-                android:layout_weight="1"
-                android:lines="1"
                 android:ellipsize="end"
-                android:gravity="center_vertical"
-                android:textSize="@dimen/text_l"
+                android:maxLines="1"
                 android:textColor="@color/black"
+                android:text=""
                 android:layout_marginRight="@dimen/spacing_w"
-                android:text="张三 13588045452 东方电子商务园区 15幢 802 室"
                 android:layout_height="match_parent" />
             <ImageView
+                android:id="@+id/btnUserValue"
                 app:srcCompat="@drawable/right13"
-                android:layout_width="13dp"
-                android:layout_height="13dp" />
+                android:scaleType="center"
+                android:layout_width="@dimen/toolBar"
+                android:layout_height="@dimen/toolBar" />
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
-            android:orientation="horizontal"
-            android:layout_height="30dp">
-        </LinearLayout>
+            android:layout_height="30dp"></LinearLayout>
     </LinearLayout>
 </ScrollView>
     <LinearLayout
@@ -372,7 +398,7 @@
         android:layout_height="@dimen/bBar_h">
         <LinearLayout
             android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:layout_height="match_parent">
         <TextView
             android:layout_width="wrap_content"
@@ -382,9 +408,10 @@
             android:text="数量"
             android:layout_height="match_parent" />
         <TextView
+            android:id="@+id/goodsNumTotal"
             android:layout_width="wrap_content"
             android:layout_marginLeft="@dimen/ui_5_dip"
-            android:textSize="@dimen/text_title"
+            android:textSize="@dimen/text_small"
             android:textColor="@color/textColor_low"
             android:gravity="center_vertical"
             android:text="1"
@@ -397,14 +424,18 @@
             android:gravity="center_vertical"
             android:text="总计"
             android:layout_height="match_parent" />
-        <TextView
-            android:layout_width="wrap_content"
-            android:textSize="@dimen/text_title"
-            android:layout_marginLeft="@dimen/ui_5_dip"
-            android:textColor="@color/red"
-            android:gravity="center_vertical"
-            android:text="￥28 "
-            android:layout_height="match_parent" />
+
+            <com.sunlin.playcat.view.CircleTitleView
+                android:id="@+id/priceTotal"
+                android:layout_marginLeft="@dimen/ui_5_dip"
+                android:gravity="center_vertical"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:layout_marginRight="@dimen/spacing_w"
+                app:show_red="true"
+                app:text="28"
+                app:text_color="@color/red"
+                app:text_size="@dimen/text_title2"/>
         </LinearLayout>
         <Button
             android:id="@+id/btnBuy"
@@ -412,7 +443,7 @@
             android:textSize="@dimen/text_title"
             android:background="@color/red2"
             android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:layout_height="match_parent" />
     </LinearLayout>
 </LinearLayout>

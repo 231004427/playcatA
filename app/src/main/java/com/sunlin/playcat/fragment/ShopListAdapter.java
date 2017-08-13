@@ -114,17 +114,19 @@ public class ShopListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolde
                     case 1:
                         btnImg.setVisibility(View.GONE);
                         buttonLayout.setBackgroundResource(R.drawable.buy_1);
-                        btnText.setText("￥"+info.getPrice()+"元");
+                        btnText.setText("¥"+info.getPrice()+"元");
                         break;
                     case 2:
                         btnImg.setVisibility(View.VISIBLE);
-                        btnImg.setImageResource(R.drawable.gold_2_16);
+                        btnImg.setImageResource(R.drawable.zhuan16);
                         buttonLayout.setBackgroundResource(R.drawable.buy_2);
                         btnText.setText(info.getPrice()+"兑换");
                         break;
                     case 3:
+                    case 4:
+                    case 5:
                         btnImg.setVisibility(View.VISIBLE);
-                        btnImg.setImageResource(R.drawable.zhuan16);
+                        btnImg.setImageResource(R.drawable.gold_2_16);
                         buttonLayout.setBackgroundResource(R.drawable.buy_2);
                         btnText.setText(info.getPrice()+"兑换");
                         break;

@@ -7,6 +7,7 @@ import com.sunlin.playcat.domain.ActionType;
 import com.sunlin.playcat.domain.BaseRequest;
 import com.sunlin.playcat.domain.Comment;
 import com.sunlin.playcat.domain.CommentList;
+import com.sunlin.playcat.domain.User;
 
 import java.util.Date;
 
@@ -20,7 +21,9 @@ public class CommentRESTful extends ObjRESTful {
     public CommentRESTful(BaseRequest _baseRequest) {
         super(_baseRequest);
     }
-
+    public CommentRESTful(User user){
+        super(user);
+    }
     public void search(CommentList commentList, RestTask.ResponseCallback responseCallback)
     {
         String dataStr=gson.toJson(commentList);

@@ -3,11 +3,13 @@ package com.sunlin.playcat.json;
 import com.google.gson.Gson;
 import com.sunlin.playcat.common.RestTask;
 import com.sunlin.playcat.common.ServerTask;
+import com.sunlin.playcat.common.SharedData;
 import com.sunlin.playcat.domain.ActionType;
 import com.sunlin.playcat.domain.BaseRequest;
 import com.sunlin.playcat.domain.BaseResult;
 import com.sunlin.playcat.domain.Game;
 import com.sunlin.playcat.domain.GameList;
+import com.sunlin.playcat.domain.User;
 
 import java.util.Date;
 
@@ -18,9 +20,12 @@ import java.util.Date;
 public class GameRESTful extends ObjRESTful {
     private static final String TAG="GameRESTful";
     public GameRESTful(BaseRequest _baseRequest) {
+
         super(_baseRequest);
     }
-
+    public GameRESTful(User user){
+        super(user);
+    }
     public void search(GameList gameList, RestTask.ResponseCallback responseCallback)
     {
         String dataStr=gson.toJson(gameList);

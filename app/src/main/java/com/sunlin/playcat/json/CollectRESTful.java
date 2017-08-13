@@ -6,6 +6,7 @@ import com.sunlin.playcat.common.ServerTask;
 import com.sunlin.playcat.domain.ActionType;
 import com.sunlin.playcat.domain.BaseRequest;
 import com.sunlin.playcat.domain.Collect;
+import com.sunlin.playcat.domain.User;
 
 import java.util.Date;
 
@@ -19,7 +20,9 @@ public class CollectRESTful extends ObjRESTful{
     public CollectRESTful(BaseRequest _baseRequest) {
         super(_baseRequest);
     }
-
+    public CollectRESTful(User user){
+        super(user);
+    }
     //获取收藏信息
     public void get(Collect collect,RestTask.ResponseCallback responseCallback){
         String dataStr=gson.toJson(collect);

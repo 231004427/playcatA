@@ -12,6 +12,11 @@ import android.view.animation.Animation;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.sunlin.playcat.common.SharedData;
+import com.sunlin.playcat.domain.User;
+import com.sunlin.playcat.view.LoadingDialog;
+import com.sunlin.playcat.view.SelectCityDialog;
+
 public class WelcomeActivity extends MyActivtiyBase {
     private String TAG="WelcomeActivity";
     @Override
@@ -49,8 +54,22 @@ public class WelcomeActivity extends MyActivtiyBase {
      * 跳转到...
      */
     private void redirectTo(){
-        Intent intent = new Intent(this, LoginActivity.class);
-        startActivity(intent);
-        finish();
+
+        SelectCityDialog selectCityDialog=new SelectCityDialog(WelcomeActivity.this);
+        selectCityDialog.show();
+        /*
+        //自动登入
+        User user= SharedData.getUser(this);
+        if(user.getId()==0) {
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
+        }else{
+            //保存全局用户信息
+            MyApp app = (MyApp) getApplicationContext();
+            app.setUser(user);
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+        }
+        finish();*/
     }
 }

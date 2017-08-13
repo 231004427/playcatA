@@ -42,8 +42,7 @@
                 android:id="@+id/btnImg"
                 android:layout_width="16dp"
                 android:layout_height="16dp"
-                android:layout_marginRight="2dp"
-                android:background="@drawable/zhuan16" />
+                android:layout_marginRight="2dp" />
             <TextView
                 android:id="@+id/btnText"
                 android:textSize="@dimen/text_small"

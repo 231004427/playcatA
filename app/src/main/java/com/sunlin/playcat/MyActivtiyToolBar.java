@@ -1,10 +1,12 @@
 package com.sunlin.playcat;
 
+import android.content.DialogInterface;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -14,7 +16,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sunlin.playcat.common.ScreenUtil;
+import com.sunlin.playcat.common.SharedData;
 import com.sunlin.playcat.domain.BaseRequest;
+import com.sunlin.playcat.domain.User;
 import com.sunlin.playcat.json.UserRESTful;
 import com.sunlin.playcat.view.LoadingDialog;
 
@@ -27,10 +31,7 @@ public abstract class MyActivtiyToolBar extends AppCompatActivity {
     public TextView toolText;
     public ImageView toolBack;
     public ImageView toolSet;
-    public BaseRequest baseRequest;
-    public int userId=1;
-    public String token="123456";
-    public int appId=111;
+    public User user;
     //提交服务器
     public LoadingDialog loadingDialog;
 
@@ -69,13 +70,24 @@ public abstract class MyActivtiyToolBar extends AppCompatActivity {
         toolBack=(ImageView)findViewById(R.id.btnBack);
         toolSet=(ImageView)findViewById(R.id.btnSet);
         setSupportActionBar(toolbar);
+
         loadingDialog=new LoadingDialog(this);
+        loadingDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK )
+                {
+                    finish();
+                }
+                return false;
+            }
+        });
 
         //用户信息初始化
-        baseRequest=new BaseRequest();
-        baseRequest.setUserid(1);
-        baseRequest.setToken("123456");
-        baseRequest.setAppid(111);
+        MyApp app = (MyApp)this.getApplicationContext();
+        user= app.getUser();
+
+
 
         /*
         //这一行注意！看本文最后的说明！！！！

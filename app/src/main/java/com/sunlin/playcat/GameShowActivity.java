@@ -3,6 +3,7 @@ package com.sunlin.playcat;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
@@ -74,6 +75,7 @@ public class GameShowActivity extends MyActivtiyToolBar implements View.OnClickL
     private GameRESTful gameRESTful;
     private CommentRESTful commentRESTful;
     private CollectRESTful collectRESTful;
+
     private AppBarLayout mAppBarLayout;
     private int totalAppBar;
     private boolean isCollect;
@@ -101,13 +103,9 @@ public class GameShowActivity extends MyActivtiyToolBar implements View.OnClickL
         loveImg=(ImageView)findViewById(R.id.loveImg);
 
         //请求信息
-        baseRequest=new BaseRequest();
-        baseRequest.setUserid(userId);
-        baseRequest.setToken(token);
-        baseRequest.setAppid(appId);
-        gameRESTful=new GameRESTful(baseRequest);
-        commentRESTful=new CommentRESTful(baseRequest);
-        collectRESTful=new CollectRESTful(baseRequest);
+        gameRESTful=new GameRESTful(user);
+        commentRESTful=new CommentRESTful(user);
+        collectRESTful=new CollectRESTful(user);
 
         //收藏
         loveImg.setOnClickListener(this);
@@ -142,19 +140,25 @@ public class GameShowActivity extends MyActivtiyToolBar implements View.OnClickL
         toolBack.setImageResource(R.drawable.back_w22);
         toolSet.setImageResource(R.drawable.social_w22);
 
-
+        toolbar.setBackgroundResource(R.drawable.backgournd_tab);
+        toolbar.getBackground().setAlpha(0);
         //头部监控
         mAppBarLayout.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
             @Override
             public void onOffsetChanged(AppBarLayout appBarLayout, int i) {
                 //Log.e(TAG,"onOffsetChanged:"+i);
-                totalAppBar=mAppBarLayout.getTotalScrollRange()/2;
+                totalAppBar=mAppBarLayout.getTotalScrollRange();
+
+                int temp=-i/totalAppBar*100;
                 //Log.e(TAG,"total:"+totalAppBar);
-                int num=-i;
-                if(num>totalAppBar){
+
+                toolbar.getBackground().setAlpha(temp);
+                if(temp>50){
                     toolBack.setImageResource(R.drawable.back22);
                     toolSet.setImageResource(R.drawable.social22);
                     toolText.setVisibility(View.VISIBLE);
+
+
                 }else {
                     toolBack.setImageResource(R.drawable.back_w22);
                     toolSet.setImageResource(R.drawable.social_w22);
@@ -167,16 +171,6 @@ public class GameShowActivity extends MyActivtiyToolBar implements View.OnClickL
         //显示对话框
         loadingDialog.setCancelable(true);
         loadingDialog.show();
-        loadingDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
-            @Override
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK )
-                {
-                    finish();
-                }
-                return false;
-            }
-        });
         loadingDialog.setOnClickListener(new LoadingDialog.OnClickListener(){
             @Override
             public void onClick(Dialog dialog, int type) {
@@ -233,7 +227,7 @@ public class GameShowActivity extends MyActivtiyToolBar implements View.OnClickL
                 Comment comment=new Comment();
                 comment.setSid(id);
                 comment.setRid(-1);
-                comment.setUserId(userId);
+                comment.setUserId(user.getId());
                 comment.setType(1);
                 comment.setContent(commnetStr);
                 comment.setGoodNum(0);
@@ -261,7 +255,7 @@ public class GameShowActivity extends MyActivtiyToolBar implements View.OnClickL
     }
     private void Collect(){
         Collect collect=new Collect();
-        collect.setUid(userId);
+        collect.setUid(user.getId());
         collect.setSid(id);
         loadingDialog.show();
         if(isCollect){

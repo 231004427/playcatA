@@ -16,8 +16,6 @@ import com.sunlin.playcat.R;
 public class CommomDialog extends Dialog implements View.OnClickListener{
     private TextView contentTxt;
     private TextView titleTxt;
-    private TextView submitTxt;
-    private TextView cancelTxt;
 
     private Context mContext;
     private String content;
@@ -75,19 +73,8 @@ public class CommomDialog extends Dialog implements View.OnClickListener{
     private void initView(){
         contentTxt = (TextView)findViewById(R.id.content);
         titleTxt = (TextView)findViewById(R.id.title);
-        submitTxt = (TextView)findViewById(R.id.submit);
-        submitTxt.setOnClickListener(this);
-        cancelTxt = (TextView)findViewById(R.id.cancel);
-        cancelTxt.setOnClickListener(this);
 
         contentTxt.setText(content);
-        if(!TextUtils.isEmpty(positiveName)){
-            submitTxt.setText(positiveName);
-        }
-
-        if(!TextUtils.isEmpty(negativeName)){
-            cancelTxt.setText(negativeName);
-        }
 
         if(!TextUtils.isEmpty(title)){
             titleTxt.setText(title);
@@ -96,19 +83,6 @@ public class CommomDialog extends Dialog implements View.OnClickListener{
     }
     @Override
     public void onClick(View v) {
-        switch (v.getId()){
-            case R.id.cancel:
-                if(listener != null){
-                    listener.onClick(this, false);
-                }
-                this.dismiss();
-                break;
-            case R.id.submit:
-                if(listener != null){
-                    listener.onClick(this, true);
-                }
-                break;
-        }
     }
 
     public interface OnCloseListener{

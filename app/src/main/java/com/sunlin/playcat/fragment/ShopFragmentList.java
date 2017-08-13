@@ -6,7 +6,6 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
-import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -18,17 +17,15 @@ import android.widget.TextView;
 import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
 import com.google.gson.Gson;
-import com.sunlin.playcat.GameShowActivity;
-import com.sunlin.playcat.GoodsShowActivity;
+import com.sunlin.playcat.GoodsBuyActivity;
+import com.sunlin.playcat.MyApp;
 import com.sunlin.playcat.R;
 import com.sunlin.playcat.common.LogC;
 import com.sunlin.playcat.common.RestTask;
-import com.sunlin.playcat.common.ScreenUtil;
 import com.sunlin.playcat.common.ShowMessage;
 import com.sunlin.playcat.domain.ActionType;
 import com.sunlin.playcat.domain.BaseRequest;
 import com.sunlin.playcat.domain.BaseResult;
-import com.sunlin.playcat.domain.GameList;
 import com.sunlin.playcat.domain.Goods;
 import com.sunlin.playcat.domain.GoodsList;
 import com.sunlin.playcat.json.GoodsRESTful;
@@ -44,7 +41,7 @@ import java.util.List;
 
 public class ShopFragmentList extends Fragment implements ShopListAdapter.OnItemClickListener {
 
-    private String TAG="MyFragment";
+    private String TAG="ShopFragmentList";
     private Context myContext;
     int typeId;
     RecyclerView mRecyclerView;
@@ -52,7 +49,6 @@ public class ShopFragmentList extends Fragment implements ShopListAdapter.OnItem
     boolean isLoading=false;
     GridLayoutManager mLayoutManager;
     int getType=1;
-    private BaseRequest baseRequest;
 
     //需修改
     private ShopListAdapter listAdapter;
@@ -79,11 +75,9 @@ public class ShopFragmentList extends Fragment implements ShopListAdapter.OnItem
 
         typeId = getArguments() != null ? getArguments().getInt("type") : 0;
 
-        baseRequest=new BaseRequest();
-        baseRequest.setUserid(1);
-        baseRequest.setToken("123456");
-        baseRequest.setAppid(111);
-        goodsRESTful=new GoodsRESTful(baseRequest);
+        //创建请求
+        MyApp app = (MyApp) myContext.getApplicationContext();
+        goodsRESTful=new GoodsRESTful(app.getUser());
     }
     public  boolean isSlideToBottom(RecyclerView recyclerView) {
         if (recyclerView == null) return false;
@@ -163,6 +157,7 @@ public class ShopFragmentList extends Fragment implements ShopListAdapter.OnItem
 
 
         //初始化加载
+        isLoading=false;
         getType=1;
         BuildData();
 
@@ -310,7 +305,7 @@ public class ShopFragmentList extends Fragment implements ShopListAdapter.OnItem
         Goods goods=(Goods) btnText.getTag();
         Bundle bundle = new Bundle();
         bundle.putSerializable("goods", goods);
-        Intent intent = new Intent(myContext,GoodsShowActivity.class);
+        Intent intent = new Intent(myContext,GoodsBuyActivity.class);
         intent.putExtras(bundle);
         startActivity(intent);
     }

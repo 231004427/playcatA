@@ -89,6 +89,7 @@ public class RestTask extends AsyncTask<Void,Integer,Object> {
     }
     public void setResponseCallback(ResponseCallback callback){
         mResponseCallback=new WeakReference<ResponseCallback>(callback);
+        Log.e("setResponseCallback",System.identityHashCode(mResponseCallback)+"");
     }
     public void setProgressCallback(ProgressCallback callback){
         mProgressCallback=new WeakReference<ProgressCallback>(callback);
@@ -223,6 +224,7 @@ public class RestTask extends AsyncTask<Void,Integer,Object> {
 
             //获取响应数据
             int status=mConnection.getResponseCode();
+
             if(status>=300){
                 String message=mConnection.getResponseMessage();
                 return new HttpRetryException(message,status);
@@ -231,6 +233,7 @@ public class RestTask extends AsyncTask<Void,Integer,Object> {
             InputStream in=mConnection.getInputStream();
             String encoding=mConnection.getContentEncoding();
             int contentLength=mConnection.getContentLength();
+
             if(encoding==null){
                 encoding="UTF-8";
             }
@@ -267,6 +270,9 @@ public class RestTask extends AsyncTask<Void,Integer,Object> {
 
     @Override
     protected void onPostExecute(Object o) {
+
+        Log.e("onPostExecute",System.identityHashCode(mResponseCallback)+"");
+
         if(mResponseCallback!=null&&mResponseCallback.get()!=null){
             if(o instanceof String){
                 mResponseCallback.get().onRequestSuccess((String)o);

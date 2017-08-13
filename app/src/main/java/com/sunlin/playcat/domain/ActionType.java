@@ -19,4 +19,14 @@ public class ActionType {
     public static final int COLLECT_DEL=11;
     public static final int GAME_PLAY_SEARCH=12;
     public static final int GOODS_SEARCH=13;
+    public static final int ADDRESS_ADD=14;
+    public static final int ADDRESS_GET=15;
+    public static final int ADDRESS_SEARCH=16;
+    public static final int ADDRESS_UPDATE=17;
+    public static final int ADDRESS_DEL=18;
+    public static final int USER_GET=19;
+    public static final int USER_UPDATE_QQ=20;
+    public static final int USER_UPDATE_PHONE2=21;
+    public static final int USER_UPDATE_ADDRESS=22;
+    public static final int USER_UPDATE_WEIXIN=23;
 }

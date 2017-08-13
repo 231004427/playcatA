@@ -88,9 +88,13 @@ public class DownloadImageFromNetwork implements Runnable{
              * 将Bitmap对象转换为inputStream
              */
             ByteArrayOutputStream baos = new ByteArrayOutputStream();
-            bitmapNetwork.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            if(fileName.indexOf(".png")>0)
+            {
+                bitmapNetwork.compress(Bitmap.CompressFormat.PNG, 100, baos);
+            }else{
+                bitmapNetwork.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+            }
             inputStream = new ByteArrayInputStream(baos.toByteArray());
-
             byte[] data = new byte[1024];
             while (inputStream.read(data) != -1) {
                 bos.write(data);

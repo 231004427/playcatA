@@ -91,6 +91,7 @@ public class ImageWorker {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
         Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
         return bitmap;
     }

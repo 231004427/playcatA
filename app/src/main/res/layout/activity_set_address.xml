@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBtn_enabled"
+    tools:context="com.sunlin.playcat.SetAddressActivity">
+    <include
+        layout="@layout/nativebar_layout"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/include" />
+    <ScrollView
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/include">
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <LinearLayout
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:paddingLeft="@dimen/spacing_w"
+                android:paddingRight="@dimen/spacing_w"
+                android:background="@drawable/downline3"
+                android:layout_height="@dimen/btn_h_l">
+                <TextView
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_title"
+                    android:gravity="center_vertical"
+                    android:layout_height="match_parent"
+                    android:layout_width="80dp"
+                    android:text="姓名" />
+                <EditText
+
+                    android:id="@+id/valueName"
+                    android:layout_width="match_parent"
+                    android:hint="联系人姓名"
+                    android:layout_height="25dp"
+                    style="@style/textInput"
+                    android:inputType="text"
+                    android:text="" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:paddingLeft="@dimen/spacing_w"
+                android:paddingRight="@dimen/spacing_w"
+                android:background="@drawable/downline3"
+                android:layout_height="@dimen/btn_h_l">
+                <TextView
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_title"
+                    android:gravity="center_vertical"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:text="手机" />
+                <EditText
+                    android:id="@+id/valuePhone"
+                    android:layout_width="match_parent"
+                    android:hint="联系人手机号"
+                    android:layout_height="25dp"
+                    style="@style/textInput"
+                    android:maxLength="11"
+                    android:inputType="number"
+                    android:text="" />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/selectCityLayout"
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:paddingLeft="@dimen/spacing_w"
+                android:background="@drawable/downline3"
+                android:layout_height="@dimen/btn_h_l">
+                <TextView
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_title"
+                    android:gravity="center_vertical"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:text="地区" />
+                <TextView
+                    android:id="@+id/valueCity"
+                    android:layout_width="match_parent"
+                    android:textSize="@dimen/text_m"
+                    android:gravity="center_vertical|right"
+                    android:textColor="@color/textColor_hit"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"
+                    android:text="请选择" />
+                <ImageView
+                    app:srcCompat="@drawable/right13"
+                    android:scaleType="center"
+                    android:layout_width="@dimen/toolBar"
+                    android:layout_height="@dimen/toolBar" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="15dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:paddingLeft="@dimen/spacing_w"
+                android:paddingRight="@dimen/spacing_w"
+                android:background="@drawable/downline3"
+                android:layout_height="@dimen/btn_h_l">
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="80dp"
+                    android:layout_height="match_parent"
+                    android:gravity="center_vertical"
+                    android:text="详细地址"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_title" />
+
+                <EditText
+
+                    android:id="@+id/valueMore"
+                    android:layout_width="match_parent"
+                    android:hint="请输入地址"
+                    android:layout_height="25dp"
+                    style="@style/textInput"
+                    android:inputType="text"
+                    android:text="" />
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
+</android.support.constraint.ConstraintLayout>

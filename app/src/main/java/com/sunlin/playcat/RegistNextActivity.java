@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.IdRes;
 import android.support.v7.widget.Toolbar;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -18,6 +19,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.soundcloud.android.crop.Crop;
+import com.sunlin.playcat.common.CValues;
 import com.sunlin.playcat.common.ImageHelp;
 import com.sunlin.playcat.common.LogC;
 import com.sunlin.playcat.common.MD5;
@@ -79,7 +81,7 @@ public class RegistNextActivity extends MyActivtiyToolBar implements View.OnClic
         cityText=(TextView) findViewById(R.id.cityText);
 
 
-        userRESTful=new UserRESTful(baseRequest);
+        userRESTful=new UserRESTful(user);
 
         //初始化导航栏
         ToolbarBuild("注册", true, false);
@@ -256,6 +258,8 @@ protected void onActivityResult(int requestCode, int resultCode, Intent result) 
         user.setUpdate(date);
         user.setZhuan(0);
         user.setId(-1);
+        user.setVersion(CValues.getLocalVersionCode(this));
+        user.setImei(((TelephonyManager) getSystemService(TELEPHONY_SERVICE)).getDeviceId());
         userRESTful.regist(user,this);
     }
     @Override

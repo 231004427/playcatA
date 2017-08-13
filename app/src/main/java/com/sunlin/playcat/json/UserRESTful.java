@@ -20,10 +20,43 @@ public class UserRESTful extends ObjRESTful {
     public UserRESTful(BaseRequest _baseRequest) {
         super(_baseRequest);
     }
+    public UserRESTful(User user){
+        super(user);
+    }
 
+    public void updateWeixin(User user,RestTask.ResponseCallback responseCallback){
+        String dataStr=gson.toJson(user);
+        baseRequest.setData(dataStr);
+        baseRequest.setActionType(ActionType.USER_UPDATE_WEIXIN);
+        baseRequest.setDateTime(new Date());
+        ServerTask.Post(gson.toJson(baseRequest),null,responseCallback);
+    }
+    public void updatePhone2(User user,RestTask.ResponseCallback responseCallback){
+        String dataStr=gson.toJson(user);
+        baseRequest.setData(dataStr);
+        baseRequest.setActionType(ActionType.USER_UPDATE_PHONE2);
+        baseRequest.setDateTime(new Date());
+        ServerTask.Post(gson.toJson(baseRequest),null,responseCallback);
+    }
+
+    public void updateQQ(User user,RestTask.ResponseCallback responseCallback){
+        String dataStr=gson.toJson(user);
+        baseRequest.setData(dataStr);
+        baseRequest.setActionType(ActionType.USER_UPDATE_QQ);
+        baseRequest.setDateTime(new Date());
+        ServerTask.Post(gson.toJson(baseRequest),null,responseCallback);
+    }
+
+    //获取用户数据
+    public void get(User user,RestTask.ResponseCallback responseCallback){
+        String dataStr=gson.toJson(user);
+        baseRequest.setData(dataStr);
+        baseRequest.setActionType(ActionType.USER_GET);
+        baseRequest.setDateTime(new Date());
+        ServerTask.Post(gson.toJson(baseRequest),null,responseCallback);
+    }
     //发送手机验证码
     public void sendCode(String phone,RestTask.ResponseCallback responseCallback){
-        Gson gson=new Gson();
 
         PCode pCode=new PCode();
         pCode.setPhone(phone);
@@ -35,12 +68,8 @@ public class UserRESTful extends ObjRESTful {
         ServerTask.Post(gson.toJson(baseRequest),null,responseCallback);
     }
     //登录
-    public void login(String phone, String password, RestTask.ResponseCallback responseCallback){
-        Gson gson=new Gson();
+    public void login(User user, RestTask.ResponseCallback responseCallback){
         //String jsonStr="{phone:\""+phone+"\",password:\""+MD5.getMD5(password)+"\"}";
-        User user=new User();
-        user.setPhone(phone);
-        user.setPassword(MD5.getMD5(password));
         String dataStr=gson.toJson(user);
         baseRequest.setData(dataStr);
         baseRequest.setActionType(ActionType.LOGIN);
@@ -49,7 +78,6 @@ public class UserRESTful extends ObjRESTful {
     }
     //注册
     public void regist(User user,RestTask.ResponseCallback responseCallback){
-        Gson gson=new Gson();
         String dataStr=gson.toJson(user);
         baseRequest.setData(dataStr);
         baseRequest.setActionType(ActionType.REGIST);
@@ -58,7 +86,6 @@ public class UserRESTful extends ObjRESTful {
     }
     //手机验证
     public  void phoneCheck(String phone,String code,RestTask.ResponseCallback responseCallback){
-        Gson gson=new Gson();
 
         PCode pCode=new PCode();
         pCode.setPhone(phone);

@@ -1,20 +1,25 @@
 package com.sunlin.playcat;
 
 import android.content.Intent;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.google.gson.Gson;
+import com.sunlin.playcat.common.CValues;
 import com.sunlin.playcat.common.LogC;
+import com.sunlin.playcat.common.MD5;
 import com.sunlin.playcat.common.RestTask;
+import com.sunlin.playcat.common.SharedData;
 import com.sunlin.playcat.common.ShowMessage;
 import com.sunlin.playcat.domain.ActionType;
 import com.sunlin.playcat.domain.BaseRequest;
 import com.sunlin.playcat.domain.BaseResult;
+import com.sunlin.playcat.domain.User;
 import com.sunlin.playcat.json.RESTfulHelp;
 import com.sunlin.playcat.json.UserRESTful;
 import com.sunlin.playcat.view.LoadingDialog;
@@ -48,6 +53,7 @@ public class LoginActivity extends MyActivtiyBase implements View.OnClickListene
         baseRequest.setUserid(1);
         baseRequest.setToken("123456");
         baseRequest.setAppid(111);
+
         userRESTful=new UserRESTful(baseRequest);
 
         registBtn.setClickable(true);
@@ -81,22 +87,36 @@ public class LoginActivity extends MyActivtiyBase implements View.OnClickListene
         //提交服务器
         loadingDialog=new LoadingDialog(this);
         loadingDialog.show();
-        userRESTful.login(phoneStr, passStr, new RestTask.ResponseCallback() {
+
+        User user=new User();
+        user.setImei(((TelephonyManager) getSystemService(TELEPHONY_SERVICE)).getDeviceId());
+        user.setPhone(phoneStr);
+        user.setPassword(MD5.getMD5(passStr));
+
+        userRESTful.login(user, new RestTask.ResponseCallback() {
             @Override
             public void onRequestSuccess(String response) {
                 try {
                     loadingDialog.dismiss();
                     //处理结果
-                    BaseResult result = RESTfulHelp.getResult(response);
+                    Gson gson=new Gson();
+                    BaseResult result = gson.fromJson(response,BaseResult.class);
                     if(result!=null){
-                    if (result.getErrcode() <= 0 && result.getType() == ActionType.GAME_SEARCH) {
-                        //进入首页
-                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                        startActivity(intent);
-                    }
-                    if(result.getErrcode()>0&&result.getType()==ActionType.LOGIN){
-                        ShowMessage.taskShow(getApplicationContext(), result.getErrmsg());}
+                        if (result.getErrcode() <= 0 && result.getType() == ActionType.LOGIN) {
 
+                            User user=gson.fromJson(result.getData(),User.class);
+                            //保存登入状态
+                            SharedData.saveUser(user,LoginActivity.this);
+                            //全局保存
+                            MyApp app = (MyApp) getApplicationContext();
+                            app.setUser(user);
+                            //进入首页
+                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                            startActivity(intent);
+                        }
+                        if(result.getErrcode()>0&&result.getType()==ActionType.LOGIN){
+                            ShowMessage.taskShow(LoginActivity.this, result.getErrmsg());
+                        }
                     }else{
                         ShowMessage.taskShow(LoginActivity.this,getString(R.string.error_server));
                     }
@@ -133,10 +153,7 @@ public class LoginActivity extends MyActivtiyBase implements View.OnClickListene
             case R.id.codelogin:
                 break;
             case R.id.btnLogin:
-                //进入首页
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
-                //loginServer();
+                loginServer();
                 break;
             case R.id.qqlogin:
                 break;

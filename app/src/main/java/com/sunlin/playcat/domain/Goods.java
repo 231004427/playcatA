@@ -16,6 +16,14 @@ public class Goods implements Serializable {
     private int order;
     private Date create_time;
     private int status;
+    private int stock;
+    public int getStock() {
+        return stock;
+    }
+
+    public void setStock(int stock) {
+        this.stock = stock;
+    }
     public int getId() {
         return id;
     }
