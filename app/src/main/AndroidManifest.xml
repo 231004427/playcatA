@@ -57,10 +57,12 @@
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity android:name=".GoodsBuyActivity" />
         <activity android:name=".SetQPActivity" />
-        <activity android:name=".SetAddressActivity"
-            android:windowSoftInputMode="adjustPan"
-            android:configChanges="keyboard|keyboardHidden|orientation"/>
-        <activity android:name=".SelectCityActivity"></activity>
+        <activity
+            android:name=".SetAddressActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation"
+            android:windowSoftInputMode="adjustPan" />
+        <activity android:name=".SelectCityActivity" />
+        <activity android:name=".FriendShowActivity"></activity>
     </application>
 
 </manifest>

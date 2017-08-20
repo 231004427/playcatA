@@ -53,7 +53,7 @@ public class RestUtil {
         task.setmContentType("application/json");
         task.setmFormBody(json);
 
-        Log.e("RestTask",json);
+        //Log.e("RestTask",json);
 
         return task;
     }

@@ -1,6 +1,7 @@
 package com.sunlin.playcat.fragment;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
 import com.google.gson.Gson;
+import com.sunlin.playcat.FriendShowActivity;
 import com.sunlin.playcat.MyApp;
 import com.sunlin.playcat.R;
 import com.sunlin.playcat.common.LogC;
@@ -28,10 +30,12 @@ import com.sunlin.playcat.domain.Friend;
 import com.sunlin.playcat.domain.FriendList;
 import com.sunlin.playcat.domain.Goods;
 import com.sunlin.playcat.domain.GoodsList;
+import com.sunlin.playcat.domain.User;
 import com.sunlin.playcat.json.FriendRESTful;
 import com.sunlin.playcat.json.GoodsRESTful;
 import com.sunlin.playcat.view.AddFriendDialog;
 import com.sunlin.playcat.view.CircleTitleView;
+import com.sunlin.playcat.view.LoadingDialog;
 import com.sunlin.playcat.view.MyDecoration;
 import com.sunlin.playcat.view.SpaceItemDecoration;
 
@@ -42,10 +46,11 @@ import java.util.List;
  * Created by sunlin on 2017/7/9.
  */
 
-public class FriendFragment extends Fragment implements FriendListAdpter.OnItemClickListener {
+public class FriendFragment extends Fragment implements FriendListAdpter.OnItemClickListener,RestTask.ResponseCallback{
     String mName;
     private String TAG="FriendFragment";
     private ImageView addImg;
+    private AddFriendDialog addFriendDialog;
 
     private Context myContext;
     private int typeId;
@@ -130,12 +135,14 @@ public class FriendFragment extends Fragment implements FriendListAdpter.OnItemC
         //判断list点击
         //viewList[i].setBackgroundColor(ContextCompat.getColor(getActivity(), CValues.color.textColor_low));
         dataList=new FriendList();
+        dataList.setUser_id(myApp.getUser().getId());
         dataList.setCount(0);
         List<Friend> listData = new ArrayList<Friend>();
         dataList.setList(listData);
         dataList.setType(typeId);
         dataList.setStart(0);
-        dataList.setPageNum(9);
+        dataList.setStatus(1);
+        dataList.setPageNum(10);
         //使用单行
         mLayoutManager=new LinearLayoutManager(myContext);
 
@@ -155,16 +162,22 @@ public class FriendFragment extends Fragment implements FriendListAdpter.OnItemC
         BuildData();
 
 
-        //绑定添加事件
+        //添加朋友对话框
         addImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AddFriendDialog addFriendDialog=new AddFriendDialog();
+                addFriendDialog=new AddFriendDialog();
+                addFriendDialog.setType(1);
                 addFriendDialog.show(getFragmentManager(),"AddFriendDialog");
+
             }
         });
 
         return view;
+    }
+    //添加朋友
+    public void addFriend(User userFriend){
+        //addFriendDialog.dismiss();
     }
     //滑动监控
     float x1=0,y1=0;
@@ -227,71 +240,9 @@ public class FriendFragment extends Fragment implements FriendListAdpter.OnItemC
             footText.setText(myContext.getString(R.string.nextpage));
         }*/
 
-        friendRESTful.search(dataList, new RestTask.ResponseCallback() {
-            @Override
-            public void onRequestSuccess(String response) {
-                try {
-                    Gson gson = new Gson();
-                    //处理结果
-                    BaseResult result=gson.fromJson(response,BaseResult.class);
-                    if (result.getErrcode() <= 0 && result.getType() == ActionType.FRIEND_SEARCH)
-                    {
-                        FriendList list = gson.fromJson(result.getData(), FriendList.class);
-                        if (list != null && list.getList().size() > 0) {
-                            //初始化数据
-                            if(getType==1 ||getType==2) {
-                                dataList.setCount(list.getCount());
-                                dataList.getList().clear();
-                                dataList.getList().addAll(list.getList());
-                                listAdapter.notifyDataSetChanged();
-                            }
-                            //分页数据
-                            if(getType==3)
-                            {
-                                dataList.getList().addAll(list.getList());
-                                listAdapter.notifyDataSetChanged();
-                            }
-                            //判断是否到页尾
-                            int start=dataList.getStart();
-                            int pageNum=dataList.getPageNum();
-                            dataList.setStart(start+pageNum);
-                            /*
-                            if(dataList.getStart()>=dataList.getCount()){
-                                TextView footText=(TextView)listAdapter.getFooterView().findViewById(R.id.footText);
-                                footText.setText(myContext.getString(R.string.nodata));
-                            }*/
-                            //隐藏加载提示
-                            loadTextView.setVisibility(View.GONE);
-                        }else{
-                            loadTextView.setVisibility(View.VISIBLE);
-                            loadTextView.setText(myContext.getString(R.string.nodata_r));
-                        }
-                    }
-                    if(result.getErrcode() >0){
-                        ShowMessage.taskShow(myContext, result.getErrmsg());
-                    }
-                }catch (Exception e)
-                {
-                    LogC.write(e,TAG);
-                    ShowMessage.taskShow(myContext,getString(R.string.error_server));
-
-                }finally {
-                    isLoading=false;
-                    swipe_refresh_widget.finishRefresh();
-                }
-
-            }
-            @Override
-            public void onRequestError(Exception error) {
-                //网络异常提示
-                loadTextView.setText(myContext.getString(R.string.error_net));
-                loadTextView.setVisibility(View.VISIBLE);
-                swipe_refresh_widget.finishRefresh();
-                isLoading=false;
-                LogC.write(error,TAG);
-            }
-        });
+        friendRESTful.search(dataList,this);
     }
+
     private void setFooterView(RecyclerView view){
         View footer = LayoutInflater.from(myContext).inflate(R.layout.foot, view, false);
         listAdapter.setFooterView(footer);
@@ -299,5 +250,79 @@ public class FriendFragment extends Fragment implements FriendListAdpter.OnItemC
     @Override
     public void onItemClick(View view) {
 
+        TextView nameText=(TextView) view.findViewById(R.id.nameText);
+
+        int userid=(int)nameText.getTag();
+
+        Intent intent=new Intent(getActivity(), FriendShowActivity.class);
+        intent.putExtra("userId",userid);
+        intent.putExtra("userName",nameText.getText().toString());
+        startActivity(intent);
+
+    }
+
+    @Override
+    public void onRequestSuccess(String response) {
+        try {
+            Gson gson = new Gson();
+            //处理结果
+            BaseResult result=gson.fromJson(response,BaseResult.class);
+            if (result.getErrcode() <= 0 && result.getType() == ActionType.FRIEND_SEARCH)
+            {
+                FriendList list = gson.fromJson(result.getData(), FriendList.class);
+                if (list != null && list.getList().size() > 0) {
+                    //初始化数据
+                    if(getType==1 ||getType==2) {
+                        dataList.setCount(list.getCount());
+                        dataList.getList().clear();
+                        dataList.getList().addAll(list.getList());
+                        listAdapter.notifyDataSetChanged();
+                    }
+                    //分页数据
+                    if(getType==3)
+                    {
+                        dataList.getList().addAll(list.getList());
+                        listAdapter.notifyDataSetChanged();
+                    }
+                    //判断是否到页尾
+                    int start=dataList.getStart();
+                    int pageNum=dataList.getPageNum();
+                    dataList.setStart(start+pageNum);
+                            /*
+                            if(dataList.getStart()>=dataList.getCount()){
+                                TextView footText=(TextView)listAdapter.getFooterView().findViewById(R.id.footText);
+                                footText.setText(myContext.getString(R.string.nodata));
+                            }*/
+                    //隐藏加载提示
+                    loadTextView.setVisibility(View.GONE);
+                }else{
+                    loadTextView.setVisibility(View.VISIBLE);
+                    loadTextView.setText(myContext.getString(R.string.nodata_f));
+                }
+            }
+            if(result.getErrcode() >0){
+                ShowMessage.taskShow(myContext, result.getErrmsg());
+                loadTextView.setText(getString(R.string.error_server));
+            }
+        }catch (Exception e)
+        {
+            LogC.write(e,TAG);
+            ShowMessage.taskShow(myContext,getString(R.string.error_server));
+            loadTextView.setText(getString(R.string.error_server));
+
+        }finally {
+            isLoading=false;
+            swipe_refresh_widget.finishRefresh();
+        }
+    }
+
+    @Override
+    public void onRequestError(Exception error) {
+        //网络异常提示
+        loadTextView.setText(myContext.getString(R.string.error_net));
+        loadTextView.setVisibility(View.VISIBLE);
+        swipe_refresh_widget.finishRefresh();
+        isLoading=false;
+        LogC.write(error,TAG);
     }
 }

@@ -24,6 +24,7 @@
     <string name="loading">加载中...</string>
     <string name="nextpage">...</string>
     <string name="nodata_r">暂无数据</string>
+    <string name="nodata_f">暂无好友</string>
     <string name="nodata">:( 没数据了</string>
     <string name="tip_phone">请输入手机号码</string>
     <string name="tip_pass">请输入密码</string>

@@ -24,6 +24,15 @@ public class Friend {
     private int play_game_id;
     private int play_status;
     private String play_game_ico;
+    private String phone;
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public void setPlay_game_ico(String play_game_ico) {
         this.play_game_ico = play_game_ico;

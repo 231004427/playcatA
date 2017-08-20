@@ -12,7 +12,7 @@ import com.sunlin.playcat.domain.User;
  * Created by sunlin on 2017/8/19.
  */
 
-public class FriendRESTful extends OrderRESTful {
+public class FriendRESTful extends ObjRESTful {
     public static String TAG="FriendRESTful";
     public FriendRESTful(BaseRequest _baseRequest) {
         super(_baseRequest);

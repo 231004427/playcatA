@@ -106,6 +106,7 @@ public class FriendListAdpter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 ImageView imgGameIco=((ListHolder)holder).imgGameIco;
 
                 nameText.setText(info.getName());
+                nameText.setTag(info.getFriend_id());
                 playStatus.setText(info.getPlay_status()==2?"正在玩":" 组队中");
 
                 //绑定图片

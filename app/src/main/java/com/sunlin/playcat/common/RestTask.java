@@ -271,7 +271,7 @@ public class RestTask extends AsyncTask<Void,Integer,Object> {
     @Override
     protected void onPostExecute(Object o) {
 
-        Log.e("onPostExecute",System.identityHashCode(mResponseCallback)+"");
+        //Log.e("onPostExecute",System.identityHashCode(mResponseCallback)+"");
 
         if(mResponseCallback!=null&&mResponseCallback.get()!=null){
             if(o instanceof String){
