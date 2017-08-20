@@ -176,7 +176,7 @@ public class GameShowActivity extends MyActivtiyToolBar implements View.OnClickL
             public void onClick(Dialog dialog, int type) {
                 if(type==2)
                 {
-                    loadingDialog.again();
+                    loadingDialog.again(false);
                     gameRESTful.get(id,GameShowActivity.this);
                 }
                 if(type==1)
@@ -325,7 +325,7 @@ public class GameShowActivity extends MyActivtiyToolBar implements View.OnClickL
 
     @Override
     public void onRequestError(Exception error) {
-        loadingDialog.showText(this.getString(R.string.error_net));
+        loadingDialog.showText(this.getString(R.string.error_net),true,null,"重新链接");
         //ShowMessage.taskShow(getApplicationContext(), this.getString(R.string.error_net));
     }
 

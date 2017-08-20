@@ -65,7 +65,10 @@ public class CircleTitleTopView  extends RelativeLayout {
     public void setLeftButtonListener(OnClickListener listener) {
         mTopBtn.setOnClickListener(listener);
     }
-
+    //设置图片
+    public void setImage(Drawable drawable){
+        mTopBtn.setBackground(drawable);
+    }
     // 设置标题的方法
     public void setText(String title) {
         mTitleTv.setText(title);

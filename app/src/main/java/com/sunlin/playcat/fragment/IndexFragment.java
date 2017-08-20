@@ -32,7 +32,7 @@ import com.sunlin.playcat.view.CircleTitleView;
  * Created by sunlin on 2017/7/19.
  */
 
-public class IndexFragment  extends Fragment {
+public class IndexFragment  extends Fragment implements RestTask.ResponseCallback {
     String TAG="IndexFragment";
     String mName;
     private Context myContext;
@@ -76,41 +76,7 @@ public class IndexFragment  extends Fragment {
         myApp=(MyApp)getActivity().getApplication();
         userRESTful=new UserRESTful(myApp.getUser());
         //用户信息更新
-        userRESTful.get(myApp.getUser(), new RestTask.ResponseCallback() {
-            @Override
-            public void onRequestSuccess(String response) {
-
-                //处理结果
-                Gson gson = new Gson();
-                BaseResult result= gson.fromJson(response,BaseResult.class);
-                try {
-                    if(result!=null) {
-                        if(result.getErrcode()<=0&&result.getType()== ActionType.USER_GET)
-                        {
-                            User user=gson.fromJson(result.getData(),User.class);
-                            myApp.setUser(user);//全局保存
-                            zhuanText.setText(String.valueOf(user.getZhuan()));
-                            goldText.setText(String.valueOf(user.getGold()));
-                            nameText.setText(user.getName());
-                            ImageWorker.loadImage(imgHead, CValues.SERVER_IMG+user.getPhoto(),myHandle);
-
-                        }else
-                        {
-                            ShowMessage.taskShow(myContext, result.getErrmsg());
-                        }
-                    }else{
-                        ShowMessage.taskShow(myContext,getString(R.string.error_server));
-                    }
-                }catch (Exception e){
-                    LogC.write(e,TAG);
-                    ShowMessage.taskShow(myContext,getString(R.string.error_server));
-                }
-            }
-            @Override
-            public void onRequestError(Exception error) {
-                ShowMessage.taskShow(myContext,getString(R.string.error_server));
-            }
-        });
+        userRESTful.get(myApp.getUser(), this);
 
         mViewPager=(ViewPager)view.findViewById(R.id.viewPager);
         String[] titles=new String[]{"精选", "在线", "棋牌","益智", "动作", "小游戏"};
@@ -127,5 +93,39 @@ public class IndexFragment  extends Fragment {
         mTabLayout.setupWithViewPager(mViewPager);
 
         return view;
+    }
+
+    @Override
+    public void onRequestSuccess(String response) {
+        //处理结果
+        Gson gson = new Gson();
+        BaseResult result= gson.fromJson(response,BaseResult.class);
+        try {
+            if(result!=null) {
+                if(result.getErrcode()<=0&&result.getType()== ActionType.USER_GET)
+                {
+                    User user=gson.fromJson(result.getData(),User.class);
+                    myApp.setUser(user);//全局保存
+                    zhuanText.setText(String.valueOf(user.getZhuan()));
+                    goldText.setText(String.valueOf(user.getGold()));
+                    nameText.setText(user.getName());
+                    ImageWorker.loadImage(imgHead, CValues.SERVER_IMG+user.getPhoto(),myHandle);
+
+                }else
+                {
+                    ShowMessage.taskShow(myContext, result.getErrmsg());
+                }
+            }else{
+                ShowMessage.taskShow(myContext,getString(R.string.error_server));
+            }
+        }catch (Exception e){
+            LogC.write(e,TAG);
+            ShowMessage.taskShow(myContext,getString(R.string.error_server));
+        }
+    }
+
+    @Override
+    public void onRequestError(Exception error) {
+        ShowMessage.taskShow(myContext,getString(R.string.error_server));
     }
 }

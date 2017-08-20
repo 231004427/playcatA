@@ -47,7 +47,6 @@ public class MainActivity extends MyActivtiyBase implements View.OnClickListener
     private  String fragment4Tag="Talk";
     private  String fragment5Tag="Set";
 
-    private Handler myHandle=new Handler();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -89,7 +89,7 @@ public class GameFragmentTop extends Fragment implements GameTopListAdapter.OnIt
         //View footer = LayoutInflater.from(getContext()).inflate(R.layout.foot, mRecyclerView, false);
         //listAdapter.setFooterView(footer);
         mRecyclerView.setAdapter(listAdapter);
-        //这句就是添加我们自定义的分隔线
+        //自定义分隔线
         mRecyclerView.addItemDecoration(new MyDecoration(getContext()));
 
         //初始化加载

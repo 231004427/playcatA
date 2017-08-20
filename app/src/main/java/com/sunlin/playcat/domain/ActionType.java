@@ -29,4 +29,8 @@ public class ActionType {
     public static final int USER_UPDATE_PHONE2=21;
     public static final int USER_UPDATE_ADDRESS=22;
     public static final int USER_UPDATE_WEIXIN=23;
+    public static final int AREA_SEARCH=24;
+    public static final int ORDER_ADD=25;
+    public static final int FRIEND_SEARCH=26;
+    public static final int FRIEND_ADD=27;
 }

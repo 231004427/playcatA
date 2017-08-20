@@ -14,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 
 import com.sunlin.playcat.R;
+import com.sunlin.playcat.common.ScreenUtil;
 
 /** * Created by wnw on 16-5-22. */
 
@@ -45,5 +46,9 @@ public class MyDecoration extends RecyclerView.ItemDecoration{
             //Log.d("wnw", left + " " + top + " "+right+"   "+bottom+" "+i);
         }
         super.onDraw(c, parent, state);
+    }
+    @Override
+    public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+        outRect.bottom =1;
     }
 }

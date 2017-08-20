@@ -16,11 +16,11 @@ public class User {
     private String photo="";
     private int gold=0;
     private int zhuan=0;
-    private int level=1;
+    private int level=0;
     private int count=0;
     private Date create;
     private Date update;
-    private int status=1;
+    private int status=0;
     private Local local;
     private String phone2;
     private String token;
@@ -29,7 +29,14 @@ public class User {
     private String qq;
     private String address;
     private String weixin;
+    private int online;
 
+    public int getOnline() {
+        return online;
+    }
+    public void setOnline(int online) {
+        this.online = online;
+    }
     public String getWeixin() {
         return weixin;
     }

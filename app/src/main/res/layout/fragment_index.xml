@@ -40,7 +40,7 @@
                         android:layout_marginLeft="10dp"
                         android:layout_toEndOf="@+id/imgHead"
                         android:layout_toRightOf="@+id/imgHead"
-                        android:text="SomeThing" />
+                        android:text="name" />
 
                     <com.sunlin.playcat.view.CircleTitleView
                         android:id="@+id/goldText"
@@ -51,7 +51,7 @@
                         android:layout_alignStart="@+id/nameText"
                         app:drawable_left="@drawable/gold16"
                         app:show_red="true"
-                        app:text="123"
+                        app:text="0"
                         app:text_color="@color/black"
                         app:text_size="@dimen/text_small">
 
@@ -68,7 +68,7 @@
                         android:layout_toRightOf="@+id/goldText"
                         app:drawable_left="@drawable/zhuan16"
                         app:show_red="true"
-                        app:text="123"
+                        app:text="0"
                         app:text_color="@color/black"
                         app:text_size="@dimen/text_small"></com.sunlin.playcat.view.CircleTitleView>
 

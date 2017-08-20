@@ -8,6 +8,8 @@ import android.util.Log;
 public class LogC {
 
     public static void  write(Exception e,String TAG){
-        Log.d(TAG,e.getMessage());
+        if(e!=null) {
+            Log.d(TAG, e.toString());
+        }
     }
 }

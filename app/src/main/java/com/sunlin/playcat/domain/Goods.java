@@ -20,6 +20,16 @@ public class Goods implements Serializable {
     public int getStock() {
         return stock;
     }
+    private int goods_value;
+
+    public int getGoods_value() {
+        return goods_value;
+    }
+
+    public void setGoods_value(int goods_value) {
+        this.goods_value = goods_value;
+    }
+
 
     public void setStock(int stock) {
         this.stock = stock;

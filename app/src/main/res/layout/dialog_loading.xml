@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/backLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -13,28 +14,37 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
-    <com.sunlin.playcat.view.CircleTitleTopView
+
+    <ImageView
+        android:id="@+id/loadTitleImg"
+        android:visibility="invisible"
+        android:background="@drawable/cry"
+        android:layout_width="55dp"
+        android:layout_height="55dp"
+        android:layout_marginBottom="10dp"
+        android:layout_above="@+id/loadTitle"
+        android:layout_centerHorizontal="true" />
+    <TextView
         android:id="@+id/loadTitle"
         android:visibility="invisible"
+        android:text="@string/error_net"
         android:layout_width="wrap_content"
-        android:layout_height="120dp"
-        app:drawable_top="@drawable/cry"
-        app:text="@string/error_net"
-        app:text_color="@color/textColor_low"
-        app:text_size="@dimen/text_m"
-        android:layout_above="@+id/loading"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="6dp"></com.sunlin.playcat.view.CircleTitleTopView>
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_m"
+        android:layout_marginBottom="10dp"
+        android:layout_above="@+id/btnAgain"
+        android:layout_centerHorizontal="true">
+    </TextView>
     <Button
         android:id="@+id/btnAgain"
         style="@style/btnMain"
         android:visibility="invisible"
         android:layout_width="200dp"
         android:layout_height="@dimen/btn_h_l"
-        android:layout_below="@+id/loadTitle"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:text="@string/try_again" />
+        android:text="@string/try_again"
+        android:layout_below="@+id/loading"
+        android:layout_centerHorizontal="true" />
     <TextView
         android:id="@+id/cancelTitle"
         android:visibility="invisible"
@@ -43,9 +53,9 @@
         android:layout_height="wrap_content"
         android:gravity="center"
         android:textColor="@color/colorPrimary"
+        android:text="@string/cancel"
         android:layout_below="@+id/btnAgain"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
-        android:text="@string/cancel" />
+        android:layout_marginTop="10dp" />
 
 </RelativeLayout>

@@ -1,6 +1,7 @@
 package com.sunlin.playcat;
 
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -39,6 +40,8 @@ public abstract class MyActivtiyBase extends AppCompatActivity {
                 statusLayout.setVisibility(View.GONE);
             }
         }
+        //默认竖屏
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
     }
     abstract protected int getLayoutResId();
 }

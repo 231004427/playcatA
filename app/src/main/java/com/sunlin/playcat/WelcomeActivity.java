@@ -54,10 +54,6 @@ public class WelcomeActivity extends MyActivtiyBase {
      * 跳转到...
      */
     private void redirectTo(){
-
-        SelectCityDialog selectCityDialog=new SelectCityDialog(WelcomeActivity.this);
-        selectCityDialog.show();
-        /*
         //自动登入
         User user= SharedData.getUser(this);
         if(user.getId()==0) {
@@ -70,6 +66,6 @@ public class WelcomeActivity extends MyActivtiyBase {
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
         }
-        finish();*/
+        finish();
     }
 }

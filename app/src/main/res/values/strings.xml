@@ -22,7 +22,7 @@
     <string name="submit">提交</string>
     <string name="btn_regit">注册</string>
     <string name="loading">加载中...</string>
-    <string name="nextpage">加载中...</string>
+    <string name="nextpage">...</string>
     <string name="nodata_r">暂无数据</string>
     <string name="nodata">:( 没数据了</string>
     <string name="tip_phone">请输入手机号码</string>

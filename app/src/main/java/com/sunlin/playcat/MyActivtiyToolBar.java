@@ -1,6 +1,7 @@
 package com.sunlin.playcat;
 
 import android.content.DialogInterface;
+import android.content.pm.ActivityInfo;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -61,8 +62,7 @@ public abstract class MyActivtiyToolBar extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(getLayoutResId());//把设置布局文件的操作交给继承的子类
-
+        setContentView(getLayoutResId());//把设置布局文件的操作交给继承的子类            android:screenOrientation="portrait"
 
         toolbar=(Toolbar)findViewById(R.id.toolbar);
         toolbar.setTitle("");
@@ -87,6 +87,8 @@ public abstract class MyActivtiyToolBar extends AppCompatActivity {
         MyApp app = (MyApp)this.getApplicationContext();
         user= app.getUser();
 
+        //默认竖屏
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
 
         /*

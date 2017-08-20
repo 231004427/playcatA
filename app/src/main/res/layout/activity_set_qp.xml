@@ -40,8 +40,7 @@
                 android:layout_height="@dimen/btn_h_l">
                 <TextView
                     android:id="@+id/valueText"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/text_title"
+                    style="@style/titleInput"
                     android:gravity="center_vertical"
                     android:layout_width="80dp"
                     android:layout_height="match_parent"

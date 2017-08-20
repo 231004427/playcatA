@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.sunlin.playcat.MyApp;
 import com.sunlin.playcat.R;
 import com.sunlin.playcat.common.CValues;
 import com.sunlin.playcat.common.ImageWorker;
@@ -49,12 +50,9 @@ public class GameFragmentInfo extends Fragment implements View.OnClickListener,R
     private CommentRESTful commentRESTful;
     private CircleTitleView nodataView;
     private Handler mHandler = new Handler();
-    boolean isBase=false;
     boolean isLoading=false;
     boolean isEnd=false;
     int loadType=0;
-    public BaseRequest baseRequest;
-
     public static GameFragmentInfo newInstance(int id,String node) {
         Bundle args = new Bundle();
         args.putInt("id",id);
@@ -69,11 +67,9 @@ public class GameFragmentInfo extends Fragment implements View.OnClickListener,R
         id = getArguments() != null ? getArguments().getInt("id") : 0;
         node = getArguments() != null ? getArguments().getString("note") : "";
 
-        baseRequest=new BaseRequest();
-        baseRequest.setUserid(1);
-        baseRequest.setToken("123456");
-        baseRequest.setAppid(111);
-        commentRESTful=new CommentRESTful(baseRequest);
+        //初始化
+        MyApp app = (MyApp) this.getActivity().getApplicationContext();
+        commentRESTful=new CommentRESTful(app.getUser());
 
     }
 

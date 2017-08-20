@@ -71,13 +71,13 @@ public class ShopFragmentList extends Fragment implements ShopListAdapter.OnItem
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        myContext=ShopFragmentList.this.getContext();
-
+        //获取来源参数
         typeId = getArguments() != null ? getArguments().getInt("type") : 0;
 
-        //创建请求
+        myContext=ShopFragmentList.this.getContext();
         MyApp app = (MyApp) myContext.getApplicationContext();
         goodsRESTful=new GoodsRESTful(app.getUser());
+
     }
     public  boolean isSlideToBottom(RecyclerView recyclerView) {
         if (recyclerView == null) return false;
@@ -89,9 +89,8 @@ public class ShopFragmentList extends Fragment implements ShopListAdapter.OnItem
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_pager_list, null);
-        mRecyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
-
         //获取对象
+        mRecyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
         loadTextView = (CircleTitleView) view.findViewById(R.id.netoffText);
         swipe_refresh_widget=(MaterialRefreshLayout) view.findViewById(R.id.swipe_refresh_widget);
 
@@ -102,7 +101,6 @@ public class ShopFragmentList extends Fragment implements ShopListAdapter.OnItem
                 BuildData();
             }
         });
-
         //下拉刷新
         //swipe_refresh_widget.setRefreshing(true);
         //swipe_refresh_widget.autoRefresh();
@@ -132,11 +130,9 @@ public class ShopFragmentList extends Fragment implements ShopListAdapter.OnItem
         layoutParams.height = viewHeight;
         loadTextView.setLayoutParams(layoutParams);*/
 
-        //判断list滚动
+        //滚动绑定
         mRecyclerView.setOnTouchListener(mRecyclerViewTouch);
-
         //判断list点击
-
         //viewList[i].setBackgroundColor(ContextCompat.getColor(getActivity(), CValues.color.textColor_low));
         dataList=new GoodsList();
         dataList.setCount(0);
@@ -150,6 +146,7 @@ public class ShopFragmentList extends Fragment implements ShopListAdapter.OnItem
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.addItemDecoration(new SpaceItemDecoration(8));
         mRecyclerView.setHasFixedSize(true);
+
         listAdapter = new ShopListAdapter(dataList.getGoodsList());
         listAdapter.setOnItemClickListener(ShopFragmentList.this);
         //setFooterView(mRecyclerView);
@@ -183,7 +180,7 @@ public class ShopFragmentList extends Fragment implements ShopListAdapter.OnItem
                 //是否到页尾
                 if(isSlideToBottom(mRecyclerView))
                 {
-                    Log.e("scroll","底部");
+                    //Log.e("scroll","底部");
                     getType=3;
                     BuildData();
 
@@ -259,6 +256,7 @@ public class ShopFragmentList extends Fragment implements ShopListAdapter.OnItem
                             //隐藏加载提示
                             loadTextView.setVisibility(View.GONE);
                         }else{
+                            loadTextView.setVisibility(View.VISIBLE);
                             loadTextView.setText(myContext.getString(R.string.nodata_r));
                         }
                     }

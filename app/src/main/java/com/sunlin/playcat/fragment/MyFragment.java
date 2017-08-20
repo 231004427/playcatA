@@ -238,7 +238,7 @@ public class MyFragment extends Fragment implements GameListAdapter.OnItemClickL
             TextView footText = (TextView) listAdapter.getFooterView().findViewById(R.id.footText);
             footText.setText(myContext.getString(R.string.nextpage));
         }
-        Log.e(TAG,"type:"+dataList.getType()+"");
+        //Log.e(TAG,"type:"+dataList.getType()+"");
         gameRESTful.search(dataList,this);
     }
     @Override

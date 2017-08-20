@@ -4,12 +4,15 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.sunlin.playcat.R;
@@ -22,7 +25,8 @@ import com.sunlin.playcat.common.ScreenUtil;
 public class LoadingDialog extends Dialog implements View.OnClickListener {
 
     private ImageView loading;
-    private CircleTitleTopView loadTitle;
+    private TextView loadTitle;
+    private ImageView loadTitleImg;
     private Button btnAgain;
 
     private Context mContext;
@@ -34,6 +38,7 @@ public class LoadingDialog extends Dialog implements View.OnClickListener {
     private AnimationDrawable animLoading;
     private TextView cancelTitle;
     private boolean cancelable=false;
+    private RelativeLayout backLayout;
 
     public LoadingDialog(Context context) {
         super(context,R.style.dialog);
@@ -59,22 +64,30 @@ public class LoadingDialog extends Dialog implements View.OnClickListener {
         this.cancelable = cancelable;
     }
 
-    //显示错误信息
-    public void showText(String text){
+    //显示信息
+    public void showText(String text, boolean isCancel, Drawable drawable,String btnStr){
         animLoading.stop();
         loading.setVisibility(View.INVISIBLE);
         loadTitle.setText(text);
 
+        if(drawable!=null) {
+            loadTitleImg.setBackground(drawable);
+        }
+
+        btnAgain.setText(btnStr);
         btnAgain.setVisibility(View.VISIBLE);
+
         loadTitle.setVisibility(View.VISIBLE);
-        cancelTitle.setVisibility(cancelable?View.VISIBLE:View.INVISIBLE);
+        loadTitleImg.setVisibility(View.VISIBLE);
+        cancelTitle.setVisibility(isCancel ? View.VISIBLE : View.INVISIBLE);
     }
-    public void again()
+    public void again(boolean isCancel)
     {
         loading.setVisibility(View.VISIBLE);
         btnAgain.setVisibility(View.INVISIBLE);
         loadTitle.setVisibility(View.INVISIBLE);
-        cancelTitle.setVisibility(this.cancelable?View.INVISIBLE:View.VISIBLE);
+        loadTitleImg.setVisibility(View.INVISIBLE);
+        cancelTitle.setVisibility(isCancel ? View.VISIBLE : View.INVISIBLE);
         animLoading.start();
 
     }
@@ -99,7 +112,9 @@ public class LoadingDialog extends Dialog implements View.OnClickListener {
         loading=(ImageView)findViewById(R.id.loading);
         cancelTitle=(TextView)findViewById(R.id.cancelTitle);
         btnAgain=(Button)findViewById(R.id.btnAgain);
-        loadTitle=(CircleTitleTopView)findViewById(R.id.loadTitle);
+        loadTitleImg=(ImageView)findViewById(R.id.loadTitleImg);
+        loadTitle=(TextView)findViewById(R.id.loadTitle);
+        backLayout=(RelativeLayout)findViewById(R.id.backLayout);
 
         loading.setImageResource(R.drawable.loading);
         animLoading = (AnimationDrawable) loading.getDrawable();
@@ -109,9 +124,9 @@ public class LoadingDialog extends Dialog implements View.OnClickListener {
 
 
 
-        //ViewGroup.LayoutParams lay=loadTitle.getLayoutParams();
-        //lay.height= (int)ScreenUtil.getScreenHeightPixels(getContext());
-        //lay.width=(int)ScreenUtil.getScreenWidthPixels(getContext());
+        ViewGroup.LayoutParams lay=backLayout.getLayoutParams();
+        lay.height= (int)ScreenUtil.getScreenHeightPixels(getContext());
+        lay.width=(int)ScreenUtil.getScreenWidthPixels(getContext());
         //loadTitle.setLayoutParams(lay);
 
     }

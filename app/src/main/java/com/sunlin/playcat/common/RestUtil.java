@@ -1,6 +1,8 @@
 package com.sunlin.playcat.common;
 
+import android.nfc.Tag;
 import android.util.Base64;
+import android.util.Log;
 
 import java.io.File;
 import java.io.IOException;
@@ -50,6 +52,8 @@ public class RestUtil {
         RestTask task=new RestTask(connection);
         task.setmContentType("application/json");
         task.setmFormBody(json);
+
+        Log.e("RestTask",json);
 
         return task;
     }
