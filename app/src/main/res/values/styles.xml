@@ -18,10 +18,19 @@
 
     <style name="btnMain">
         <item name="android:background">@drawable/btnbig</item>
-        <item name="android:textSize">@dimen/text_btn_l</item>
+        <item name="android:textSize">@dimen/text_l</item>
         <item name="android:textColor">@drawable/btnbigtext</item>
     </style>
-
+    <style name="btnMain_2">
+        <item name="android:background">@drawable/btnbig_green</item>
+        <item name="android:textSize">@dimen/text_l</item>
+        <item name="android:textColor">@drawable/btnbigtext</item>
+    </style>
+    <style name="btnMain_3">
+        <item name="android:background">@drawable/btnbig_white</item>
+        <item name="android:textSize">@dimen/text_l</item>
+        <item name="android:textColor">@drawable/btnbigtext</item>
+    </style>
 
     <style name="btnSmall">
         <item name="android:background">@drawable/btns</item>

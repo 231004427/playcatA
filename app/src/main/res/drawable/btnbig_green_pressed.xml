@@ -1,0 +1,18 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <shape>
+            <solid android:color="#151104" />
+            <corners android:radius="4dp" />
+        </shape>
+    </item>
+    <item android:bottom="1dp" android:right="1dp" android:top="1dp" android:left="1dp">
+        <shape>
+            <solid android:color="@color/green_main_press" />
+
+            <padding android:left="2dp" android:top="2dp" android:right="2dp"
+                android:bottom="2dp" />
+            <!-- 应该是圆角 -->
+            <corners android:radius="4dp" />
+        </shape>
+    </item>
+</layer-list>

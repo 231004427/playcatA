@@ -9,10 +9,17 @@
     <color name="textColorM">#666666</color>
     <color name="textColor_hit">#CCCCCC</color>
     <color name="textColor_select">#F5A623</color>
+
     <color name="colorBtn_main">#F8E81C</color>
     <color name="colorBtn_main_press">#FBF27D</color>
     <color name="colorBtn_enabled">#EFEFF4</color>
-    <color name="colorBtn_shadow">#F5B921</color>
+    <color name="colorBtn_shadow">#F5B921</color>g
+    <color name="green_main">#A3ED53</color>
+    <color name="green_main_press">#C0F981</color>
+    <color name="green_main_shadow">#6EB91C</color>
+    <color name="white_main">#F2F2F2</color>
+    <color name="white_main_shadow">#D0D0D0</color>
+
     <color name="colorBtn_select">#7ED321</color>
     <color name="textColor_enabled">#cccccc</color>
     <color name="textColor_low">#9B9B9B</color>
