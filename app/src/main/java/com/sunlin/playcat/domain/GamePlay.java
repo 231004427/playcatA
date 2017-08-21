@@ -21,7 +21,24 @@ public class GamePlay
     private String user_name;
     private int user_level;
     private String user_photo;
+    private String game_name;
+    private String game_ico;
 
+    public String getGame_ico() {
+        return game_ico;
+    }
+
+    public String getGame_name() {
+        return game_name;
+    }
+
+    public void setGame_ico(String game_ico) {
+        this.game_ico = game_ico;
+    }
+
+    public void setGame_name(String game_name) {
+        this.game_name = game_name;
+    }
     public int getUser_level() {
         return user_level;
     }

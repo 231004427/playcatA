@@ -252,11 +252,10 @@ public class FriendFragment extends Fragment implements FriendListAdpter.OnItemC
 
         TextView nameText=(TextView) view.findViewById(R.id.nameText);
 
-        int userid=(int)nameText.getTag();
+        Friend friend=(Friend) nameText.getTag();
 
         Intent intent=new Intent(getActivity(), FriendShowActivity.class);
-        intent.putExtra("userId",userid);
-        intent.putExtra("userName",nameText.getText().toString());
+        intent.putExtra("friend",friend);
         startActivity(intent);
 
     }

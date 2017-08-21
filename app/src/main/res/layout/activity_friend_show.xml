@@ -57,7 +57,7 @@
                     android:layout_marginLeft="@dimen/ui_10_dip"
                     android:layout_toEndOf="@+id/imgHead"
                     android:layout_toRightOf="@+id/imgHead"
-                    android:text="name"
+                    android:text=""
                     android:textColor="@color/black"
                     android:textSize="@dimen/text_l" />
 
@@ -69,19 +69,18 @@
                     android:layout_alignParentRight="true"
                     android:layout_centerVertical="true"
                     android:layout_marginRight="@dimen/spacing_w"
-                    android:text="城市: 浙江-杭州"
+                    android:text=""
                     android:textColor="@color/textColor_low"
                     android:textSize="@dimen/text_small" />
 
                 <ImageView
-                    android:id="@+id/imgSex"
+                    android:id="@+id/sexImg"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginLeft="@dimen/ui_10_dip"
                     android:layout_toEndOf="@+id/nameText"
-                    android:layout_toRightOf="@+id/nameText"
-                    app:srcCompat="@drawable/sex_1_16" />
+                    android:layout_toRightOf="@+id/nameText" />
 
 
             </RelativeLayout>

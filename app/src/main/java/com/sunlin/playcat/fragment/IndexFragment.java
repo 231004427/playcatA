@@ -109,7 +109,13 @@ public class IndexFragment  extends Fragment implements RestTask.ResponseCallbac
                     zhuanText.setText(String.valueOf(user.getZhuan()));
                     goldText.setText(String.valueOf(user.getGold()));
                     nameText.setText(user.getName());
-                    ImageWorker.loadImage(imgHead, CValues.SERVER_IMG+user.getPhoto(),myHandle);
+
+                    //绑定头像
+                    if(user.getPhoto()!=null||!user.getPhoto().isEmpty()){
+                        ImageWorker.loadImage(imgHead, CValues.SERVER_IMG+user.getPhoto(),myHandle);
+                    }else{
+                        imgHead.setImageResource(user.getSex()==1?R.mipmap.boy45:R.mipmap.girl45);
+                    }
 
                 }else
                 {

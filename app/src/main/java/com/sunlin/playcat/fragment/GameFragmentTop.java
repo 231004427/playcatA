@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.gson.Gson;
+import com.sunlin.playcat.MyApp;
 import com.sunlin.playcat.R;
 import com.sunlin.playcat.common.LogC;
 import com.sunlin.playcat.common.RestTask;
@@ -18,6 +19,7 @@ import com.sunlin.playcat.domain.BaseRequest;
 import com.sunlin.playcat.domain.BaseResult;
 import com.sunlin.playcat.domain.GamePlay;
 import com.sunlin.playcat.domain.GamePlayList;
+import com.sunlin.playcat.domain.User;
 import com.sunlin.playcat.json.GamePlayRESTful;
 import com.sunlin.playcat.view.CircleTitleView;
 import com.sunlin.playcat.view.MyDecoration;
@@ -42,7 +44,7 @@ public class GameFragmentTop extends Fragment implements GameTopListAdapter.OnIt
     private GameTopListAdapter listAdapter;
     private GamePlayList dataList;
     private GamePlayRESTful gamePlayRESTful;
-    private BaseRequest baseRequest;
+    private User myUser;
 
 
     public static GameFragmentTop newInstance(int id) {
@@ -58,7 +60,7 @@ public class GameFragmentTop extends Fragment implements GameTopListAdapter.OnIt
         super.onCreate(savedInstanceState);
         id = getArguments() != null ? getArguments().getInt("id") : 0;
 
-
+        myUser=((MyApp)getActivity().getApplication()).getUser();
         dataList=new GamePlayList();
         List<GamePlay> datas = new ArrayList<GamePlay>();
         dataList.setGamePlays(datas);
@@ -66,11 +68,7 @@ public class GameFragmentTop extends Fragment implements GameTopListAdapter.OnIt
         dataList.setId(id);
         dataList.setStart(0);
         dataList.setPageNum(10);
-        baseRequest=new BaseRequest();
-        baseRequest.setUserid(1);
-        baseRequest.setToken("123456");
-        baseRequest.setAppid(111);
-        gamePlayRESTful=new GamePlayRESTful(baseRequest);
+        gamePlayRESTful=new GamePlayRESTful(myUser);
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

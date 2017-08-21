@@ -1,12 +1,13 @@
 package com.sunlin.playcat.domain;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by sunlin on 2017/8/19.
  */
 
-public class Friend {
+public class Friend implements Serializable {
     private int id;
     private int user_id;
     private int friend_id;

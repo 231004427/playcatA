@@ -106,11 +106,16 @@ public class FriendListAdpter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 ImageView imgGameIco=((ListHolder)holder).imgGameIco;
 
                 nameText.setText(info.getName());
-                nameText.setTag(info.getFriend_id());
+                nameText.setTag(info);
                 playStatus.setText(info.getPlay_status()==2?"正在玩":" 组队中");
 
-                //绑定图片
-                ImageWorker.loadImage(imgHead, CValues.SERVER_IMG+info.getPhoto(),mHandler);
+                //绑定头像
+                if(info.getPhoto()!=null||!info.getPhoto().isEmpty()){
+                    ImageWorker.loadImage(imgHead, CValues.SERVER_IMG+info.getPhoto(),mHandler);
+                }else{
+                    imgHead.setImageResource(info.getSex()==1?R.mipmap.boy45:R.mipmap.girl45);
+                }
+
                 ImageWorker.loadImage(imgGameIco, CValues.SERVER_IMG+info.getPlay_game_ico(),mHandler);
 
                 return;
