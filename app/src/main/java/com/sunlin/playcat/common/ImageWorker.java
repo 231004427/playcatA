@@ -2,6 +2,8 @@ package com.sunlin.playcat.common;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.ColorMatrix;
+import android.graphics.ColorMatrixColorFilter;
 import android.os.Environment;
 import android.os.Handler;
 import android.support.v4.util.LruCache;
@@ -64,6 +66,7 @@ public class ImageWorker {
             if(bitmapDisk!=null){
                 addBitmapToLruCache(imgUrl,bitmapDisk);
                 mImageView.setImageBitmap(bitmapDisk);
+
             }else{
                 //从网络下载图片
                 loadImageFromNetwork(mImageView,imgUrl,mHandler,mLruCache,bitmapPath);

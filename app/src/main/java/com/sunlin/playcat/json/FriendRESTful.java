@@ -34,5 +34,18 @@ public class FriendRESTful extends ObjRESTful {
         baseRequest.setActionType(ActionType.FRIEND_ADD);
         ServerTask.Post(gson.toJson(baseRequest),null,responseCallback);
     }
+    public void noRead(Friend obj, RestTask.ResponseCallback responseCallback){
+        String dataStr=gson.toJson(obj);
+        baseRequest.setData(dataStr);
+        baseRequest.setActionType(ActionType.FRIEND_NO_READ);
+        ServerTask.Post(gson.toJson(baseRequest),null,responseCallback);
+    }
+    public void messageList(FriendList objList, RestTask.ResponseCallback responseCallback)
+    {
+        String dataStr=gson.toJson(objList);
+        baseRequest.setData(dataStr);
+        baseRequest.setActionType(ActionType.FRIEND_MESSAGE);
+        ServerTask.Post(gson.toJson(baseRequest),null,responseCallback);
+    }
 
 }

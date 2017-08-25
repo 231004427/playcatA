@@ -191,6 +191,14 @@ public class GameFragmentInfo extends Fragment implements View.OnClickListener,R
 
                             if(1<=item.getLevel()&& item.getLevel()<=10){
                                 imgLevel.setImageResource(R.drawable.leve1_16);
+                            }else if(11<=item.getLevel()&& item.getLevel()<=20){
+                                imgLevel.setImageResource(R.drawable.leve2_16);
+
+                            }else if(21<=item.getLevel()&& item.getLevel()<=30){
+                                imgLevel.setImageResource(R.drawable.leve3_16);
+
+                            }else if(31<=item.getLevel()&& item.getLevel()<=40){
+                                imgLevel.setImageResource(R.drawable.leve4_16);
                             }
                             ImageWorker.loadImage(imgHead, CValues.SERVER_IMG+item.getPhoto(),mHandler);
                             view.setLayoutParams(vlp);

@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/nav_h"
+        android:background="@drawable/backgournd_tab"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true">
+    <TextView
+        android:id="@+id/toolbar_title"
+        style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:text="消息"
+        android:textColor="@color/textColor"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+    <com.cjj.MaterialRefreshLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/swipe_refresh_widget"
+        app:overlay="true"
+        app:wave_height_type="normal">
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/my_recycler_view"
+            android:background="@color/colorBtn_enabled"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+        <com.sunlin.playcat.view.CircleTitleView
+            android:id="@+id/netoffText"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:gravity="center"
+            android:visibility="gone"
+            app:text="@string/loading"
+            app:text_color="@color/textColor_low"
+            app:text_size="@dimen/text_small"
+            app:drawable_left="@drawable/cat22">
+        </com.sunlin.playcat.view.CircleTitleView>
+    </com.cjj.MaterialRefreshLayout>
+</LinearLayout>

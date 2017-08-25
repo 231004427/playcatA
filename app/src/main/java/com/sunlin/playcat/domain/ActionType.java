@@ -33,5 +33,7 @@ public class ActionType {
     public static final int ORDER_ADD=25;
     public static final int FRIEND_SEARCH=26;
     public static final int FRIEND_ADD=27;
+    public static final int FRIEND_NO_READ=29;
     public static final int GAME_PLAY_SEARCH_USER=28;
+    public static final int FRIEND_MESSAGE=30;
 }

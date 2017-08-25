@@ -14,15 +14,17 @@ import android.widget.TextView;
 import com.sunlin.playcat.R;
 import com.sunlin.playcat.common.CValues;
 import com.sunlin.playcat.common.ImageWorker;
+import com.sunlin.playcat.common.Time;
 import com.sunlin.playcat.domain.Friend;
 
+import java.util.Date;
 import java.util.List;
 
 /**
- * Created by sunlin on 2017/8/19.
+ * Created by sunlin on 2017/8/24.
  */
 
-public class FriendListAdpter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class TalkListAdpter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int TYPE_HEADER = 0;  //说明是带有Header的
     public static final int TYPE_FOOTER = 1;  //说明是带有Footer的
     public static final int TYPE_NORMAL = 2;  //说明是不带有header和footer的
@@ -34,11 +36,11 @@ public class FriendListAdpter extends RecyclerView.Adapter<RecyclerView.ViewHold
     private Context mContext;
     private Handler mHandler = new Handler();
     //构造函数
-    public FriendListAdpter(List<Friend> list){
+    public TalkListAdpter(List<Friend> list){
         this.mDatas = list;
     }
     //构造函数
-    public FriendListAdpter(List<Friend> list, Context context){
+    public TalkListAdpter(List<Friend> list, Context context){
         this.mDatas = list;
         this.mContext=context;
     }
@@ -80,13 +82,13 @@ public class FriendListAdpter extends RecyclerView.Adapter<RecyclerView.ViewHold
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if(mHeaderView != null && viewType == TYPE_HEADER) {
-            return new FriendListAdpter.ListHolder(mHeaderView);
+            return new TalkListAdpter.ListHolder(mHeaderView);
         }
         if(mFooterView != null && viewType == TYPE_FOOTER){
-            return new FriendListAdpter.ListHolder(mFooterView);
+            return new TalkListAdpter.ListHolder(mFooterView);
         }
-        View layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_item_friend, parent, false);
-        return new FriendListAdpter.ListHolder(layout);
+        View layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_item_message, parent, false);
+        return new TalkListAdpter.ListHolder(layout);
     }
 
     //绑定View，这里是根据返回的这个position的类型，从而进行绑定的，   HeaderView和FooterView, 就不同绑定了
@@ -101,39 +103,30 @@ public class FriendListAdpter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }else{
                     info=mDatas.get(position);
                 }
-
-                ImageView imgHead=((ListHolder)holder).imgHead;
-                TextView nameText=((ListHolder)holder).nameText;
-                TextView playStatus=((ListHolder)holder).playStatus;
-                ImageView imgGameIco=((ListHolder)holder).imgGameIco;
+                ImageView imgHead=((TalkListAdpter.ListHolder)holder).imgHead;
+                TextView nameText=((TalkListAdpter.ListHolder)holder).nameText;
+                TextView redText=((TalkListAdpter.ListHolder)holder).redText;
+                TextView messText=((TalkListAdpter.ListHolder)holder).messText;
+                TextView timeText=((TalkListAdpter.ListHolder)holder).timeText;
 
                 nameText.setText(info.getName());
                 nameText.setTag(info);
-                playStatus.setText(info.getPlay_status()==2?"正在玩":" 组队中");
+                messText.setText(info.getLast_info());
 
-                if(info.getOnline()==0) {
-                    ColorMatrix matrix = new ColorMatrix();
-                    matrix.setSaturation(0);//饱和度 0灰色 100过度彩色，50正常
-                    ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-                    imgHead.setColorFilter(filter);
+                if(info.getNo_read()>0){
+                    redText.setVisibility(View.VISIBLE);
+                    redText.setText(String.valueOf(info.getNo_read()));
+                }else{
+                    redText.setVisibility(View.GONE);
                 }
+                //
+                 timeText.setText(Time.getTimeDifference(info.getLast_time(),new Date()));
+                
                 //绑定头像
                 if(info.getPhoto()!=null||!info.getPhoto().isEmpty()){
                     ImageWorker.loadImage(imgHead, CValues.SERVER_IMG+info.getPhoto(),mHandler);
                 }else{
                     imgHead.setImageResource(info.getSex()==1?R.mipmap.boy45:R.mipmap.girl45);
-                }
-                if(info.getPlay_status()==1){
-                    playStatus.setText("");
-                    imgGameIco.setVisibility(View.GONE);
-                }else if(info.getPlay_status()==2)
-                {
-                    playStatus.setText("正在组队 "+info.getPlay_name());
-                    ImageWorker.loadImage(imgGameIco, CValues.SERVER_IMG+info.getPlay_game_ico(),mHandler);
-                }else if(info.getPlay_status()==3)
-                {
-                    playStatus.setText("正在玩 "+info.getPlay_name());
-                    ImageWorker.loadImage(imgGameIco, CValues.SERVER_IMG+info.getPlay_game_ico(),mHandler);
                 }
 
                 return;
@@ -152,8 +145,7 @@ public class FriendListAdpter extends RecyclerView.Adapter<RecyclerView.ViewHold
     //在这里面加载ListView中的每个item的布局
     class ListHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         ImageView imgHead;
-        TextView nameText,playStatus;
-        ImageView imgGameIco;
+        TextView nameText,redText,messText,timeText;
 
         public ListHolder(View itemView) {
             super(itemView);
@@ -167,8 +159,9 @@ public class FriendListAdpter extends RecyclerView.Adapter<RecyclerView.ViewHold
 
             imgHead=(ImageView)itemView.findViewById(R.id.imgHead);
             nameText=(TextView)itemView.findViewById(R.id.nameText);
-            playStatus=(TextView)itemView.findViewById(R.id.playStatus);
-            imgGameIco=(ImageView) itemView.findViewById(R.id.imgGameIco);
+            redText=(TextView)itemView.findViewById(R.id.redText);
+            messText=(TextView)itemView.findViewById(R.id.messText);
+            timeText=(TextView)itemView.findViewById(R.id.timeText);
 
             itemView.setOnClickListener(this);
         }

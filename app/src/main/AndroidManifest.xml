@@ -62,7 +62,8 @@
             android:configChanges="keyboard|keyboardHidden|orientation"
             android:windowSoftInputMode="adjustPan" />
         <activity android:name=".SelectCityActivity" />
-        <activity android:name=".FriendShowActivity"></activity>
+        <activity android:name=".FriendShowActivity" />
+        <activity android:name=".ChatShowActivity"></activity>
     </application>
 
 </manifest>

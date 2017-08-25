@@ -295,6 +295,10 @@ public class FriendFragment extends Fragment implements FriendListAdpter.OnItemC
                     //隐藏加载提示
                     loadTextView.setVisibility(View.GONE);
                 }else{
+                    if(dataList.getList().size()>0) {
+                        dataList.getList().clear();
+                        listAdapter.notifyDataSetChanged();
+                    }
                     loadTextView.setVisibility(View.VISIBLE);
                     loadTextView.setText(myContext.getString(R.string.nodata_f));
                 }

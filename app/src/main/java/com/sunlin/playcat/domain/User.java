@@ -30,6 +30,15 @@ public class User {
     private String address;
     private String weixin;
     private int online;
+    private int no_read;
+
+    public int getNo_read() {
+        return no_read;
+    }
+
+    public void setNo_read(int no_read) {
+        this.no_read = no_read;
+    }
 
     public int getOnline() {
         return online;

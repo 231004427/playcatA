@@ -23,9 +23,45 @@ public class Friend implements Serializable {
     private int level;
     private int online;
     private int play_game_id;
+    private String play_name;
     private int play_status;
     private String play_game_ico;
     private String phone;
+    private int no_read;
+    private String last_info;
+    private Date last_time;
+
+    public String getPlay_name() {
+        return play_name;
+    }
+
+    public void setPlay_name(String play_name) {
+        this.play_name = play_name;
+    }
+
+    public Date getLast_time() {
+        return last_time;
+    }
+
+    public int getNo_read() {
+        return no_read;
+    }
+
+    public String getLast_info() {
+        return last_info;
+    }
+
+    public void setLast_info(String last_info) {
+        this.last_info = last_info;
+    }
+
+    public void setLast_time(Date last_time) {
+        this.last_time = last_time;
+    }
+
+    public void setNo_read(int no_read) {
+        this.no_read = no_read;
+    }
 
     public String getPhone() {
         return phone;

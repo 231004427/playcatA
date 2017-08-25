@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@drawable/downline3"
+    android:layout_width="match_parent"
+    android:layout_height="63dp">
+<com.sunlin.playcat.view.CircleImageView
+    android:id="@+id/imgHead"
+    android:layout_width="45dp"
+    android:layout_height="45dp"
+    android:layout_alignParentLeft="true"
+    android:layout_alignParentStart="true"
+    android:layout_centerVertical="true"
+    android:layout_marginLeft="@dimen/spacing_w"
+    android:src="@drawable/sys_m_45"
+    app:border_color="@color/white"
+    app:border_width="0dp" />
+<TextView
+    android:id="@+id/redText"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="4dp"
+    android:background="@drawable/reddot_num"
+    android:textSize="10dp"
+    android:paddingLeft="4dp"
+    android:paddingRight="4dp"
+    android:textColor="@color/white"
+    android:gravity="center"
+    android:text="0"
+    android:layout_alignTop="@+id/imgHead"
+    android:layout_toLeftOf="@+id/nameText"
+    android:layout_toStartOf="@+id/nameText" />
+<TextView
+    android:id="@+id/nameText"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:textSize="@dimen/text_title"
+    android:layout_marginLeft="@dimen/ui_10_dip"
+    android:textColor="@color/black"
+    android:text="系统通知"
+    android:layout_alignTop="@+id/imgHead"
+    android:layout_toRightOf="@+id/imgHead"
+    android:layout_toEndOf="@+id/imgHead" />
+
+<TextView
+    android:id="@+id/messText"
+    android:layout_width="match_parent"
+    android:layout_height="24dp"
+    android:textColor="@color/textColor_low"
+    android:textSize="@dimen/text_small"
+    android:layout_marginLeft="@dimen/ui_10_dip"
+    android:layout_marginRight="@dimen/spacing_w"
+    android:gravity="center_vertical"
+    android:ellipsize="end"
+    android:maxLines="1"
+    android:layout_below="@+id/nameText"
+    android:layout_toEndOf="@+id/imgHead"
+    android:layout_toRightOf="@+id/imgHead"
+    android:text="很高兴认识你们，很高兴认识你们，很高兴认识你们很高兴认识你们" />
+
+<TextView
+    android:id="@+id/timeText"
+    android:textColor="@color/textColor_low"
+    android:textSize="@dimen/text_small"
+    android:layout_width="wrap_content"
+    android:layout_height="20dp"
+    android:gravity="center_vertical"
+    android:layout_above="@+id/messText"
+    android:layout_alignEnd="@+id/messText"
+    android:layout_alignRight="@+id/messText"
+    android:text="昨天" />
+</RelativeLayout>

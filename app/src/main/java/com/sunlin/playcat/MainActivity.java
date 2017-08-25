@@ -15,30 +15,28 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
-import com.sunlin.playcat.common.CValues;
-import com.sunlin.playcat.common.ImageWorker;
 import com.sunlin.playcat.common.LogC;
 import com.sunlin.playcat.common.RestTask;
 import com.sunlin.playcat.common.ShowMessage;
 import com.sunlin.playcat.domain.ActionType;
 import com.sunlin.playcat.domain.BaseResult;
+import com.sunlin.playcat.domain.Friend;
 import com.sunlin.playcat.domain.User;
 import com.sunlin.playcat.fragment.FriendFragment;
 import com.sunlin.playcat.fragment.IndexFragment;
 import com.sunlin.playcat.fragment.SetFragment;
 import com.sunlin.playcat.fragment.ShopFragment;
 import com.sunlin.playcat.fragment.TalkFragment;
-import com.sunlin.playcat.json.UserRESTful;
-import com.sunlin.playcat.view.CircleImageView;
-import com.sunlin.playcat.view.CircleTitleView;
+import com.sunlin.playcat.json.FriendRESTful;
 
-public class MainActivity extends MyActivtiyBase implements View.OnClickListener {
+public class MainActivity extends MyActivtiyBase implements View.OnClickListener,RestTask.ResponseCallback {
     private String TAG="MainActivity";
     private TextView tb_home;
     private TextView tb_shop;
     private TextView tb_friend;
     private TextView tb_talk;
     private TextView tb_set;
+    private TextView redText;
     private int sIndex;
 
     private  String fragment1Tag="Home";
@@ -46,6 +44,9 @@ public class MainActivity extends MyActivtiyBase implements View.OnClickListener
     private  String fragment3Tag="Friend";
     private  String fragment4Tag="Talk";
     private  String fragment5Tag="Set";
+
+    private FriendRESTful friendRESTful;
+    private User myUser;
 
 
     @Override
@@ -58,6 +59,7 @@ public class MainActivity extends MyActivtiyBase implements View.OnClickListener
         tb_friend=(TextView)findViewById(R.id.tab_friend);
         tb_talk=(TextView)findViewById(R.id.tab_talk);
         tb_set=(TextView)findViewById(R.id.tab_set);
+        redText=(TextView)findViewById(R.id.redText);
 
         tb_home.setOnClickListener(this);
         tb_shop.setOnClickListener(this);
@@ -66,10 +68,25 @@ public class MainActivity extends MyActivtiyBase implements View.OnClickListener
         tb_set.setOnClickListener(this);
 
         //显示红点
+
         sIndex=0;
         switchFrgment(0);//设置默认显示Fragment
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        showRed();
+    }
+
+    private void showRed()
+    {
+        myUser=((MyApp)this.getApplication()).getUser();
+        friendRESTful=new FriendRESTful(myUser);
+        Friend friend=new Friend();
+        friend.setUser_id(myUser.getId());
+        friendRESTful.noRead(friend,this);
+    }
     @Override
     protected int getLayoutResId() {
         return R.layout.activity_main;
@@ -199,5 +216,36 @@ public class MainActivity extends MyActivtiyBase implements View.OnClickListener
                 switchFrgment(4);//切换Fragment
                 break;
         }
+    }
+    public void hideRed(){
+        redText.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void onRequestSuccess(String response) {
+
+        try{
+            Gson gson=new Gson();
+            BaseResult result=gson.fromJson(response,BaseResult.class);
+            if (result.getErrcode() <= 0 && result.getType() == ActionType.FRIEND_NO_READ){
+                Friend friend=gson.fromJson(result.getData(),Friend.class);
+
+                if(friend.getNo_read()>0){
+                    redText.setText(String.valueOf(friend.getNo_read()));
+                    redText.setVisibility(View.VISIBLE);
+                }else{
+                    redText.setVisibility(View.GONE);
+                }
+            }
+        }catch (Exception e)
+        {
+            LogC.write(e,TAG);
+            ShowMessage.taskShow(this,getString(R.string.error_server));
+        }
+    }
+
+    @Override
+    public void onRequestError(Exception error) {
+
     }
 }

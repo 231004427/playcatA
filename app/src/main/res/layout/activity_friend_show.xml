@@ -86,9 +86,10 @@
             </RelativeLayout>
 
             <LinearLayout
+                android:id="@+id/playTitleLayout"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="30dp">
-
                 <TextView
                     android:id="@+id/textView8"
                     android:layout_width="match_parent"
@@ -99,8 +100,9 @@
                     android:textColor="@color/textColor_low"
                     android:textSize="@dimen/text_small" />
             </LinearLayout>
-
             <LinearLayout
+                android:id="@+id/playGameLayout"
+                android:visibility="gone"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:divider="@drawable/downline"
@@ -108,116 +110,6 @@
                 android:showDividers="middle"
                 android:background="@color/white">
 
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/btn_h_l"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:layout_marginLeft="@dimen/spacing_w">
-
-                    <ImageView
-                        android:layout_width="29dp"
-                        android:layout_height="29dp"
-                        app:srcCompat="@drawable/game1_ico" />
-
-                    <TextView
-                        android:layout_width="150dp"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:lines="1"
-                        android:layout_alignParentLeft="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/spacing_w"
-                        android:text="飞行棋"
-
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_l" />
-                    <ImageView
-                        android:layout_marginLeft="@dimen/ui_5_dip"
-                        android:layout_width="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_height="16dp"
-                        android:layout_toEndOf="@+id/nameText"
-                        android:layout_toRightOf="@+id/nameText"
-                        app:srcCompat="@drawable/leve1_16" />
-                    <TextView
-                        android:layout_marginRight="@dimen/spacing_w"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:text="青铜3"
-                        android:textColor="@color/textColor_low"
-                        android:textSize="@dimen/text_small" />
-                    <TextView
-                        android:layout_marginRight="@dimen/spacing_w"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:text="积分 10000"
-                        android:textColor="@color/textColor_low"
-                        android:textSize="@dimen/text_small" />
-                </LinearLayout>
-                <LinearLayout
-                    android:id="@+id/payAliLayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/btn_h_l"
-                    android:gravity="center_vertical"
-                    android:orientation="horizontal"
-                    android:layout_marginLeft="@dimen/spacing_w">
-                    <ImageView
-                        android:layout_width="29dp"
-                        android:layout_height="29dp"
-                        app:srcCompat="@drawable/game1_ico" />
-
-                    <TextView
-                        android:id="@+id/gameNameText"
-                        android:layout_width="150dp"
-                        android:layout_height="wrap_content"
-                        android:ellipsize="end"
-                        android:lines="1"
-                        android:layout_alignParentLeft="true"
-                        android:layout_centerVertical="true"
-                        android:layout_marginLeft="@dimen/spacing_w"
-                        android:text="飞行棋"
-
-                        android:textColor="@color/black"
-                        android:textSize="@dimen/text_l" />
-                    <ImageView
-                        android:id="@+id/levelImg"
-                        android:layout_marginLeft="@dimen/ui_5_dip"
-                        android:layout_width="wrap_content"
-                        android:layout_gravity="center"
-                        android:layout_height="16dp"
-                        android:layout_toEndOf="@+id/nameText"
-                        android:layout_toRightOf="@+id/nameText"
-                        app:srcCompat="@drawable/leve1_16" />
-                    <TextView
-                        android:id="@+id/levelNameText"
-                        android:layout_marginRight="@dimen/spacing_w"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:text="青铜3"
-                        android:textColor="@color/textColor_low"
-                        android:textSize="@dimen/text_small" />
-                    <TextView
-                        android:id="@+id/gameScoreText"
-                        android:layout_marginRight="@dimen/spacing_w"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:layout_alignParentEnd="true"
-                        android:layout_alignParentRight="true"
-                        android:layout_centerVertical="true"
-                        android:text="积分 10000"
-                        android:textColor="@color/textColor_low"
-                        android:textSize="@dimen/text_small" />
-                </LinearLayout>
             </LinearLayout>
             <LinearLayout
                 android:layout_marginTop="@dimen/spacing_w"
@@ -246,6 +138,7 @@
                     android:layout_centerHorizontal="true" />
                 <Button
                     android:layout_marginTop="@dimen/spacing_w"
+                    android:layout_marginBottom="@dimen/spacing_w"
                     android:id="@+id/btnCancel"
                     style="@style/btnMain_3"
                     android:layout_width="match_parent"

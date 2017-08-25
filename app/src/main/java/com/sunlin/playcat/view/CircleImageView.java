@@ -195,7 +195,7 @@ public class CircleImageView extends AppCompatImageView {
         }
 
         mBitmapShader = new BitmapShader(mBitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP);
-
+        mBitmapPaint.setColorFilter(getColorFilter());
         mBitmapPaint.setAntiAlias(true);
         mBitmapPaint.setShader(mBitmapShader);
 
