@@ -112,10 +112,12 @@ public class GameShowActivity extends MyActivtiyToolBar implements View.OnClickL
 
         //发布评论
         commentBtn.setOnClickListener(this);
+
         //获取屏幕高度
         screenHeight = (int)ScreenUtil.getScreenHeightDp(this);
         //阀值设置为屏幕高度的1/3
         keyHeight = screenHeight/3;
+
         //软件键盘监控
         mainLayout.addOnLayoutChangeListener(this);
         //评论

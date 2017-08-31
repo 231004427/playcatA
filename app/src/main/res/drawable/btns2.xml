@@ -6,7 +6,7 @@
             <corners android:radius="14dp" />
         </shape>
     </item>
-    <item android:bottom="1dp" android:right="1dp" android:top="1dp" android:left="1dp">
+    <item android:bottom="1px" android:right="1px" android:top="1px" android:left="1px">
         <shape>
             <solid android:color="@color/colorBtn_main" />
             <padding android:left="7dp" android:top="2dp" android:right="7dp"

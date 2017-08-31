@@ -54,7 +54,7 @@ public class WelcomeActivity extends MyActivtiyBase {
      * 跳转到...
      */
     private void redirectTo(){
-        //SharedData.removeUser(this);
+       // SharedData.removeUser(this);
         //自动登入
         User user= SharedData.getUser(this);
         if(user.getId()==0) {

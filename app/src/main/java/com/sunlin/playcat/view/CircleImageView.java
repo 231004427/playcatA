@@ -82,6 +82,11 @@ public class CircleImageView extends AppCompatImageView {
     }
 
     @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+    }
+
+    @Override
     public ScaleType getScaleType() {
         return SCALE_TYPE;
     }

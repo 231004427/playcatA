@@ -21,6 +21,7 @@ public class SharedData {
         editor.putString("name", user.getName());
         editor.putString("token",user.getToken());
         editor.putString("photo",user.getPhoto());
+        editor.putInt("sex",user.getSex());
         editor.commit();
     }
     public static void removeUser(Context context){
@@ -32,6 +33,7 @@ public class SharedData {
         editor.putString("name", "");
         editor.putString("token","");
         editor.putString("photo","");
+        editor.putInt("sex",0);
         editor.commit();
     }
     public static User getUser(Context context){
@@ -44,6 +46,7 @@ public class SharedData {
         user.setName(sp.getString("name",""));
         user.setToken(sp.getString("token",""));
         user.setPhoto(sp.getString("photo",""));
+        user.setSex(sp.getInt("sex",0));
         return user;
     }
 

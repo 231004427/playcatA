@@ -37,6 +37,7 @@
             android:id="@+id/netoffText"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="@color/colorBtn_enabled"
             android:layout_centerVertical="true"
             android:gravity="center"
             android:visibility="gone"

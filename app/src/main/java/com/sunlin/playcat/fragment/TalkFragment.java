@@ -18,6 +18,7 @@ import com.cjj.MaterialRefreshListener;
 import com.google.gson.Gson;
 import com.sunlin.playcat.FriendShowActivity;
 import com.sunlin.playcat.MainActivity;
+import com.sunlin.playcat.MessageActivity;
 import com.sunlin.playcat.MyApp;
 import com.sunlin.playcat.R;
 import com.sunlin.playcat.common.LogC;
@@ -54,8 +55,8 @@ public class TalkFragment extends Fragment implements FriendListAdpter.OnItemCli
     private FriendList dataList;
     private TalkListAdpter listAdapter;
     private FriendRESTful friendRESTful;
-
     CircleTitleView loadTextView;
+
     private MaterialRefreshLayout swipe_refresh_widget;
 
     public static TalkFragment newInstance(String name) {
@@ -71,6 +72,7 @@ public class TalkFragment extends Fragment implements FriendListAdpter.OnItemCli
         super.onCreate(savedInstanceState);
 
         mName = getArguments() != null ? getArguments().getString("name") : "Null";
+        //初始化分页对象
         myApp=(MyApp) getActivity().getApplication();
         myContext=TalkFragment.this.getActivity();
         friendRESTful=new FriendRESTful(myApp.getUser());
@@ -87,7 +89,7 @@ public class TalkFragment extends Fragment implements FriendListAdpter.OnItemCli
     }
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_friend, null);
+        View view = inflater.inflate(R.layout.fragment_talk, null);
         //获取对象
         mRecyclerView = (RecyclerView) view.findViewById(R.id.my_recycler_view);
         loadTextView = (CircleTitleView) view.findViewById(R.id.netoffText);
@@ -127,10 +129,6 @@ public class TalkFragment extends Fragment implements FriendListAdpter.OnItemCli
         dataList.setCount(0);
         List<Friend> listData = new ArrayList<Friend>();
         dataList.setList(listData);
-        dataList.setType(-1);//所有消息
-        dataList.setStart(0);
-        dataList.setStatus(1);
-        dataList.setPageNum(10);
         //使用单行
         mLayoutManager=new LinearLayoutManager(myContext);
 
@@ -145,12 +143,32 @@ public class TalkFragment extends Fragment implements FriendListAdpter.OnItemCli
 
 
         //初始化加载
+        return view;
+    }
+    public void BaseBuild(){
         isLoading=false;
         getType=1;
         BuildData();
-
-        return view;
     }
+    @Override
+    public void onStop() {
+        super.onStop();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        BaseBuild();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden) {
+            BaseBuild();
+        }
+    }
+
     //滑动监控
     float x1=0,y1=0;
     private View.OnTouchListener  mRecyclerViewTouch=new View.OnTouchListener() {
@@ -201,8 +219,14 @@ public class TalkFragment extends Fragment implements FriendListAdpter.OnItemCli
         }
         //初始加载提示
         if(getType==1){
-            loadTextView.setText(myContext.getString(R.string.loading));
-            loadTextView.setVisibility(View.VISIBLE);
+
+            dataList.setType(-1);//所有消息
+            dataList.setStart(0);
+            dataList.setStatus(1);
+            dataList.setPageNum(10);
+
+            //loadTextView.setText(myContext.getString(R.string.loading));
+            //loadTextView.setVisibility(View.VISIBLE);
             //mRecyclerView.setVisibility(View.VISIBLE);
         }
         /*
@@ -223,7 +247,7 @@ public class TalkFragment extends Fragment implements FriendListAdpter.OnItemCli
 
         TextView nameText=(TextView) view.findViewById(R.id.nameText);
         Friend friend=(Friend) nameText.getTag();
-        Intent intent=new Intent(getActivity(), FriendShowActivity.class);
+        Intent intent=new Intent(getActivity(), MessageActivity.class);
         intent.putExtra("friend",friend);
         startActivity(intent);
 
@@ -234,7 +258,7 @@ public class TalkFragment extends Fragment implements FriendListAdpter.OnItemCli
             Gson gson = new Gson();
             //处理结果
             BaseResult result=gson.fromJson(response,BaseResult.class);
-            if (result.getErrcode() <= 0 && result.getType() == ActionType.FRIEND_SEARCH)
+            if (result.getErrcode() <= 0 && result.getType() == ActionType.FRIEND_MESSAGE)
             {
                 FriendList list = gson.fromJson(result.getData(), FriendList.class);
                 if (list != null && list.getList().size() > 0) {
@@ -290,8 +314,10 @@ public class TalkFragment extends Fragment implements FriendListAdpter.OnItemCli
     @Override
     public void onRequestError(Exception error) {
         //网络异常提示
+
         loadTextView.setText(myContext.getString(R.string.error_net));
         loadTextView.setVisibility(View.VISIBLE);
+
         swipe_refresh_widget.finishRefresh();
         isLoading=false;
         LogC.write(error,TAG);

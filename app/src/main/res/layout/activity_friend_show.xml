@@ -25,8 +25,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:divider="@drawable/downline"
-            android:orientation="vertical"
-            android:showDividers="middle">
+            android:showDividers="middle"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -126,7 +126,7 @@
                     android:layout_height="@dimen/btn_h_l"
                     android:text="邀请游戏" />
                 <Button
-                    android:layout_marginTop="@dimen/spacing_w"
+                    android:layout_marginTop="@dimen/ui_5_dip"
                     android:id="@+id/btnMessage"
                     style="@style/btnMain_2"
                     android:layout_width="match_parent"
@@ -137,7 +137,7 @@
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true" />
                 <Button
-                    android:layout_marginTop="@dimen/spacing_w"
+                    android:layout_marginTop="@dimen/ui_5_dip"
                     android:layout_marginBottom="@dimen/spacing_w"
                     android:id="@+id/btnCancel"
                     style="@style/btnMain_3"

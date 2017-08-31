@@ -95,7 +95,7 @@ public class TalkListAdpter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(getItemViewType(position) == TYPE_NORMAL){
-            if(holder instanceof FriendListAdpter.ListHolder) {
+            if(holder instanceof TalkListAdpter.ListHolder) {
                 //这里加载数据的时候要注意，是从position-1开始，因为position==0已经被header占用了
                 Friend info;
                 if(mHeaderView != null) {
@@ -120,13 +120,17 @@ public class TalkListAdpter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     redText.setVisibility(View.GONE);
                 }
                 //
-                 timeText.setText(Time.getTimeDifference(info.getLast_time(),new Date()));
+                 timeText.setText(Time.getTimeTalk(info.getLast_time(),new Date()));
                 
                 //绑定头像
-                if(info.getPhoto()!=null||!info.getPhoto().isEmpty()){
-                    ImageWorker.loadImage(imgHead, CValues.SERVER_IMG+info.getPhoto(),mHandler);
+                if(info.getType()==2){
+                    imgHead.setImageResource(R.drawable.sys_m_45);
                 }else{
-                    imgHead.setImageResource(info.getSex()==1?R.mipmap.boy45:R.mipmap.girl45);
+                    if(info.getPhoto()!=null && !info.getPhoto().isEmpty()){
+                        ImageWorker.loadImage(imgHead, CValues.SERVER_IMG+info.getPhoto(),mHandler);
+                    }else{
+                        imgHead.setImageResource(info.getSex()==1?R.mipmap.boy45:R.mipmap.girl45);
+                    }
                 }
 
                 return;

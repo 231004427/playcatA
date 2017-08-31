@@ -9,9 +9,10 @@ import android.content.pm.PackageManager;
  */
 
 public class CValues {
-    public static final String SERVER_IMG="http://10.1.1.5:8080";
-    public static final String POST_URL= "http://10.1.1.5:8080/api/playcat/post";
-    public static final String GET_URL= "http://10.1.1.5:8080/api/playcat/get";
+    private static final String ip="10.1.1.5";
+    public static final String SERVER_IMG="http://"+ip+":8080";
+    public static final String POST_URL= "http://"+ip+":8080/api/playcat/post";
+    public static final String GET_URL= "http://"+ip+":8080/api/playcat/get";
     public static final String APP_NAME="playcat";
     public static final int APP_ID=1;
 

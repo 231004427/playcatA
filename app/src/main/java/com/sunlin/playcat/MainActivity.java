@@ -28,6 +28,7 @@ import com.sunlin.playcat.fragment.SetFragment;
 import com.sunlin.playcat.fragment.ShopFragment;
 import com.sunlin.playcat.fragment.TalkFragment;
 import com.sunlin.playcat.json.FriendRESTful;
+import com.sunlin.playcat.view.TabFragment;
 
 public class MainActivity extends MyActivtiyBase implements View.OnClickListener,RestTask.ResponseCallback {
     private String TAG="MainActivity";
