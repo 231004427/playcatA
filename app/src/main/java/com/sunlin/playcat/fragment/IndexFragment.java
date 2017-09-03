@@ -64,6 +64,14 @@ public class IndexFragment  extends Fragment implements RestTask.ResponseCallbac
         myContext=IndexFragment.this.getActivity();
 
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        //用户信息更新
+        userRESTful.get(myApp.getUser(), this);
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_index, null);
@@ -75,8 +83,6 @@ public class IndexFragment  extends Fragment implements RestTask.ResponseCallbac
 
         myApp=(MyApp)getActivity().getApplication();
         userRESTful=new UserRESTful(myApp.getUser());
-        //用户信息更新
-        userRESTful.get(myApp.getUser(), this);
 
         mViewPager=(ViewPager)view.findViewById(R.id.viewPager);
         String[] titles=new String[]{"精选", "在线", "棋牌","益智", "动作", "小游戏"};

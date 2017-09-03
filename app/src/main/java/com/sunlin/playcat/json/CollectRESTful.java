@@ -24,7 +24,7 @@ public class CollectRESTful extends ObjRESTful{
         super(user);
     }
     //获取收藏信息
-    public void get(Collect collect,RestTask.ResponseCallback responseCallback){
+    public void get2(Collect collect,RestTask.ResponseCallback responseCallback){
         String dataStr=gson.toJson(collect);
         baseRequest.setData(dataStr);
         baseRequest.setActionType(ActionType.COLLECT_GET);

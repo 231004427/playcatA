@@ -1,24 +1,212 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/colorBtn_enabled"
+    android:layout_width="match_parent"
     android:layout_height="match_parent">
-    <RelativeLayout
+    <include
+        layout="@layout/nativebar_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/nav_h"
-        android:background="@drawable/backgournd_tab"
-        android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true">
-        <TextView
-            android:id="@+id/toolbar_title"
-            style="@style/TextAppearance.AppCompat.Widget.ActionBar.Title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:text="消息"
-            android:textColor="@color/textColor"
-            android:layout_centerVertical="true"
-            android:layout_centerHorizontal="true" />
-    </RelativeLayout>
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/include" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:divider="@drawable/downline"
+            android:showDividers="middle"
+            android:orientation="vertical">
+
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp">
+
+            </View>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="76dp"
+                android:background="@color/white">
+
+                <com.sunlin.playcat.view.CircleImageView
+                    android:id="@+id/imgHead"
+                    android:layout_width="45dp"
+                    android:layout_height="45dp"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/spacing_w"
+                    android:src="@mipmap/boy45"
+                    app:border_color="@color/white"
+                    app:border_width="0dp" />
+
+                <TextView
+                    android:id="@+id/nameText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@+id/cityText"
+                    android:layout_marginLeft="@dimen/ui_10_dip"
+                    android:layout_toEndOf="@+id/imgHead"
+                    android:layout_toRightOf="@+id/imgHead"
+                    android:text="name"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/text_l" />
+
+                <TextView
+                    android:id="@+id/cityText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="城市:杭州"
+                    android:textColor="@color/textColor_low"
+                    android:textSize="@dimen/text_small"
+                    android:layout_alignTop="@+id/sexImg"
+                    android:layout_toLeftOf="@+id/btnSet"
+                    android:layout_toStartOf="@+id/btnSet" />
+                <ImageView
+                    android:id="@+id/btnSet"
+                    app:srcCompat="@drawable/right13"
+                    android:scaleType="center"
+                    android:layout_centerVertical="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_width="@dimen/toolBar"
+                    android:layout_height="@dimen/toolBar" />
+
+                <ImageView
+                    android:id="@+id/sexImg"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/sex_1_16"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="@dimen/ui_10_dip"
+                    android:layout_toEndOf="@+id/nameText"
+                    android:layout_toRightOf="@+id/nameText" />
+
+            </RelativeLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="15dp"></View>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:orientation="vertical"
+                android:background="@color/white"
+                android:layout_height="wrap_content">
+                <LinearLayout
+                    android:id="@+id/payGoldLayout"
+                    android:layout_width="match_parent"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/spacing_w"
+                    android:layout_height="@dimen/btn_h_l">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/good_29" />
+                    <RelativeLayout
+                        android:background="@drawable/downline2"
+                        android:layout_marginLeft="@dimen/spacing_w"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:id="@+id/textView7"
+                            android:textSize="@dimen/text_l"
+                            android:textColor="@color/black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:text="金币" />
+                        <TextView
+                            android:id="@+id/goldText"
+                            android:layout_marginLeft="@dimen/spacing_w"
+                            android:textSize="@dimen/text_small"
+                            android:textColor="@color/textColor_select"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="(0)"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@+id/textView7"
+                            android:layout_toEndOf="@+id/textView7" />
+                        <ImageView
+                            android:id="@+id/btnGold"
+                            app:srcCompat="@drawable/right13"
+                            android:scaleType="center"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_width="@dimen/toolBar"
+                            android:layout_height="@dimen/toolBar" />
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="赚金币"
+                            android:textColor="@color/textColor_low"
+                            android:textSize="@dimen/text_small"
+                            android:layout_centerVertical="true"
+                            android:layout_toLeftOf="@+id/btnGold" />
+                    </RelativeLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:id="@+id/payZhuanLayout"
+                    android:layout_width="match_parent"
+                    android:gravity="center_vertical"
+                    android:paddingLeft="@dimen/spacing_w"
+                    android:layout_height="@dimen/btn_h_l">
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:srcCompat="@drawable/zhuan_29" />
+                    <RelativeLayout
+                        android:layout_marginLeft="@dimen/spacing_w"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+                        <TextView
+                            android:textSize="@dimen/text_l"
+                            android:textColor="@color/black"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_alignParentLeft="true"
+                            android:layout_centerVertical="true"
+                            android:text="钻石"
+                            android:id="@+id/textView4" />
+                        <TextView
+                            android:id="@+id/zhuanText"
+                            android:layout_marginLeft="@dimen/spacing_w"
+                            android:textSize="@dimen/text_small"
+                            android:textColor="@color/textColor_select"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="(0)"
+                            android:layout_centerVertical="true"
+                            android:layout_toRightOf="@+id/textView4"
+                            android:layout_toEndOf="@+id/textView4" />
+                        <ImageView
+                            android:id="@+id/btnZuan"
+                            app:srcCompat="@drawable/right13"
+                            android:scaleType="center"
+                            android:layout_centerVertical="true"
+                            android:layout_alignParentRight="true"
+                            android:layout_width="@dimen/toolBar"
+                            android:layout_height="@dimen/toolBar" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="购买"
+                            android:textColor="@color/textColor_low"
+                            android:textSize="@dimen/text_small"
+                            android:layout_centerVertical="true"
+                            android:layout_toLeftOf="@+id/btnZuan" />
+                    </RelativeLayout>
+                </LinearLayout>
+            </LinearLayout>
+        </LinearLayout>
+
+    </ScrollView>
 
 </LinearLayout>

@@ -43,6 +43,7 @@
         <activity android:name=".WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
+
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
@@ -63,9 +64,11 @@
         <activity android:name=".SelectCityActivity" />
         <activity android:name=".FriendShowActivity" />
         <activity android:name=".ChatShowActivity" />
-        <activity android:name=".MessageActivity"
-            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" >
-        </activity>
+        <activity
+            android:name=".MessageActivity"
+            android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
+        <activity android:name=".SetActivity" />
+        <activity android:name=".SetMyActivity"></activity>
     </application>
 
 </manifest>

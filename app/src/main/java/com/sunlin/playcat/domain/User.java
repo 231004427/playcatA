@@ -1,19 +1,19 @@
 package com.sunlin.playcat.domain;
 
 import java.util.Date;
+import java.util.Date;
 
 /**
- * Created by sunlin on 2017/6/28.
+ * Created by sunlin on 2017/5/16.
  */
-
 public class User {
     private int id=-1;
-    private String name="";
-    private String phone="";
-    private String password="";
+    private String name;
+    private String phone;
+    private String password;
     private int sex=1;
-    private String city="";
-    private String photo="";
+    private String city;
+    private String photo;
     private int gold=0;
     private int zhuan=0;
     private int level=0;
@@ -31,6 +31,24 @@ public class User {
     private String weixin;
     private int online;
     private int no_read;
+    private int loveNum;
+    private int orderNum;
+
+    public int getLoveNum() {
+        return loveNum;
+    }
+
+    public int getOrderNum() {
+        return orderNum;
+    }
+
+    public void setLoveNum(int loveNum) {
+        this.loveNum = loveNum;
+    }
+
+    public void setOrderNum(int orderNum) {
+        this.orderNum = orderNum;
+    }
 
     public int getNo_read() {
         return no_read;
@@ -43,9 +61,11 @@ public class User {
     public int getOnline() {
         return online;
     }
+
     public void setOnline(int online) {
         this.online = online;
     }
+
     public String getWeixin() {
         return weixin;
     }
@@ -53,6 +73,7 @@ public class User {
     public void setWeixin(String weixin) {
         this.weixin = weixin;
     }
+
     public String getAddress() {
         return address;
     }
@@ -60,6 +81,7 @@ public class User {
     public void setAddress(String address) {
         this.address = address;
     }
+
     public String getQq() {
         return qq;
     }
@@ -67,20 +89,21 @@ public class User {
     public void setQq(String qq) {
         this.qq = qq;
     }
-    public int getVersion() {
-        return version;
-    }
 
     public void setVersion(int version) {
         this.version = version;
     }
 
-    public String getImei() {
-        return imei;
+    public int getVersion() {
+        return version;
     }
 
     public void setImei(String imei) {
         this.imei = imei;
+    }
+
+    public String getImei() {
+        return imei;
     }
 
     public void setToken(String token) {
@@ -90,7 +113,6 @@ public class User {
     public String getToken() {
         return token;
     }
-
     public void setPhone2(String phone2) {
         this.phone2 = phone2;
     }
@@ -98,13 +120,13 @@ public class User {
     public String getPhone2() {
         return phone2;
     }
+
     public void setLocal(Local local) {
         this.local = local;
     }
     public Local getLocal() {
         return local;
     }
-
     public int getStatus() {
         return status;
     }

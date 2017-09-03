@@ -1,6 +1,7 @@
 package com.sunlin.playcat.domain;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by sunlin on 2017/8/16.
@@ -21,6 +22,15 @@ public class Order {
     private int pay_way;
     private String pay_code;
     private Date pay_time;
+    private String goods_img;
+
+    public String getGoods_img() {
+        return goods_img;
+    }
+
+    public void setGoods_img(String goods_img) {
+        this.goods_img = goods_img;
+    }
 
     public Date getPay_time() {
         return pay_time;

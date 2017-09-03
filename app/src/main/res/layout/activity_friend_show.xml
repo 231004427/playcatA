@@ -6,7 +6,7 @@
     android:background="@color/colorBtn_enabled"
     android:orientation="vertical"
     android:layout_height="match_parent"
-    tools:context="com.sunlin.playcat.GoodsBuyActivity">
+    tools:context="com.sunlin.playcat.FriendShowActivity">
 
     <include
         layout="@layout/nativebar_layout"

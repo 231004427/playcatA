@@ -1,5 +1,6 @@
 package com.sunlin.playcat;
 
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
@@ -99,6 +100,13 @@ public class MainActivity extends MyActivtiyBase implements View.OnClickListener
      */
 
     private void switchFrgment(int i){
+
+        if(i==4){
+            Intent intent=new Intent(this,SetActivity.class);
+            startActivity(intent);
+            return;
+        }
+
         resetTabState();
         FragmentManager fm = getSupportFragmentManager();
         FragmentTransaction ft = fm.beginTransaction();

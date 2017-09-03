@@ -34,6 +34,7 @@ import java.util.List;
 public class FriendShowActivity extends MyActivtiyToolBar {
     private String TAG="FriendShowActivity";
     private Friend friend;
+    private Handler mHandler = new Handler();
 
     private CircleImageView imgHead;
     private TextView nameText;
@@ -41,7 +42,6 @@ public class FriendShowActivity extends MyActivtiyToolBar {
     private ImageView sexImg;
     private LinearLayout playTitleLayout;
     private LinearLayout playGameLayout;
-    private Handler mHandler = new Handler();
     private GamePlayRESTful gamePlayRESTful;
     private User myUser;
     @Override
