@@ -24,13 +24,10 @@ public class WelcomeActivity extends MyActivtiyBase {
         super.onCreate(savedInstanceState);
 
         final ImageView logo=(ImageView) findViewById(R.id.imageView);
-
         //渐变展示启动屏
-
         AlphaAnimation aa = new AlphaAnimation(0.3f,1.0f);
         aa.setDuration(2000);
         logo.startAnimation(aa);
-
         aa.setAnimationListener(new Animation.AnimationListener()
         {
             @Override

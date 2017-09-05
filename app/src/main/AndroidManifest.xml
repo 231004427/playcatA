@@ -68,7 +68,9 @@
             android:name=".MessageActivity"
             android:windowSoftInputMode="adjustResize|stateAlwaysHidden" />
         <activity android:name=".SetActivity" />
-        <activity android:name=".SetMyActivity"></activity>
+        <activity android:name=".SetMyActivity" />
+        <activity android:name=".SetNameActivity" />
+        <activity android:name=".SetSexActivity"></activity>
     </application>
 
 </manifest>

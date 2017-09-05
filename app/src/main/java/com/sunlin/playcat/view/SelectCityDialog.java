@@ -51,6 +51,7 @@ public class SelectCityDialog extends DialogFragment implements View.OnClickList
     private ViewPager mViewPager;
     private List<Area>  areaList;
     private Area[] selectAreas;
+    private int level=3;
 
     @Override //在onCreate中设置对话框的风格、属性等
     public void onCreate(Bundle savedInstanceState) {
@@ -108,6 +109,10 @@ public class SelectCityDialog extends DialogFragment implements View.OnClickList
         return view;
     }
 
+    public void setLevel(int _level){
+        level=_level;
+    }
+
     @Override
     public void show(FragmentManager manager, String tag) {
         super.show(manager, tag);
@@ -134,7 +139,10 @@ public class SelectCityDialog extends DialogFragment implements View.OnClickList
 
 
     }
-
+    private OnResultListener setResult;
+    public void setOnResultListener(OnResultListener _setResult){
+        setResult=_setResult;
+    }
     @Override
     public void onItemClick(View view) {
 
@@ -144,9 +152,9 @@ public class SelectCityDialog extends DialogFragment implements View.OnClickList
         int size=areaList.size();
         selectAreas[size]=area;
 
-        if(area.getType()==3){
+        if(area.getType()==level){
             dismiss();
-            ((SetAddressActivity)getActivity()).SetArea(selectAreas);
+            setResult.onCityResult(selectAreas);
             return;
         }
 
@@ -172,5 +180,8 @@ public class SelectCityDialog extends DialogFragment implements View.OnClickList
 
 
         //Log.e(TAG,"onItemClick:"+area.getId()+"|"+area.getType());
+    }
+    public interface OnResultListener{
+        void onCityResult(Area[] selectAreas);
     }
 }

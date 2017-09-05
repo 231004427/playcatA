@@ -97,7 +97,7 @@ public class IndexFragment  extends Fragment implements RestTask.ResponseCallbac
         //TabLayout
         mTabLayout = (TabLayout)view.findViewById(R.id.tabs);
         mTabLayout.setupWithViewPager(mViewPager);
-
+        nameText.setText(myApp.getUser().getName());
         return view;
     }
 
@@ -114,7 +114,6 @@ public class IndexFragment  extends Fragment implements RestTask.ResponseCallbac
                     myApp.setUser(user);//全局保存
                     zhuanText.setText(String.valueOf(user.getZhuan()));
                     goldText.setText(String.valueOf(user.getGold()));
-                    nameText.setText(user.getName());
 
                     //绑定头像
                     if(user.getPhoto()!=null||!user.getPhoto().isEmpty()){

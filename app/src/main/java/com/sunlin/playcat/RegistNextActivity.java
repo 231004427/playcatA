@@ -178,7 +178,7 @@ public class RegistNextActivity extends MyActivtiyToolBar implements View.OnClic
         }
     }
     @Override
-protected void onActivityResult(int requestCode, int resultCode, Intent result) {
+    protected void onActivityResult(int requestCode, int resultCode, Intent result) {
     if (requestCode == Crop.REQUEST_PICK && resultCode == RESULT_OK) {
         beginCrop(result.getData());
     }else  if(requestCode==ImageHelp.PAI_BACK){

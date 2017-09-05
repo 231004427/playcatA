@@ -35,28 +35,185 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <LinearLayout
+                    android:background="@drawable/downline2"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_height="76dp"
+                    android:layout_marginLeft="@dimen/spacing_w">
+
+                    <TextView
+                        android:layout_gravity="center_vertical"
+                        android:textSize="@dimen/text_l"
+                        android:textColor="@color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:text="头像" />
+
+                    <com.sunlin.playcat.view.CircleImageView
+                        android:id="@+id/imgHead"
+                        android:layout_width="45dp"
+                        android:layout_height="45dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@mipmap/boy45"
+                        app:border_color="@color/white"
+                        app:border_width="0dp" />
+                    <ImageView
+                        android:id="@+id/btnHeadImg"
+                        app:srcCompat="@drawable/right13"
+                        android:scaleType="center"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="@dimen/toolBar"
+                        android:layout_height="@dimen/toolBar" />
+                </LinearLayout>
+                <LinearLayout
+                    android:background="@drawable/downline2"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/bBar_h"
                     android:layout_marginLeft="@dimen/spacing_w">
-
+                    <TextView
+                        android:layout_gravity="center_vertical"
+                        android:textSize="@dimen/text_l"
+                        android:textColor="@color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:text="用户名" />
+                    <TextView
+                        android:id="@+id/nameText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:text="name"
+                        android:textColor="@color/textColor_low"
+                        android:textSize="@dimen/text_small"
+                        android:layout_centerVertical="true" />
+                    <ImageView
+                        android:id="@+id/btnName"
+                        app:srcCompat="@drawable/right13"
+                        android:scaleType="center"
+                        android:layout_gravity="center_vertical"
+                        android:layout_width="@dimen/toolBar"
+                        android:layout_height="@dimen/toolBar" />
                 </LinearLayout>
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/bBar_h"
                     android:layout_marginLeft="@dimen/spacing_w">
-
-                </LinearLayout>
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/bBar_h"
-                    android:layout_marginLeft="@dimen/spacing_w">
-
+                    <TextView
+                        android:layout_gravity="center_vertical"
+                        android:textSize="@dimen/text_l"
+                        android:textColor="@color/black"
+                        android:layout_width="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="true"
+                        android:layout_centerVertical="true"
+                        android:text="手机号" />
+                    <TextView
+                        android:id="@+id/phoneText"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/bBar_h"
+                        android:layout_gravity="center_vertical"
+                        android:text="13588045452"
+                        android:textColor="@color/textColor_low"
+                        android:textSize="@dimen/text_small"
+                        android:layout_centerVertical="true"/>
                 </LinearLayout>
 
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
                 android:layout_height="15dp"></View>
+        <LinearLayout
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:background="@drawable/downline2"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bBar_h"
+                android:layout_marginLeft="@dimen/spacing_w">
+                <TextView
+                    android:layout_gravity="center_vertical"
+                    android:textSize="@dimen/text_l"
+                    android:textColor="@color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:text="性别" />
+                <TextView
+                    android:id="@+id/sexText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text=""
+                    android:textColor="@color/textColor_low"
+                    android:textSize="@dimen/text_small"
+                    android:layout_centerVertical="true" />
+                <ImageView
+                    android:id="@+id/btnSex"
+                    app:srcCompat="@drawable/right13"
+                    android:scaleType="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="@dimen/toolBar"
+                    android:layout_height="@dimen/toolBar" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bBar_h"
+                android:layout_marginLeft="@dimen/spacing_w">
+                <TextView
+                    android:layout_gravity="center_vertical"
+                    android:textSize="@dimen/text_l"
+                    android:textColor="@color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:text="城市" />
+                <TextView
+                    android:id="@+id/cityText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:text=""
+                    android:textColor="@color/textColor_low"
+                    android:textSize="@dimen/text_small"
+                    android:layout_centerVertical="true" />
+                <ImageView
+                    android:id="@+id/btnCity"
+                    app:srcCompat="@drawable/right13"
+                    android:scaleType="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="@dimen/toolBar"
+                    android:layout_height="@dimen/toolBar" />
+            </LinearLayout>
+        </LinearLayout>
+            <LinearLayout
+                android:layout_marginTop="@dimen/spacing_w"
+                android:layout_width="match_parent"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:layout_height="wrap_content">
+                <Button
+                    android:id="@+id/btnOut"
+                    style="@style/btnMain"
+                    android:layout_width="match_parent"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_height="@dimen/btn_h_l"
+                    android:text="退出登录" />
+            </LinearLayout>
         </LinearLayout>
     </ScrollView>
 

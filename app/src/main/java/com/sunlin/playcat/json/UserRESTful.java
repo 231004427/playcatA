@@ -24,6 +24,34 @@ public class UserRESTful extends ObjRESTful {
         super(user);
     }
 
+    public void updatePhoto(User user,RestTask.ResponseCallback responseCallback){
+        String dataStr=gson.toJson(user);
+        baseRequest.setData(dataStr);
+        baseRequest.setActionType(ActionType.USER_UPDATE_PHOTO);
+        baseRequest.setDateTime(new Date());
+        ServerTask.Post(gson.toJson(baseRequest),null,responseCallback);
+    }
+    public void updateName(User user,RestTask.ResponseCallback responseCallback){
+        String dataStr=gson.toJson(user);
+        baseRequest.setData(dataStr);
+        baseRequest.setActionType(ActionType.USER_UPDATE_NAME);
+        baseRequest.setDateTime(new Date());
+        ServerTask.Post(gson.toJson(baseRequest),null,responseCallback);
+    }
+    public void updateSex(User user,RestTask.ResponseCallback responseCallback){
+        String dataStr=gson.toJson(user);
+        baseRequest.setData(dataStr);
+        baseRequest.setActionType(ActionType.USER_UPDATE_SEX);
+        baseRequest.setDateTime(new Date());
+        ServerTask.Post(gson.toJson(baseRequest),null,responseCallback);
+    }
+    public void updateCity(User user,RestTask.ResponseCallback responseCallback){
+        String dataStr=gson.toJson(user);
+        baseRequest.setData(dataStr);
+        baseRequest.setActionType(ActionType.USER_UPDATE_CITY);
+        baseRequest.setDateTime(new Date());
+        ServerTask.Post(gson.toJson(baseRequest),null,responseCallback);
+    }
     public void updateWeixin(User user,RestTask.ResponseCallback responseCallback){
         String dataStr=gson.toJson(user);
         baseRequest.setData(dataStr);

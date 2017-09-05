@@ -38,4 +38,8 @@ public class ActionType {
     public static final int FRIEND_MESSAGE=30;
     public static final int MESSAGE_SEARCH=31;
     public static final int MESSAGE_ADD=32;
+    public static final int USER_UPDATE_PHOTO=33;
+    public static final int USER_UPDATE_NAME=34;
+    public static final int USER_UPDATE_SEX=35;
+    public static final int USER_UPDATE_CITY=36;
 }

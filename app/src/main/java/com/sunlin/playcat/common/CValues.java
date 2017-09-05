@@ -9,12 +9,17 @@ import android.content.pm.PackageManager;
  */
 
 public class CValues {
-    private static final String ip="10.1.1.15";
+    private static final String ip="169.254.60.247";
     public static final String SERVER_IMG="http://"+ip+":8080";
     public static final String POST_URL= "http://"+ip+":8080/api/playcat/post";
     public static final String GET_URL= "http://"+ip+":8080/api/playcat/get";
     public static final String APP_NAME="playcat";
     public static final int APP_ID=1;
+    public static final int SET=100;
+    public static final int SET_NAME=1001;
+    public static final int SET_SEX=1002;
+    public static final int SET_CITY=1003;
+    public static final int SET_ADDRESS=1004;
 
     /**
      * 获取本地软件版本号名称

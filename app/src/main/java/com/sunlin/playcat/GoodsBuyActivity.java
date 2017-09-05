@@ -24,6 +24,7 @@ import com.sunlin.playcat.common.ShowMessage;
 import com.sunlin.playcat.domain.ActionType;
 import com.sunlin.playcat.domain.Address;
 import com.sunlin.playcat.domain.AddressList;
+import com.sunlin.playcat.domain.Area;
 import com.sunlin.playcat.domain.BaseResult;
 import com.sunlin.playcat.domain.Goods;
 import com.sunlin.playcat.domain.Order;
@@ -33,11 +34,12 @@ import com.sunlin.playcat.json.ObjRESTful;
 import com.sunlin.playcat.json.OrderRESTful;
 import com.sunlin.playcat.view.CircleTitleView;
 import com.sunlin.playcat.view.LoadingDialog;
+import com.sunlin.playcat.view.SelectCityDialog;
 
 import java.util.Date;
 import java.util.List;
 
-public class GoodsBuyActivity extends MyActivtiyToolBar implements View.OnClickListener,RestTask.ResponseCallback {
+public class GoodsBuyActivity extends MyActivtiyToolBar implements View.OnClickListener,RestTask.ResponseCallback{
     private String TAG="GoodsBuyActivity";
     private Goods goods;
     private ImageView goodsImg;
@@ -301,7 +303,7 @@ public class GoodsBuyActivity extends MyActivtiyToolBar implements View.OnClickL
                 } else if (goods.getType() == 5 && addressId>=-1) {
                     Intent intent = new Intent(this, SetAddressActivity.class);
                     intent.putExtra("addressId", addressId);
-                    startActivityForResult(intent, 001);
+                    startActivityForResult(intent, CValues.SET_ADDRESS);
                 }
                 break;
             case R.id.btnBuy:
@@ -360,7 +362,7 @@ public class GoodsBuyActivity extends MyActivtiyToolBar implements View.OnClickL
     {
         super.onActivityResult(requestCode, resultCode, data);
         //获取收货地址
-        if (requestCode == 001 && data!=null)
+        if (requestCode == CValues.SET_ADDRESS && data!=null)
         {
             addressId=data.getIntExtra("addressId",-1);
             setValueAddress(data.getStringExtra("address"));

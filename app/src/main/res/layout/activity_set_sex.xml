@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/colorBtn_enabled"
+    android:layout_height="match_parent"
+    tools:context="com.sunlin.playcat.SetSexActivity">
+    <include
+        layout="@layout/nativebar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/include" />
+
+        <LinearLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="match_parent"
+            android:layout_marginTop="@dimen/spacing_w"
+            android:paddingLeft="@dimen/spacing_w"
+            android:paddingRight="@dimen/spacing_w"
+            android:background="@drawable/downline3"
+            android:layout_height="@dimen/bBar_h">
+            <TextView
+                android:id="@+id/valueText"
+                style="@style/titleInput"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="性别" />
+            <RadioGroup
+                android:id="@+id/rgSex"
+                android:layout_gravity="center_vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rbBoy"
+                    style="@style/radioBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:button="@null"
+                    android:checked="true"
+                    android:text="男" />
+
+                <RadioButton
+                    android:id="@+id/rbGirl"
+                    style="@style/radioBtn"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/bBar_h"
+                    android:button="@null"
+                    android:text="女" />
+            </RadioGroup>
+        </LinearLayout>
+</LinearLayout>

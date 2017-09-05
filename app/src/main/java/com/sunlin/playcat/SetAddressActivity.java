@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.sunlin.playcat.common.CValues;
 import com.sunlin.playcat.common.LogC;
 import com.sunlin.playcat.common.RestTask;
 import com.sunlin.playcat.common.ShowMessage;
@@ -23,7 +24,7 @@ import com.sunlin.playcat.view.SelectCityDialog;
 
 import java.util.Date;
 
-public class SetAddressActivity extends MyActivtiyToolBar implements RestTask.ResponseCallback {
+public class SetAddressActivity extends MyActivtiyToolBar implements RestTask.ResponseCallback,SelectCityDialog.OnResultListener  {
     private String TAG="SetAddressActivity";
     private LinearLayout selectCityLayout;
     private TextView areaText;
@@ -65,6 +66,7 @@ public class SetAddressActivity extends MyActivtiyToolBar implements RestTask.Re
             @Override
             public void onClick(View v) {
                 SelectCityDialog selectCityDialog=new SelectCityDialog();
+                selectCityDialog.setOnResultListener(SetAddressActivity.this);
                 selectCityDialog.show(getSupportFragmentManager(),"CityDialog");
             }
         });
@@ -138,12 +140,12 @@ public class SetAddressActivity extends MyActivtiyToolBar implements RestTask.Re
     }
 
     //设置地区选择框
-    public void SetArea(Area[] _selectAreas){
+    @Override
+    public void onCityResult(Area[] _selectAreas) {
         selectAreas=_selectAreas;
         areaText.setText(selectAreas[1].getName()+" "+selectAreas[2].getName()+" "+selectAreas[3].getName());
         areaText.setTextColor(ContextCompat.getColor(this,R.color.black));
     }
-
     @Override
     public void onRequestSuccess(String response) {
 
@@ -202,7 +204,7 @@ public class SetAddressActivity extends MyActivtiyToolBar implements RestTask.Re
         Intent intent = new Intent();
         intent.putExtra("address", myresult);
         intent.putExtra("addressId",id);
-        setResult(001, intent);
+        setResult(CValues.SET_ADDRESS, intent);
         finish();
     }
     @Override
