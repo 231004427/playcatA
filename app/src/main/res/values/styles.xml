@@ -154,7 +154,7 @@
     </style>
 
     <style name="titleInput">
-        <item name="android:textColor">@color/black</item>
-        <item name="android:textSize">@dimen/text_l</item>
+        <item name="android:textColor">@color/textColor_low</item>
+        <item name="android:textSize">@dimen/text_m</item>
     </style>
 </resources>

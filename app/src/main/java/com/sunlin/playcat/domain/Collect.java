@@ -13,14 +13,33 @@ public class Collect {
     private int type;
     private int status;
     private Date create_time;
-    private String rule;
 
-    public String getRule() {
-        return rule;
+    private String game_name;
+    private String game_note;
+    private String game_ico;
+
+    public String getGame_ico() {
+        return game_ico;
     }
 
-    public void setRule(String rule) {
-        this.rule = rule;
+    public String getGame_name() {
+        return game_name;
+    }
+
+    public String getGame_note() {
+        return game_note;
+    }
+
+    public void setGame_ico(String game_ico) {
+        this.game_ico = game_ico;
+    }
+
+    public void setGame_name(String game_name) {
+        this.game_name = game_name;
+    }
+
+    public void setGame_note(String game_note) {
+        this.game_note = game_note;
     }
 
     public int getSid() {
@@ -71,4 +90,3 @@ public class Collect {
         this.uid = uid;
     }
 }
-

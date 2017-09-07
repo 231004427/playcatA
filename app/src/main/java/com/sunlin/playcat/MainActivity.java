@@ -70,9 +70,10 @@ public class MainActivity extends MyActivtiyBase implements View.OnClickListener
         tb_set.setOnClickListener(this);
 
         //显示红点
+        sIndex=getIntent().getIntExtra("sIndex",0);;
+        switchFrgment(sIndex);//设置默认显示Fragment
 
-        sIndex=0;
-        switchFrgment(0);//设置默认显示Fragment
+
     }
 
     @Override

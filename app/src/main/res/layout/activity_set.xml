@@ -30,6 +30,7 @@
                 android:layout_height="15dp"></View>
 
             <RelativeLayout
+                android:id="@+id/btnSetLayout"
                 android:layout_width="match_parent"
                 android:layout_height="76dp"
                 android:background="@color/white">
@@ -212,6 +213,7 @@
             android:background="@color/white"
             android:layout_height="wrap_content">
                 <LinearLayout
+                    android:id="@+id/loveLayout"
                 android:layout_width="match_parent"
                 android:gravity="center_vertical"
                 android:paddingLeft="@dimen/spacing_w"
@@ -253,6 +255,7 @@
                 </RelativeLayout>
             </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/fightLayout"
                     android:layout_width="match_parent"
                     android:gravity="center_vertical"
                     android:paddingLeft="@dimen/spacing_w"
@@ -294,6 +297,7 @@
                     </RelativeLayout>
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/shopLayout"
                     android:layout_width="match_parent"
                     android:gravity="center_vertical"
                     android:paddingLeft="@dimen/spacing_w"
@@ -335,6 +339,7 @@
                     </RelativeLayout>
                 </LinearLayout>
                 <LinearLayout
+                    android:id="@+id/addressLayout"
                     android:layout_width="match_parent"
                     android:gravity="center_vertical"
                     android:paddingLeft="@dimen/spacing_w"
@@ -388,6 +393,7 @@
                 android:background="@color/white"
                 android:layout_height="wrap_content">
                 <LinearLayout
+                    android:id="@+id/sysLayout"
                     android:layout_width="match_parent"
                     android:gravity="center_vertical"
                     android:paddingLeft="@dimen/spacing_w"

@@ -42,4 +42,5 @@ public class ActionType {
     public static final int USER_UPDATE_NAME=34;
     public static final int USER_UPDATE_SEX=35;
     public static final int USER_UPDATE_CITY=36;
+    public static final int COLLECT_SARCH_GAME=37;
 }

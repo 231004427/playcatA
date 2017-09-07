@@ -9,7 +9,7 @@ import android.content.pm.PackageManager;
  */
 
 public class CValues {
-    private static final String ip="169.254.60.247";
+    private static final String ip="10.1.1.15";
     public static final String SERVER_IMG="http://"+ip+":8080";
     public static final String POST_URL= "http://"+ip+":8080/api/playcat/post";
     public static final String GET_URL= "http://"+ip+":8080/api/playcat/get";

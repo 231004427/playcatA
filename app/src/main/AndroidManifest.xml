@@ -70,7 +70,8 @@
         <activity android:name=".SetActivity" />
         <activity android:name=".SetMyActivity" />
         <activity android:name=".SetNameActivity" />
-        <activity android:name=".SetSexActivity"></activity>
+        <activity android:name=".SetSexActivity" />
+        <activity android:name=".LoveActivity"></activity>
     </application>
 
 </manifest>

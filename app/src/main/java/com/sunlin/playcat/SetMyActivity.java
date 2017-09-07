@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,10 +48,10 @@ public class SetMyActivity extends MyActivtiyToolBar implements SelectCityDialog
     private TextView sexText;
     private TextView cityText;
 
-    private ImageView btnHeadImg;
-    private ImageView btnName;
-    private ImageView btnSex;
-    private ImageView btnCity;
+    private LinearLayout btnHeadImg;
+    private LinearLayout btnName;
+    private LinearLayout btnSex;
+    private LinearLayout btnCity;
 
     private Area[] selectAreas;
 
@@ -72,10 +73,10 @@ public class SetMyActivity extends MyActivtiyToolBar implements SelectCityDialog
         phoneText=(TextView)findViewById(R.id.phoneText);
         sexText=(TextView)findViewById(R.id.sexText);
         cityText=(TextView)findViewById(R.id.cityText);
-        btnHeadImg=(ImageView)findViewById(R.id.btnHeadImg);
-        btnName=(ImageView)findViewById(R.id.btnName);
-        btnSex=(ImageView)findViewById(R.id.btnSex);
-        btnCity=(ImageView)findViewById(R.id.btnCity);
+        btnHeadImg=(LinearLayout)findViewById(R.id.btnHeadImg);
+        btnName=(LinearLayout)findViewById(R.id.btnName);
+        btnSex=(LinearLayout)findViewById(R.id.btnSex);
+        btnCity=(LinearLayout)findViewById(R.id.btnCity);
 
         //获取用户信息
         user=((MyApp)getApplication()).getUser();

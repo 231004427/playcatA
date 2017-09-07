@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.sunlin.playcat.view.SlideLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_height="wrap_content"
+    android:layout_width="match_parent">
+<RelativeLayout
+    android:id="@+id/content"
+    android:orientation="vertical"
+    android:background="@color/white"
+    android:layout_width="match_parent"
+    android:layout_height="76dp">
+    <ImageView
+        android:id="@+id/imgHead"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/spacing_w"
+        android:src="@drawable/game1_ico" />
+    <TextView
+        android:id="@+id/nameText"
+        android:textSize="@dimen/text_title"
+        android:textColor="@color/black"
+        android:layout_marginLeft="@dimen/ui_10_dip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="name"
+        android:layout_alignTop="@+id/imgHead"
+        android:layout_toRightOf="@+id/imgHead"
+        android:layout_toEndOf="@+id/imgHead" />
+    <TextView
+        android:id="@+id/noteText"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:textColor="@color/textColor_low"
+        android:textSize="@dimen/text_small"
+        android:layout_marginLeft="@dimen/ui_10_dip"
+        android:layout_marginRight="@dimen/spacing_w"
+        android:gravity="center_vertical"
+        android:ellipsize="end"
+        android:maxLines="1"
+        android:text="介绍"
+        android:layout_below="@+id/nameText"
+        android:layout_toRightOf="@+id/imgHead"
+        android:layout_toEndOf="@+id/imgHead" />
+</RelativeLayout>
+    <TextView
+        android:id="@+id/menu"
+        android:layout_width="76dp"
+        android:layout_height="76dp"
+        android:text="删除"
+        android:textColor="@color/white"
+        android:textSize="@dimen/text_l"
+        android:background="@color/red"
+        android:gravity="center"
+        android:padding="8dp"/>
+</com.sunlin.playcat.view.SlideLayout>

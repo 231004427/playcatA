@@ -4,7 +4,10 @@ import android.content.Context;
 
 import com.google.gson.Gson;
 import com.sunlin.playcat.common.CValues;
+import com.sunlin.playcat.common.RestTask;
+import com.sunlin.playcat.common.ServerTask;
 import com.sunlin.playcat.common.SharedData;
+import com.sunlin.playcat.domain.ActionType;
 import com.sunlin.playcat.domain.BaseRequest;
 import com.sunlin.playcat.domain.User;
 
@@ -33,5 +36,11 @@ public class ObjRESTful {
         baseRequest.setVesion(_user.getVersion());
         baseRequest.setAppid(CValues.APP_ID);
         gson=new Gson();
+    }
+    public void requestPost(int type,String dataStr,RestTask.ResponseCallback responseCallback){
+        baseRequest.setData(dataStr);
+        baseRequest.setActionType(type);
+        baseRequest.setDateTime(new Date());
+        ServerTask.Post(gson.toJson(baseRequest),null,responseCallback);
     }
 }
