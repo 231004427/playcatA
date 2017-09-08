@@ -1,6 +1,7 @@
 package com.sunlin.playcat;
 
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -9,23 +10,28 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.sunlin.playcat.MyActivtiyToolBar;
+import com.sunlin.playcat.R;
 import com.sunlin.playcat.common.LogC;
 import com.sunlin.playcat.common.RestTask;
 import com.sunlin.playcat.common.ShowMessage;
 import com.sunlin.playcat.domain.ActionType;
 import com.sunlin.playcat.domain.BaseResult;
-import com.sunlin.playcat.domain.Collect;
 import com.sunlin.playcat.domain.CollectList;
+import com.sunlin.playcat.domain.GamePlay;
+import com.sunlin.playcat.domain.GamePlayList;
 import com.sunlin.playcat.fragment.LoveListAdpter;
+import com.sunlin.playcat.fragment.MyRecordAdapter;
 import com.sunlin.playcat.json.CollectRESTful;
+import com.sunlin.playcat.json.GamePlayRESTful;
 import com.sunlin.playcat.view.CircleTitleView;
 import com.sunlin.playcat.view.MyDecoration;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class LoveActivity extends MyActivtiyToolBar implements LoveListAdpter.OnItemClickListener,RestTask.ResponseCallback {
-    private String TAG="LoveActivity";
+public class MyrecordActivity extends MyActivtiyToolBar implements MyRecordAdapter.OnItemClickListener,RestTask.ResponseCallback {
+    private String TAG="MyrecordActivity";
 
     private RecyclerView mRecyclerView;
     private boolean isLoading=false;
@@ -33,24 +39,23 @@ public class LoveActivity extends MyActivtiyToolBar implements LoveListAdpter.On
     private int getType=1;
     private MyApp myApp;
     //需修改
-    private CollectList dataList;
+    private GamePlayList dataList;
     //需修改
-    private LoveListAdpter listAdapter;
-    private CollectRESTful collectRESTful;
+    private MyRecordAdapter listAdapter;
+    private GamePlayRESTful gamePlayRESTful;
     private CircleTitleView loadTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         mRecyclerView = (RecyclerView)findViewById(R.id.my_recycler_view);
         loadTextView = (CircleTitleView)findViewById(R.id.netoffText);
 
-        ToolbarBuild("收藏",true,false);
+        ToolbarBuild("战绩",true,false);
         ToolbarBackListense();
 
         myApp=(MyApp)getApplication();
-        collectRESTful=new CollectRESTful(myApp.getUser());
+        gamePlayRESTful=new GamePlayRESTful(myApp.getUser());
 
         //点击重试
         loadTextView.setOnClickListener(new View.OnClickListener() {
@@ -65,13 +70,12 @@ public class LoveActivity extends MyActivtiyToolBar implements LoveListAdpter.On
 
         //判断list点击
         //viewList[i].setBackgroundColor(ContextCompat.getColor(getActivity(), CValues.color.textColor_low));
-        dataList=new CollectList();
-        dataList.setUid(myApp.getUser().getId());
+        dataList=new GamePlayList();
         dataList.setCount(0);
-        List<Collect> listData = new ArrayList<Collect>();
-        dataList.setList(listData);
+        List<GamePlay> listData = new ArrayList<GamePlay>();
+        dataList.setGamePlays(listData);
         dataList.setType(1);
-        dataList.setStatus(1);
+        dataList.setId(myApp.getUser().getId());
         dataList.setStart(0);
         dataList.setPageNum(10);
         //使用单行
@@ -81,7 +85,7 @@ public class LoveActivity extends MyActivtiyToolBar implements LoveListAdpter.On
         mRecyclerView.setHasFixedSize(true);
         //自定义分割线
         mRecyclerView.addItemDecoration(new MyDecoration(this));
-        listAdapter = new LoveListAdpter(dataList.getList());
+        listAdapter = new MyRecordAdapter(dataList.getGamePlays());
         listAdapter.setOnItemClickListener(this);
         //setFooterView(mRecyclerView);
         mRecyclerView.setAdapter(listAdapter);
@@ -115,9 +119,6 @@ public class LoveActivity extends MyActivtiyToolBar implements LoveListAdpter.On
                 x1 =event.getX();
                 x1 = event.getX();
                 y1 = event.getY();
-
-
-
             }
             if(event.getAction() == MotionEvent.ACTION_UP) {
                 //是否到页尾
@@ -168,34 +169,11 @@ public class LoveActivity extends MyActivtiyToolBar implements LoveListAdpter.On
             footText.setText(myContext.getString(R.string.nextpage));
         }*/
 
-        collectRESTful.searchGame(dataList,this);
+        gamePlayRESTful.searchUser(dataList,this);
     }
     @Override
     protected int getLayoutResId() {
-        return R.layout.activity_love;
-    }
-
-    @Override
-    public void onItemClick(View view) {
-        TextView nameText=(TextView)view.findViewById(R.id.nameText);
-        TextView noteText=(TextView)view.findViewById(R.id.noteText);
-
-        //查看详情
-        Intent intent = new Intent(this,GameShowActivity.class);
-        intent.putExtra("name", nameText.getText().toString());
-        intent.putExtra("note",noteText.getText().toString());
-        intent.putExtra("id",(int)nameText.getTag());
-        startActivity(intent);
-    }
-
-    @Override
-    public void onItemDel(int id) {
-        //取消收藏
-        Collect collect=new Collect();
-        collect.setUid(myApp.getUser().getId());
-        collect.setSid(id);
-
-        collectRESTful.del(collect,this);
+        return R.layout.activity_myrecord;
     }
 
     @Override
@@ -204,21 +182,21 @@ public class LoveActivity extends MyActivtiyToolBar implements LoveListAdpter.On
             Gson gson = new Gson();
             //处理结果
             BaseResult result=gson.fromJson(response,BaseResult.class);
-            if (result.getErrcode() <= 0 && result.getType() == ActionType.COLLECT_SARCH_GAME)
+            if (result.getErrcode() <= 0 && result.getType() == ActionType.GAME_PLAY_SEARCH_USER)
             {
-                CollectList list = gson.fromJson(result.getData(), CollectList.class);
-                if (list != null && list.getList().size() > 0) {
+                GamePlayList list = gson.fromJson(result.getData(), GamePlayList.class);
+                if (list != null && list.getGamePlays().size() > 0) {
                     //初始化数据
                     if(getType==1 ||getType==2) {
                         dataList.setCount(list.getCount());
-                        dataList.getList().clear();
-                        dataList.getList().addAll(list.getList());
+                        dataList.getGamePlays().clear();
+                        dataList.getGamePlays().addAll(list.getGamePlays());
                         listAdapter.notifyDataSetChanged();
                     }
                     //分页数据
                     if(getType==3)
                     {
-                        dataList.getList().addAll(list.getList());
+                        dataList.getGamePlays().addAll(list.getGamePlays());
                         listAdapter.notifyDataSetChanged();
                     }
                     //判断是否到页尾
@@ -230,13 +208,9 @@ public class LoveActivity extends MyActivtiyToolBar implements LoveListAdpter.On
                 }else{
                     if(getType==1 ||getType==2) {
                         loadTextView.setVisibility(View.VISIBLE);
-                        loadTextView.setText(this.getString(R.string.nodata_f));
+                        loadTextView.setText(this.getString(R.string.nodata_r));
                     }
                 }
-            }
-            if(result.getErrcode()<=0&& result.getType()==ActionType.COLLECT_DEL){
-                //收藏取消
-                ShowMessage.taskShow(this,"取消成功");
             }
             if(result.getErrcode() >0){
                 ShowMessage.taskShow(this, result.getErrmsg());
@@ -260,5 +234,16 @@ public class LoveActivity extends MyActivtiyToolBar implements LoveListAdpter.On
         loadTextView.setVisibility(View.VISIBLE);
         isLoading=false;
         LogC.write(error,TAG);
+    }
+
+    @Override
+    public void onItemClick(View view) {
+
+        TextView nameText=(TextView)view.findViewById(R.id.gameName);
+        //查看详情
+        Intent intent = new Intent(this,GameShowActivity.class);
+        intent.putExtra("name", nameText.getText().toString());
+        intent.putExtra("id",(int)nameText.getTag());
+        startActivity(intent);
     }
 }

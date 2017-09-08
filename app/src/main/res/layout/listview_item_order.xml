@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/white"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:background="@drawable/downline2"
+        android:layout_height="76dp"
+        android:paddingTop="@dimen/ui_5_dip"
+        android:paddingBottom="@dimen/ui_5_dip"
+        android:paddingRight="@dimen/spacing_w"
+        android:paddingLeft="@dimen/spacing_w">
+
+        <TextView
+            android:id="@+id/orderNum"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="订单 21234456"
+            android:textColor="@color/textColor_low"
+            android:textSize="@dimen/text_small" />
+
+        <TextView
+            android:id="@+id/orderStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:text="完成"
+            android:textColor="@color/textColor_low"
+            android:textSize="@dimen/text_small" />
+
+        <ImageView
+            android:id="@+id/goodsImg"
+            android:layout_marginTop="@dimen/ui_5_dip"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:background="@drawable/goods_back"
+            app:srcCompat="@drawable/goods2"
+            android:layout_below="@+id/orderNum"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+
+        <TextView
+            android:id="@+id/goodsTitle"
+            android:textSize="@dimen/text_l"
+            android:layout_marginLeft="@dimen/ui_5_dip"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="300金币"
+            android:layout_alignTop="@+id/goodsImg"
+            android:layout_toRightOf="@+id/goodsImg"
+            android:layout_toEndOf="@+id/goodsImg" />
+
+    </RelativeLayout>
+    <LinearLayout
+        android:paddingTop="@dimen/ui_5_dip"
+        android:paddingBottom="@dimen/ui_5_dip"
+        android:paddingRight="@dimen/spacing_w"
+        android:paddingLeft="@dimen/spacing_w"
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="30dp">
+        <View
+            android:layout_weight="3"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"></View>
+        <TextView
+            android:id="@+id/goodsNum"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:text="数量 1"
+            android:layout_width="0dp"
+            android:textColor="@color/textColor_low"
+            android:textSize="@dimen/text_ss"
+            android:layout_height="match_parent" />
+        <LinearLayout
+            android:layout_weight="1"
+            android:layout_width="0dp"
+            android:layout_height="match_parent">
+            <TextView
+                android:gravity="center_vertical"
+                android:text="价格 "
+                android:layout_width="wrap_content"
+                android:textColor="@color/textColor_low"
+                android:textSize="@dimen/text_ss"
+                android:layout_height="match_parent" />
+            <ImageView
+                android:layout_gravity="center_vertical"
+                android:id="@+id/imgPay"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:srcCompat="@drawable/gold_2_16" />
+            <TextView
+                android:id="@+id/payTotal"
+                android:gravity="center_vertical"
+                android:text="50000"
+                android:layout_width="wrap_content"
+                android:textColor="@color/textColor_low"
+                android:textSize="@dimen/text_ss"
+                android:layout_height="match_parent" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+
+</LinearLayout>

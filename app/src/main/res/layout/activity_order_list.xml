@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:background="@color/colorBtn_enabled"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.sunlin.playcat.LoveActivity">
+    <include
+        layout="@layout/nativebar_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:id="@+id/include" />
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:background="@drawable/my_tab_back2"
+        android:layout_height="44dp"
+        app:tabGravity="fill"
+        app:tabIndicatorColor="@color/textColor_select"
+        app:tabIndicatorHeight="3dp"
+        app:tabMode="scrollable"
+        app:tabSelectedTextColor="@color/textColor_select"
+        app:tabTextColor="@android:color/background_dark" />
+        <android.support.v4.view.ViewPager
+        android:id="@+id/viewPager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+        </android.support.v4.view.ViewPager>
+</LinearLayout>

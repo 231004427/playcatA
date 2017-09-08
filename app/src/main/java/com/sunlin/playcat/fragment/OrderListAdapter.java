@@ -1,46 +1,41 @@
 package com.sunlin.playcat.fragment;
 
 import android.content.Context;
-import android.graphics.ColorMatrix;
-import android.graphics.ColorMatrixColorFilter;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sunlin.playcat.R;
-import com.sunlin.playcat.common.CValues;
-import com.sunlin.playcat.common.ImageWorker;
-import com.sunlin.playcat.domain.Collect;
-import com.sunlin.playcat.domain.Friend;
-import com.sunlin.playcat.view.SlideLayout;
+import com.sunlin.playcat.domain.Order;
 
 import java.util.List;
 
 /**
- * Created by sunlin on 2017/9/6.
+ * Created by sunlin on 2017/9/8.
  */
 
-public class LoveListAdpter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public static final int TYPE_HEADER = 0;  //说明是带有Header的
     public static final int TYPE_FOOTER = 1;  //说明是带有Footer的
     public static final int TYPE_NORMAL = 2;  //说明是不带有header和footer的
     //获取从Activity中传递过来每个item的数据集合
-    private List<Collect> mDatas;
+    private List<Order> mDatas;
     //HeaderView, FooterView
     private View mHeaderView;
     private View mFooterView;
     private Context mContext;
     private Handler mHandler = new Handler();
     //构造函数
-    public LoveListAdpter(List<Collect> list){
+    public OrderListAdapter(List<Order> list){
         this.mDatas = list;
     }
     //构造函数
-    public LoveListAdpter(List<Collect> list, Context context){
+    public OrderListAdapter(List<Order> list, Context context){
         this.mDatas = list;
         this.mContext=context;
     }
@@ -82,49 +77,28 @@ public class LoveListAdpter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         if(mHeaderView != null && viewType == TYPE_HEADER) {
-            return new LoveListAdpter.ListHolder(mHeaderView);
+            return new OrderListAdapter.ListHolder(mHeaderView);
         }
         if(mFooterView != null && viewType == TYPE_FOOTER){
-            return new LoveListAdpter.ListHolder(mFooterView);
+            return new OrderListAdapter.ListHolder(mFooterView);
         }
-        View layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_item_love, parent, false);
-        return new LoveListAdpter.ListHolder(layout);
+        View layout = LayoutInflater.from(parent.getContext()).inflate(R.layout.listview_item_order, parent, false);
+        return new OrderListAdapter.ListHolder(layout);
     }
 
     //绑定View，这里是根据返回的这个position的类型，从而进行绑定的，   HeaderView和FooterView, 就不同绑定了
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
         if(getItemViewType(position) == TYPE_NORMAL){
-            if(holder instanceof LoveListAdpter.ListHolder) {
+            if(holder instanceof OrderListAdapter.ListHolder) {
                 //这里加载数据的时候要注意，是从position-1开始，因为position==0已经被header占用了
-                final Collect info;
+                Order info;
                 if(mHeaderView != null) {
                     info=mDatas.get(position - 1);
                 }else{
                     info=mDatas.get(position);
                 }
-
-                ImageView imgHead=((ListHolder)holder).imgHead;
-                TextView nameText=((ListHolder)holder).nameText;
-                TextView noteText=((ListHolder)holder).noteText;
-                TextView menu=((ListHolder)holder).menu;
-                nameText.setTag(info.getSid());
-                ImageWorker.loadImage(imgHead, CValues.SERVER_IMG+info.getGame_ico(),mHandler);
-                nameText.setText(info.getGame_name());
-                noteText.setText(info.getGame_note());
-
-                menu.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        mDatas.remove(info);
-                        notifyDataSetChanged();
-                        //
-                        mListener.onItemDel(info.getSid());
-                    }
-                });
-
-                SlideLayout slideLayout = (SlideLayout) ((ListHolder)holder).itemView;
-                slideLayout.setOnStateChangeListener(new MyOnStateChangeListener());
+                ImageView goodsImg=((OrderListAdapter.ListHolder) holder).goodsImg;
 
                 return;
             }
@@ -135,16 +109,14 @@ public class LoveListAdpter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             return;
         }
     }
-    private LoveListAdpter.OnItemClickListener mListener;
-
-    public void setOnItemClickListener(LoveListAdpter.OnItemClickListener listener) {
+    private OrderListAdapter.OnItemClickListener mListener;
+    public void setOnItemClickListener(OrderListAdapter.OnItemClickListener listener) {
         mListener = listener;
     }
     //在这里面加载ListView中的每个item的布局
     class ListHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
-        ImageView imgHead;
-        TextView nameText,noteText;
-        TextView menu;
+        ImageView goodsImg,imgPay;
+        TextView orderNum,orderStatus,goodsTitle,goodsNum,payTotal;
 
         public ListHolder(View itemView) {
             super(itemView);
@@ -155,11 +127,15 @@ public class LoveListAdpter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             if (itemView == mFooterView){
                 return;
             }
+            goodsImg=(ImageView)itemView.findViewById(R.id.goodsImg);
+            imgPay=(ImageView)itemView.findViewById(R.id.imgPay);
 
-            imgHead=(ImageView)itemView.findViewById(R.id.imgHead);
-            nameText=(TextView)itemView.findViewById(R.id.nameText);
-            noteText=(TextView)itemView.findViewById(R.id.noteText);
-            menu=(TextView)itemView.findViewById(R.id.menu);
+            orderNum = (TextView)itemView.findViewById(R.id.orderNum);
+            orderStatus = (TextView)itemView.findViewById(R.id.orderStatus);
+            goodsTitle = (TextView)itemView.findViewById(R.id.goodsTitle);
+            goodsNum = (TextView)itemView.findViewById(R.id.goodsNum);
+            payTotal = (TextView)itemView.findViewById(R.id.payTotal);
+
 
             itemView.setOnClickListener(this);
         }
@@ -173,7 +149,6 @@ public class LoveListAdpter extends RecyclerView.Adapter<RecyclerView.ViewHolder
     }
     public interface OnItemClickListener{
         void onItemClick(View view);
-        void onItemDel(int id);
     }
     //返回View中Item的个数，这个时候，总的个数应该是ListView中Item的个数加上HeaderView和FooterView
     @Override
@@ -186,33 +161,6 @@ public class LoveListAdpter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             return mDatas.size() + 1;
         }else {
             return mDatas.size() + 2;
-        }
-    }
-    //侧滑控制
-    public SlideLayout slideLayout = null;
-    class MyOnStateChangeListener implements SlideLayout.OnStateChangeListener
-    {
-
-        @Override
-        public void onOpen(SlideLayout layout) {
-
-            slideLayout = layout;
-        }
-
-        @Override
-        public void onMove(SlideLayout layout) {
-            if (slideLayout != null && slideLayout !=layout)
-            {
-                slideLayout.closeMenu();
-            }
-        }
-
-        @Override
-        public void onClose(SlideLayout layout) {
-            if (slideLayout == layout)
-            {
-                slideLayout = null;
-            }
         }
     }
 }

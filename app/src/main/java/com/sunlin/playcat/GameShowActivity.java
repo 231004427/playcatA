@@ -124,10 +124,10 @@ public class GameShowActivity extends MyActivtiyToolBar implements View.OnClickL
         gBtnTalk.setOnClickListener(this);
 
         //获取参数
-        //name=getIntent().getStringExtra("name");
-        //id=getIntent().getIntExtra("id",0);
-        name="飞行棋";
-        id=1;
+        name=getIntent().getStringExtra("name");
+        id=getIntent().getIntExtra("id",0);
+        //name="飞行棋";
+        //id=1;
         note=getIntent().getStringExtra("note");
         if(id==0||name=="")
         {

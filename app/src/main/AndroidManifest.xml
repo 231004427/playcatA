@@ -71,7 +71,9 @@
         <activity android:name=".SetMyActivity" />
         <activity android:name=".SetNameActivity" />
         <activity android:name=".SetSexActivity" />
-        <activity android:name=".LoveActivity"></activity>
+        <activity android:name=".LoveActivity" />
+        <activity android:name=".MyrecordActivity" />
+        <activity android:name=".OrderListActivity"></activity>
     </application>
 
 </manifest>

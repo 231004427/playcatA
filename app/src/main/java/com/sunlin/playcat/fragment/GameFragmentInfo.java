@@ -146,10 +146,12 @@ public class GameFragmentInfo extends Fragment implements View.OnClickListener,R
             showTag = false;
             noteText.setEllipsize(null); // 展开
             noteText.setSingleLine(showTag);
+            noteText.setText("显示更多");
         }else{
             showTag = true;
             noteText.setEllipsize(TextUtils.TruncateAt.END); // 收缩
             noteText.setLines(3);
+            noteText.setText("隐藏");
         }
     }
 
@@ -209,7 +211,7 @@ public class GameFragmentInfo extends Fragment implements View.OnClickListener,R
                         int pageNum=dataList.getPageNum();
                         dataList.setStart(start+pageNum);
                         if(dataList.getStart()>=dataList.getCount()){
-                            nodataView.setVisibility(View.VISIBLE);
+                            nodataView.setVisibility(View.GONE);
                             nodataView.setText(getContext().getString(R.string.nodata));
                             isEnd=true;
 
