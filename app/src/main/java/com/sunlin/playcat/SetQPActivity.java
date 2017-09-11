@@ -46,7 +46,8 @@ public class SetQPActivity extends MyActivtiyToolBar implements RestTask.Respons
                 loadingDialog.show();
                 String valueStr=valueEdit.getText().toString();
                 if(valueStr.isEmpty()){
-                    ShowMessage.taskShow(SetQPActivity.this,"不能为空");
+                    ShowMessage.taskShow(SetQPActivity.this,"请输入内容");
+                    return;
                 }
                 //更新QQ号
                 if(type==3){

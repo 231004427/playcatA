@@ -12,7 +12,7 @@ public class Order {
     private int user_id;
     private int goods_id;
     private int type;
-    private int price;
+    private float price;
     private int num;
     private Date create_time;
     private String to_value;
@@ -99,7 +99,7 @@ public class Order {
         return num;
     }
 
-    public int getPrice() {
+    public float getPrice() {
         return price;
     }
 
@@ -131,7 +131,7 @@ public class Order {
         this.num = num;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(float price) {
         this.price = price;
     }
 

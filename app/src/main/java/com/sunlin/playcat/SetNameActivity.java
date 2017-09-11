@@ -38,6 +38,7 @@ public class SetNameActivity extends MyActivtiyToolBar implements RestTask.Respo
                 String result=valueEdit.getText().toString().trim();
                 if(result.isEmpty()){
                     ShowMessage.taskShow(SetNameActivity.this,"不能为空");
+                    return;
                 }
                 User requestData=new User();
                 requestData.setId(user.getId());

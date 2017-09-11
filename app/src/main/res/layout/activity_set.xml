@@ -27,7 +27,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="15dp"></View>
+                android:layout_height="@dimen/spacing_w"></View>
 
             <RelativeLayout
                 android:id="@+id/btnSetLayout"
@@ -386,7 +386,7 @@
         </LinearLayout>
             <View
                 android:layout_width="match_parent"
-                android:layout_height="15dp"></View>
+                android:layout_height="@dimen/spacing_w"></View>
             <LinearLayout
                 android:layout_width="match_parent"
                 android:orientation="vertical"
@@ -403,7 +403,6 @@
                         android:layout_height="wrap_content"
                         app:srcCompat="@drawable/set_29" />
                     <RelativeLayout
-                        android:background="@drawable/downline2"
                         android:layout_marginLeft="@dimen/spacing_w"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
@@ -443,7 +442,7 @@
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
-                android:layout_height="15dp"></View>
+                android:layout_height="@dimen/spacing_w"></View>
         </LinearLayout>
 
     </ScrollView>

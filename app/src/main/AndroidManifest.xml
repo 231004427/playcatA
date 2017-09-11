@@ -73,7 +73,10 @@
         <activity android:name=".SetSexActivity" />
         <activity android:name=".LoveActivity" />
         <activity android:name=".MyrecordActivity" />
-        <activity android:name=".OrderListActivity"></activity>
+        <activity android:name=".OrderListActivity" />
+        <activity android:name=".SetSysActivity" />
+        <activity android:name=".SetPassActivity" />
+        <activity android:name=".ForgetPassActivity"></activity>
     </application>
 
 </manifest>

@@ -54,12 +54,12 @@ public class OrderListFragment extends Fragment implements OrderListAdapter.OnIt
     CircleTitleView loadTextView;
     private MaterialRefreshLayout swipe_refresh_widget;
 
-    public static ShopFragmentList newInstance(int type) {
+    public static OrderListFragment newInstance(int type) {
 
         Bundle args = new Bundle();
         args.putInt("type",type);
 
-        ShopFragmentList fragment = new ShopFragmentList();
+        OrderListFragment fragment = new OrderListFragment();
         fragment.setArguments(args);
         return fragment;
     }
@@ -223,7 +223,7 @@ public class OrderListFragment extends Fragment implements OrderListAdapter.OnIt
                     Gson gson = new Gson();
                     //处理结果
                     BaseResult result=gson.fromJson(response,BaseResult.class);
-                    if (result.getErrcode() <= 0 && result.getType() == ActionType.GOODS_SEARCH)
+                    if (result.getErrcode() <= 0 && result.getType() == ActionType.ORDER_SEARCH)
                     {
                         OrderList list = gson.fromJson(result.getData(), OrderList.class);
                         if (list != null && list.getList().size() > 0) {

@@ -8,6 +8,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -22,6 +23,7 @@ import com.sunlin.playcat.common.ImageHelp;
 import com.sunlin.playcat.common.ImageWorker;
 import com.sunlin.playcat.common.LogC;
 import com.sunlin.playcat.common.RestTask;
+import com.sunlin.playcat.common.SharedData;
 import com.sunlin.playcat.common.ShowMessage;
 import com.sunlin.playcat.domain.ActionType;
 import com.sunlin.playcat.domain.Area;
@@ -52,6 +54,8 @@ public class SetMyActivity extends MyActivtiyToolBar implements SelectCityDialog
     private LinearLayout btnName;
     private LinearLayout btnSex;
     private LinearLayout btnCity;
+    private LinearLayout btnPass;
+    private Button btnOut;
 
     private Area[] selectAreas;
 
@@ -77,6 +81,8 @@ public class SetMyActivity extends MyActivtiyToolBar implements SelectCityDialog
         btnName=(LinearLayout)findViewById(R.id.btnName);
         btnSex=(LinearLayout)findViewById(R.id.btnSex);
         btnCity=(LinearLayout)findViewById(R.id.btnCity);
+        btnOut=(Button)findViewById(R.id.btnOut);
+        btnPass=(LinearLayout)findViewById(R.id.btnPass);
 
         //获取用户信息
         user=((MyApp)getApplication()).getUser();
@@ -123,6 +129,23 @@ public class SetMyActivity extends MyActivtiyToolBar implements SelectCityDialog
                 selectCityDialog.setLevel(2);
                 selectCityDialog.setOnResultListener(SetMyActivity.this);
                 selectCityDialog.show(getSupportFragmentManager(),"CityDialog");
+            }
+        });
+        //退出登录
+        btnOut.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                SharedData.removeUser(SetMyActivity.this);
+                Intent intent = new Intent(SetMyActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+        //修改密码
+        btnPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(SetMyActivity.this, SetPassActivity.class);
+                startActivity(intent);
             }
         });
 

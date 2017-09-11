@@ -11,8 +11,12 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.sunlin.playcat.R;
+import com.sunlin.playcat.common.CValues;
+import com.sunlin.playcat.common.ImageWorker;
 import com.sunlin.playcat.domain.Order;
 
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 /**
@@ -98,7 +102,46 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 }else{
                     info=mDatas.get(position);
                 }
-                ImageView goodsImg=((OrderListAdapter.ListHolder) holder).goodsImg;
+                ImageView goodsImg=((ListHolder) holder).goodsImg;
+                ImageView imgPay=((ListHolder) holder).imgPay;
+                TextView orderNum = ((ListHolder) holder).orderNum;
+                TextView orderStatus = ((ListHolder) holder).orderStatus;
+                TextView goodsTitle = ((ListHolder) holder).goodsTitle;
+                TextView goodsNum = ((ListHolder) holder).goodsNum;
+                TextView payTotal = ((ListHolder) holder).payTotal;
+                TextView timeText = ((ListHolder) holder).timeText;
+
+                ImageWorker.loadImage(goodsImg, CValues.SERVER_IMG+info.getGoods_img(),mHandler);
+                switch (info.getPay_way()){
+                    case 1:imgPay.setImageResource(R.drawable.cny_16);
+                        DecimalFormat decimalFormat=new DecimalFormat(".00");
+                        payTotal.setText(decimalFormat.format(info.getPrice()));
+                        break;
+                    case 2:
+                        imgPay.setImageResource(R.drawable.zhuan16);
+                        payTotal.setText(String.valueOf((int)info.getPrice()));
+                        break;
+                    case 3:
+                    case 4:
+                    case 5:
+                        imgPay.setImageResource(R.drawable.gold_2_16);
+                        payTotal.setText(String.valueOf((int)info.getPrice()));
+                        break;
+                }
+                orderNum.setText("订单编号 "+String.valueOf(info.getId()));
+                //1=待支付,2=已支付，3=已发货，4=已完成
+                String statusStr="";
+                switch (info.getStatus()){
+                    case 1:statusStr="待支付";break;
+                    case 2:statusStr="已支付";break;
+                    case 3:statusStr="已发货";break;
+                    case 4:statusStr="已完成";break;
+                }
+                orderStatus.setText(statusStr);
+                goodsTitle.setText(info.getGoods_title());
+                goodsNum.setText("数量 "+String.valueOf(info.getNum()));
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+                timeText.setText(dateFormat.format(info.getCreate_time()));
 
                 return;
             }
@@ -116,7 +159,7 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
     //在这里面加载ListView中的每个item的布局
     class ListHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
         ImageView goodsImg,imgPay;
-        TextView orderNum,orderStatus,goodsTitle,goodsNum,payTotal;
+        TextView orderNum,orderStatus,goodsTitle,goodsNum,payTotal,timeText;
 
         public ListHolder(View itemView) {
             super(itemView);
@@ -129,12 +172,12 @@ public class OrderListAdapter extends RecyclerView.Adapter<RecyclerView.ViewHold
             }
             goodsImg=(ImageView)itemView.findViewById(R.id.goodsImg);
             imgPay=(ImageView)itemView.findViewById(R.id.imgPay);
-
             orderNum = (TextView)itemView.findViewById(R.id.orderNum);
             orderStatus = (TextView)itemView.findViewById(R.id.orderStatus);
             goodsTitle = (TextView)itemView.findViewById(R.id.goodsTitle);
             goodsNum = (TextView)itemView.findViewById(R.id.goodsNum);
             payTotal = (TextView)itemView.findViewById(R.id.payTotal);
+            timeText=(TextView)itemView.findViewById(R.id.timeText);
 
 
             itemView.setOnClickListener(this);

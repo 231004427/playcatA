@@ -216,12 +216,16 @@ public class RegistNextActivity extends MyActivtiyToolBar implements View.OnClic
         String passStr=passEdit.getText().toString();
         if(TextUtils.isEmpty(nameStr))
         {
-            Toast.makeText(getApplicationContext(), "请输入昵称", Toast.LENGTH_SHORT).show();
+            ShowMessage.taskShow(this,"请输入昵称");
             return;
         }
         if(TextUtils.isEmpty(passStr))
         {
-            Toast.makeText(getApplicationContext(), "请输入密码", Toast.LENGTH_SHORT).show();
+            ShowMessage.taskShow(this,"请输入密码");
+            return;
+        }
+        if(passStr.length()<6){
+            ShowMessage.taskShow(this,"密码至少需要6位");
             return;
         }
         String passMD5="";

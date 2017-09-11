@@ -91,6 +91,9 @@ public class SetActivity extends MyActivtiyToolBar implements View.OnClickListen
         payZhuanLayout.setOnClickListener(this);
         loveLayout.setOnClickListener(this);
         fightLayout.setOnClickListener(this);
+        shopLayout.setOnClickListener(this);
+        addressLayout.setOnClickListener(this);
+        sysLayout.setOnClickListener(this);
 
     }
 
@@ -120,7 +123,17 @@ public class SetActivity extends MyActivtiyToolBar implements View.OnClickListen
             case R.id.fightLayout:
                 Intent intent4=new Intent(this,MyrecordActivity.class);
                 startActivity(intent4);
+            case R.id.shopLayout:
+                Intent intent5=new Intent(this,OrderListActivity.class);
+                startActivity(intent5);
                 break;
+            case R.id.addressLayout:
+                Intent intent6=new Intent(this,SetAddressActivity.class);
+                startActivity(intent6);
+                break;
+            case R.id.sysLayout:
+                Intent intent7=new Intent(this,SetSysActivity.class);
+                startActivity(intent7);
         }
     }
 }

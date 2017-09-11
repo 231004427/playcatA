@@ -27,7 +27,7 @@
             android:orientation="vertical">
             <View
                 android:layout_width="match_parent"
-                android:layout_height="15dp"></View>
+                android:layout_height="@dimen/spacing_w"></View>
 
             <LinearLayout
                 android:background="@color/white"
@@ -129,7 +129,7 @@
             </LinearLayout>
             <View
                 android:layout_width="match_parent"
-                android:layout_height="15dp"></View>
+                android:layout_height="@dimen/spacing_w"></View>
         <LinearLayout
             android:background="@color/white"
             android:layout_width="match_parent"
@@ -199,6 +199,38 @@
                     android:layout_height="@dimen/toolBar" />
             </LinearLayout>
         </LinearLayout>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/spacing_w"></View>
+        <LinearLayout
+            android:background="@color/white"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:id="@+id/btnPass"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/bBar_h"
+                android:layout_marginLeft="@dimen/spacing_w">
+                <TextView
+                    android:layout_gravity="center_vertical"
+                    android:textSize="@dimen/text_l"
+                    android:textColor="@color/black"
+                    android:layout_width="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_centerVertical="true"
+                    android:text="修改密码" />
+                <ImageView
+                    app:srcCompat="@drawable/right13"
+                    android:scaleType="center"
+                    android:layout_gravity="center_vertical"
+                    android:layout_width="@dimen/toolBar"
+                    android:layout_height="@dimen/toolBar" />
+            </LinearLayout>
+            </LinearLayout>
+
             <LinearLayout
                 android:layout_marginTop="@dimen/spacing_w"
                 android:layout_width="match_parent"

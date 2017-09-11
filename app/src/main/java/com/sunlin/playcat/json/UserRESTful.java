@@ -23,7 +23,11 @@ public class UserRESTful extends ObjRESTful {
     public UserRESTful(User user){
         super(user);
     }
-
+    //修改密码
+    public void updatePassword(User user, RestTask.ResponseCallback responseCallback){
+        String dataStr=gson.toJson(user);
+        super.requestPost(ActionType.USER_UPDATE_PASS,dataStr,responseCallback);
+    }
     public void updatePhoto(User user,RestTask.ResponseCallback responseCallback){
         String dataStr=gson.toJson(user);
         baseRequest.setData(dataStr);
@@ -124,5 +128,10 @@ public class UserRESTful extends ObjRESTful {
         baseRequest.setActionType(ActionType.PHONE_CHECK);
         baseRequest.setDateTime(new Date());
         ServerTask.Post(gson.toJson(baseRequest),null,responseCallback);
+    }
+    //忘记密码
+    public void updatePassPhone(User user, RestTask.ResponseCallback responseCallback){
+        String dataStr=gson.toJson(user);
+        super.requestPost(ActionType.USER_UPDATE_PASS_PHONE,dataStr,responseCallback);
     }
 }

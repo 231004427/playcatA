@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:background="@color/colorBtn_enabled"
+    android:layout_height="match_parent"
+    tools:context="com.sunlin.playcat.SetSexActivity">
+    <include
+    layout="@layout/nativebar_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:id="@+id/include" />
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:paddingLeft="@dimen/spacing_w"
+            android:paddingRight="@dimen/spacing_w"
+            android:background="@drawable/downline3"
+            android:layout_height="@dimen/btn_h_l">
+            <TextView
+                style="@style/titleInput"
+                android:gravity="center_vertical"
+                android:layout_height="match_parent"
+                android:layout_width="80dp"
+                android:text="原密码" />
+            <EditText
+                android:id="@+id/oldPass"
+                android:layout_width="match_parent"
+                android:hint="请输入原密码"
+                android:layout_height="25dp"
+                style="@style/textInput"
+                android:inputType="textPassword"
+                android:text="" />
+        </LinearLayout>
+        <LinearLayout
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:paddingLeft="@dimen/spacing_w"
+            android:paddingRight="@dimen/spacing_w"
+            android:background="@drawable/downline3"
+            android:layout_height="@dimen/btn_h_l">
+            <TextView
+                style="@style/titleInput"
+                android:gravity="center_vertical"
+                android:layout_width="80dp"
+                android:layout_height="match_parent"
+                android:text="新密码" />
+            <EditText
+                android:id="@+id/newPass"
+                android:layout_width="match_parent"
+                android:hint="@string/tip_pass"
+                android:layout_height="25dp"
+                style="@style/textInput"
+                android:maxLength="11"
+                android:inputType="textPassword"
+                android:text="" />
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>
+

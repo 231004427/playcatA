@@ -338,7 +338,7 @@ public class GoodsBuyActivity extends MyActivtiyToolBar implements View.OnClickL
         order.setType(goods.getType());
         order.setNum(buyNum);
         order.setCreate_time(new Date());
-        //支付方式,
+        //在线支付方式,
         if(rbBoyAli.isChecked()){order.setPay_way(1);}
         if(rbBoyWeixin.isChecked()){order.setPay_way(2);}
         if(rbBoyGold.isChecked()){order.setPay_way(3);}

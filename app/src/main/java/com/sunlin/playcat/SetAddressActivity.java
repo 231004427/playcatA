@@ -49,7 +49,7 @@ public class SetAddressActivity extends MyActivtiyToolBar implements RestTask.Re
         postCode=(EditText)findViewById(R.id.postCode);
 
         //初始化导航栏
-        ToolbarBuild("设置地址",true,true);
+        ToolbarBuild("收货地址",true,true);
         ToolbarBackListense();
         toolSet.setImageResource(R.drawable.save22);
         toolSet.setOnClickListener(new View.OnClickListener() {
@@ -75,15 +75,13 @@ public class SetAddressActivity extends MyActivtiyToolBar implements RestTask.Re
         //获取已有地址信息
         address=new Address();
         addressRESTful=new AddressRESTful(user);
-        if(addressId>0) {
-            get();
-        }
-
+        get();
         //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
     }
     private void get(){
         loadingDialog.show();
+        address.setUser_id(user.getId());
         address.setId(addressId);
         addressRESTful.get(address,this);
     }
@@ -101,7 +99,7 @@ public class SetAddressActivity extends MyActivtiyToolBar implements RestTask.Re
             ShowMessage.taskShow(this,"手机号不能为空");
             return;
         }
-        if(selectAreas==null && addressId<0){
+        if(selectAreas==null){
             ShowMessage.taskShow(this,"请选择地区");
             return;
         }
@@ -116,20 +114,17 @@ public class SetAddressActivity extends MyActivtiyToolBar implements RestTask.Re
         address.setPhone(phoneStr);
         address.setPost_code(postCodeStr);
 
-        if(addressId<0) {
-            address.setCountry_id(selectAreas[0].getId());
-            address.setProvince_id(selectAreas[1].getId());
-            address.setCity_id(selectAreas[2].getId());
-            address.setDistrict_id(selectAreas[3].getId());
-        }
-
+        address.setCountry_id(selectAreas[0].getId());
+        address.setProvince_id(selectAreas[1].getId());
+        address.setCity_id(selectAreas[2].getId());
+        address.setDistrict_id(selectAreas[3].getId());
         address.setArea_name(areaText.getText().toString());
         address.setAddress(addressStr);
-        address.setCreate_time(new Date());
-        address.setStatus(1);
         if(addressId>0){
-        addressRESTful.update(address,this);
+            addressRESTful.update(address,this);
         }else{
+            address.setCreate_time(new Date());
+            address.setStatus(1);
             addressRESTful.add(address,this);
         }
     }
@@ -164,7 +159,15 @@ public class SetAddressActivity extends MyActivtiyToolBar implements RestTask.Re
                         postCode.setText(address.getPost_code());
                         valueAddress.setText(address.getAddress());
                         areaText.setTextColor(ContextCompat.getColor(this,R.color.black));
+                        selectAreas=new Area[]{new Area(),new Area(),new Area(),new Area()};
+                        selectAreas[0].setId(address.getCountry_id());
+                        selectAreas[1].setId(address.getProvince_id());
+                        selectAreas[2].setId(address.getCity_id());
+                        selectAreas[3].setId(address.getDistrict_id());
+                        addressId=address.getId();
 
+                    }else{
+                        addressId=-1;
                     }
                 }
                 if (result.getErrcode() <= 0 && result.getType() == ActionType.ADDRESS_UPDATE){

@@ -26,7 +26,7 @@ import com.sunlin.playcat.view.LoadingDialog;
 
 public class LoginActivity extends MyActivtiyBase implements View.OnClickListener {
     private String TAG="LoginActivity";
-    private TextView registBtn;
+    private TextView registBtn,forget;
     private Button btnLogin;
     private EditText phoneEdit;
     private EditText passEdit;
@@ -44,6 +44,7 @@ public class LoginActivity extends MyActivtiyBase implements View.OnClickListene
         super.onCreate(savedInstanceState);
 
         registBtn=(TextView)findViewById(R.id.regist);
+        forget=(TextView)findViewById(R.id.forget);
         btnLogin=(Button)findViewById(R.id.btnLogin);
         phoneEdit=(EditText)findViewById(R.id.phoneEdit);
         passEdit=(EditText)findViewById(R.id.passEdit);
@@ -62,6 +63,7 @@ public class LoginActivity extends MyActivtiyBase implements View.OnClickListene
         //事件绑定
         registBtn.setOnClickListener(this);
         btnLogin.setOnClickListener(this);
+        forget.setOnClickListener(this);
     }
 
     @Override
@@ -135,10 +137,14 @@ public class LoginActivity extends MyActivtiyBase implements View.OnClickListene
             }
         });
     }
-    public void regist()
+    private void regist()
     {
         //打开注册页面
         Intent intent = new Intent(this, RegistActivity.class);
+        startActivity(intent);
+    }
+    private void forget(){
+        Intent intent = new Intent(this, ForgetPassActivity.class);
         startActivity(intent);
     }
     @Override
@@ -149,6 +155,7 @@ public class LoginActivity extends MyActivtiyBase implements View.OnClickListene
                 regist();
                 break;
             case R.id.forget:
+                forget();
                 break;
             case R.id.codelogin:
                 break;
