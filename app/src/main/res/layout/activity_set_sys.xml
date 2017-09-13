@@ -95,6 +95,7 @@
                             android:layout_width="@dimen/toolBar"
                             android:layout_height="@dimen/toolBar" />
                         <TextView
+                            android:id="@+id/clearText"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="已使用:234MB"
@@ -114,12 +115,11 @@
                 android:background="@color/white"
                 android:layout_height="wrap_content">
                 <LinearLayout
-                    android:id="@+id/sysLayout"
+                    android:id="@+id/updateLayout"
                     android:layout_width="match_parent"
                     android:gravity="center_vertical"
                     android:layout_height="@dimen/btn_h_l">
                     <RelativeLayout
-                        android:background="@drawable/downline2"
                         android:layout_marginLeft="@dimen/spacing_w"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent">
@@ -155,9 +155,10 @@
                             android:layout_width="@dimen/toolBar"
                             android:layout_height="@dimen/toolBar" />
                         <TextView
+                            android:id="@+id/vesionName"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="v1.0.0"
+                            android:text=""
                             android:textColor="@color/textColor_low"
                             android:textSize="@dimen/text_small"
                             android:layout_centerVertical="true"

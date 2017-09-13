@@ -11,6 +11,17 @@ import com.sunlin.playcat.domain.User;
 
 public class SharedData {
 
+    public static void saveDownVesion(Context context,int versionCode){
+        //保存用户数据
+        SharedPreferences sp = context.getSharedPreferences(CValues.APP_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.putInt("vesion",versionCode);
+    }
+    public static int getDownVesion(Context context){
+        SharedPreferences sp = context.getSharedPreferences(CValues.APP_NAME, Context.MODE_PRIVATE);
+        return  sp.getInt("vesion",0);
+    }
+
     public static void saveUser(User user,Context context){
         //保存用户数据
         SharedPreferences sp = context.getSharedPreferences(CValues.APP_NAME, Context.MODE_PRIVATE);

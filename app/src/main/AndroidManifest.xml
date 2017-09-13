@@ -77,6 +77,15 @@
         <activity android:name=".SetSysActivity" />
         <activity android:name=".SetPassActivity" />
         <activity android:name=".ForgetPassActivity"></activity>
+        <receiver android:name=".common.SDCardListener">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_EJECT" />
+                <action android:name="android.intent.action.MEDIA_MOUNTED" />
+                <action android:name="android.intent.action.MEDIA_REMOVED" />
+                <action android:name="android.intent.action.MEDIA_UNMOUNTED" />
+                <data android:scheme="file" />
+            </intent-filter>
+        </receiver>
     </application>
 
 </manifest>

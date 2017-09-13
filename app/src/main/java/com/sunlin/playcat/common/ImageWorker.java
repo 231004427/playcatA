@@ -29,7 +29,7 @@ public class ImageWorker {
     private ImageWorker() {
     }
     private static ImageWorker mImageWorker = null;
-    private static String bitmapPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/playcat/temp/";// 图片在硬盘中的存储地址
+    public static String bitmapPath = Environment.getExternalStorageDirectory().getAbsolutePath()+"/playcat/temp/";// 图片在硬盘中的存储地址
     /**
      * 初始化，使用单例获得ImageWorker1的对象
      */

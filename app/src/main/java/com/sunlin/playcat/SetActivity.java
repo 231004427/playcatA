@@ -123,6 +123,7 @@ public class SetActivity extends MyActivtiyToolBar implements View.OnClickListen
             case R.id.fightLayout:
                 Intent intent4=new Intent(this,MyrecordActivity.class);
                 startActivity(intent4);
+                break;
             case R.id.shopLayout:
                 Intent intent5=new Intent(this,OrderListActivity.class);
                 startActivity(intent5);

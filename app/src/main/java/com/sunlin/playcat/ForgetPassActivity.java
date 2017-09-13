@@ -48,9 +48,8 @@ public class ForgetPassActivity extends MyActivtiyToolBar implements View.OnClic
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ToolbarBuild("忘记密码",true,true);
+        ToolbarBuild("忘记密码",true,false);
         ToolbarBackListense();
-        toolSet.setImageResource(R.drawable.save22);
 
         //绑定对象
         btnSendCode=(Button) findViewById(R.id.btnSendCode);
