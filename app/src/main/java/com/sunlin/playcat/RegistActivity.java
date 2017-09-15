@@ -54,7 +54,7 @@ public class RegistActivity extends MyActivtiyToolBar implements View.OnClickLis
         phoneEdit=(EditText)findViewById(R.id.phoneEdit);
         codeEdit=(EditText)findViewById(R.id.codeEdit);
 
-        userRESTful=new UserRESTful(user);
+        userRESTful=new UserRESTful(myApp.getUser());
 
         btnSendCode.setOnClickListener(this);
         btnNext.setOnClickListener(this);

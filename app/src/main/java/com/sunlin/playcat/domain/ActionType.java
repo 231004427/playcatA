@@ -46,4 +46,5 @@ public class ActionType {
     public static final int ORDER_SEARCH=38;
     public static final int USER_UPDATE_PASS=39;
     public static final int USER_UPDATE_PASS_PHONE=40;
+    public static final int CONFIG_GET=41;
 }

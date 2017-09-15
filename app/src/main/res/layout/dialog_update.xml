@@ -18,6 +18,7 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true">
         <TextView
+            android:id="@+id/titleText"
             android:textSize="@dimen/text_small"
             android:textColor="@color/white"
             android:text="当前有新版本V1.0.1"
@@ -30,13 +31,34 @@
             android:layout_height="wrap_content"
             android:progress="50"
             android:layout_marginTop="@dimen/spacing_w" />
+        <TextView
+            android:id="@+id/messText"
+            android:visibility="gone"
+            android:textSize="@dimen/text_small"
+            android:textColor="@color/highlight"
+            android:layout_gravity="left"
+            android:layout_marginTop="4dp"
+            android:text=""
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
         <Button
             android:id="@+id/btnOK"
             android:layout_marginTop="@dimen/spacing_w"
             style="@style/btnMain"
             android:layout_width="match_parent"
             android:layout_height="38dp"
-            android:text="确定"
+            android:text="开始下载"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true" />
+        <Button
+            android:id="@+id/btnInstall"
+            android:layout_marginTop="@dimen/spacing_w"
+            style="@style/btnMain"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:text="点击安装"
             android:layout_alignParentTop="true"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true" />

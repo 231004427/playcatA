@@ -29,9 +29,9 @@
         android:drawableTop="@drawable/friendlyb25"
         android:text="好友"/>
 <RelativeLayout
-android:layout_width="wrap_content"
-android:layout_weight="1"
-android:layout_height="match_parent">
+    android:layout_width="wrap_content"
+    android:layout_weight="1"
+    android:layout_height="match_parent">
     <TextView
         android:id="@+id/tab_talk"
         android:layout_centerInParent="true"
@@ -57,12 +57,32 @@ android:layout_height="match_parent">
         android:layout_alignRight="@+id/tab_talk"
         android:layout_alignEnd="@+id/tab_talk" />
 </RelativeLayout>
-
-    <TextView
-        android:id="@+id/tab_set"
-        style="@style/tabBottom"
+    <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="match_parent"
-        android:drawableTop="@drawable/profileb25"
-        android:text="我" />
+        android:layout_weight="1"
+        android:layout_height="match_parent">
+        <TextView
+            android:id="@+id/tab_set"
+            android:layout_centerInParent="true"
+            style="@style/tabBottom"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:drawableTop="@drawable/profileb25"
+            android:text="我" />
+        <TextView
+            android:id="@+id/redSet"
+            android:visibility="gone"
+            android:layout_width="11dp"
+            android:layout_height="11dp"
+            android:layout_marginTop="4dp"
+            android:background="@drawable/reddot"
+            android:textSize="10dp"
+            android:paddingLeft="4dp"
+            android:paddingRight="4dp"
+            android:textColor="@color/white"
+            android:gravity="center"
+            android:layout_alignParentTop="true"
+            android:layout_alignRight="@+id/tab_set"
+            android:layout_alignEnd="@+id/tab_set" />
+    </RelativeLayout>
 </LinearLayout>

@@ -32,7 +32,7 @@ public abstract class MyActivtiyToolBar extends AppCompatActivity {
     public TextView toolText;
     public ImageView toolBack;
     public ImageView toolSet;
-    public User user;
+    public MyApp myApp;
     //提交服务器
     public LoadingDialog loadingDialog;
 
@@ -84,9 +84,7 @@ public abstract class MyActivtiyToolBar extends AppCompatActivity {
         });
 
         //用户信息初始化
-        MyApp app = (MyApp)this.getApplicationContext();
-        user= app.getUser();
-
+        myApp= (MyApp)this.getApplicationContext();
         //默认竖屏
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 

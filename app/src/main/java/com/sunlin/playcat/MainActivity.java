@@ -38,7 +38,7 @@ public class MainActivity extends MyActivtiyBase implements View.OnClickListener
     private TextView tb_friend;
     private TextView tb_talk;
     private TextView tb_set;
-    private TextView redText;
+    private TextView redText,redSet;
     private int sIndex;
 
     private  String fragment1Tag="Home";
@@ -62,6 +62,7 @@ public class MainActivity extends MyActivtiyBase implements View.OnClickListener
         tb_talk=(TextView)findViewById(R.id.tab_talk);
         tb_set=(TextView)findViewById(R.id.tab_set);
         redText=(TextView)findViewById(R.id.redText);
+        redSet=(TextView)findViewById(R.id.redSet);
 
         tb_home.setOnClickListener(this);
         tb_shop.setOnClickListener(this);
@@ -70,9 +71,15 @@ public class MainActivity extends MyActivtiyBase implements View.OnClickListener
         tb_set.setOnClickListener(this);
 
         //显示红点
-        sIndex=getIntent().getIntExtra("sIndex",0);;
+        sIndex=getIntent().getIntExtra("sIndex",0);
         switchFrgment(sIndex);//设置默认显示Fragment
 
+        //显示设置红点
+        if(myApp.update_code>myApp.versionCode){
+            if(myApp.update_type==1||myApp.update_type==2) {
+                redSet.setVisibility(View.VISIBLE);
+            }
+        }
 
     }
 
@@ -229,6 +236,9 @@ public class MainActivity extends MyActivtiyBase implements View.OnClickListener
     }
     public void hideRed(){
         redText.setVisibility(View.GONE);
+    }
+    public void hideRedSet(){
+        redSet.setVisibility(View.GONE);
     }
 
     @Override

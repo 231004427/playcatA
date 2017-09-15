@@ -8,6 +8,8 @@ import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.widget.ProgressBar;
 
+import com.sunlin.playcat.common.ScreenUtil;
+
 /**
  * Created by sunlin on 2017/9/12.
  */
@@ -52,6 +54,7 @@ public class MyProgressBar extends ProgressBar {
     private void initPaint(){
         this.mPaint=new Paint();
         this.mPaint.setAntiAlias(true);
+        this.mPaint.setTextSize(ScreenUtil.getScreenDensity(getContext())*10);
         this.mPaint.setColor(Color.WHITE);
     }
     private void setTextProgress(int progress){

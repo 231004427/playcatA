@@ -24,6 +24,14 @@ public class MyApp extends Application {
     }
 
     private User user;
+    public int versionCode;
+    public String versionName;
+
+    public int update_code;
+    public String update_name;
+    public int update_type;
+    public String update_url;
+
 
     public User getUser() {
         return user;

@@ -13,17 +13,20 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.sunlin.playcat.common.ScreenUtil;
+import com.sunlin.playcat.domain.User;
 
 /**
  * Created by sunlin on 2017/8/6.
  */
 
 public abstract class MyActivtiyBase extends AppCompatActivity {
+    public MyApp myApp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(getLayoutResId());
-
+        //用户信息初始化
+        myApp = (MyApp)this.getApplicationContext();
         //透明状态栏
         LinearLayout statusLayout=(LinearLayout)findViewById(R.id.statusLayout);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {

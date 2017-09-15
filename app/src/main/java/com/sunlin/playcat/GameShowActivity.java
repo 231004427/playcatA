@@ -103,9 +103,9 @@ public class GameShowActivity extends MyActivtiyToolBar implements View.OnClickL
         loveImg=(ImageView)findViewById(R.id.loveImg);
 
         //请求信息
-        gameRESTful=new GameRESTful(user);
-        commentRESTful=new CommentRESTful(user);
-        collectRESTful=new CollectRESTful(user);
+        gameRESTful=new GameRESTful(myApp.getUser());
+        commentRESTful=new CommentRESTful(myApp.getUser());
+        collectRESTful=new CollectRESTful(myApp.getUser());
 
         //收藏
         loveImg.setOnClickListener(this);
@@ -229,7 +229,7 @@ public class GameShowActivity extends MyActivtiyToolBar implements View.OnClickL
                 Comment comment=new Comment();
                 comment.setSid(id);
                 comment.setRid(-1);
-                comment.setUserId(user.getId());
+                comment.setUserId(myApp.getUser().getId());
                 comment.setType(1);
                 comment.setContent(commnetStr);
                 comment.setGoodNum(0);
@@ -257,7 +257,7 @@ public class GameShowActivity extends MyActivtiyToolBar implements View.OnClickL
     }
     private void Collect(){
         Collect collect=new Collect();
-        collect.setUid(user.getId());
+        collect.setUid(myApp.getUser().getId());
         collect.setSid(id);
         loadingDialog.show();
         if(isCollect){

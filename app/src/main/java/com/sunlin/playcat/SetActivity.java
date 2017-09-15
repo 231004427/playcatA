@@ -28,6 +28,7 @@ public class SetActivity extends MyActivtiyToolBar implements View.OnClickListen
     private TextView loveText;
     private TextView orderText;
     private TextView cityText;
+    private TextView redSet;
 
     private ImageView btnSet;
     private ImageView btnZuan;
@@ -56,6 +57,7 @@ public class SetActivity extends MyActivtiyToolBar implements View.OnClickListen
         loveText=(TextView)findViewById(R.id.loveText);
         orderText=(TextView)findViewById(R.id.orderText);
         cityText=(TextView)findViewById(R.id.cityText);
+        redSet=(TextView)findViewById(R.id.redSet);
 
         btnSet=(ImageView)findViewById(R.id.btnSet);
         btnZuan=(ImageView)findViewById(R.id.btnZuan);
@@ -95,8 +97,12 @@ public class SetActivity extends MyActivtiyToolBar implements View.OnClickListen
         addressLayout.setOnClickListener(this);
         sysLayout.setOnClickListener(this);
 
+        //是否有新版本
+        //版本更新1，强制，2提示更新
+        if(myApp.update_code>myApp.versionCode){
+            redSet.setVisibility(View.VISIBLE);
+        }
     }
-
     @Override
     protected int getLayoutResId() {
         return R.layout.activity_set;

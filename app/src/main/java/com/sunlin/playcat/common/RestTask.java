@@ -89,7 +89,7 @@ public class RestTask extends AsyncTask<Void,Integer,Object> {
     }
     public void setResponseCallback(ResponseCallback callback){
         mResponseCallback=new WeakReference<ResponseCallback>(callback);
-        Log.e("setResponseCallback",System.identityHashCode(mResponseCallback)+"");
+        //Log.e("setResponseCallback",System.identityHashCode(mResponseCallback)+"");
     }
     public void setProgressCallback(ProgressCallback callback){
         mProgressCallback=new WeakReference<ProgressCallback>(callback);

@@ -50,12 +50,7 @@ public class LoginActivity extends MyActivtiyBase implements View.OnClickListene
         passEdit=(EditText)findViewById(R.id.passEdit);
 
         //请求信息
-        baseRequest=new BaseRequest();
-        baseRequest.setUserid(1);
-        baseRequest.setToken("123456");
-        baseRequest.setAppid(111);
-
-        userRESTful=new UserRESTful(baseRequest);
+        userRESTful=new UserRESTful(myApp.getUser());
 
         registBtn.setClickable(true);
         registBtn.setFocusable(true);

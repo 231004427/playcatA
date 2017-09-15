@@ -16,6 +16,7 @@ public class SharedData {
         SharedPreferences sp = context.getSharedPreferences(CValues.APP_NAME, Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sp.edit();
         editor.putInt("vesion",versionCode);
+        editor.commit();
     }
     public static int getDownVesion(Context context){
         SharedPreferences sp = context.getSharedPreferences(CValues.APP_NAME, Context.MODE_PRIVATE);

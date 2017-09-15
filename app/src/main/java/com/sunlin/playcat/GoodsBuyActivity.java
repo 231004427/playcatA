@@ -78,6 +78,7 @@ public class GoodsBuyActivity extends MyActivtiyToolBar implements View.OnClickL
     private int addressId=-2;
 
     private Handler mHandler = new Handler();
+    private User user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,6 +111,7 @@ public class GoodsBuyActivity extends MyActivtiyToolBar implements View.OnClickL
         btnUserValue=(ImageView)findViewById(R.id.btnUserValue);
         btnBuy=(Button)findViewById(R.id.btnBuy);
 
+        user=myApp.getUser();
         //初始化支付方式
         setAllRB(false);
 

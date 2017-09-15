@@ -133,10 +133,11 @@
                             android:layout_centerVertical="true"
                             android:text="当前版本" />
                         <TextView
-                            android:id="@+id/redText"
-                            android:layout_width="12dp"
+                            android:id="@+id/redSet"
+                            android:visibility="gone"
+                            android:layout_width="11dp"
                             android:layout_marginLeft="4dp"
-                            android:layout_height="12dp"
+                            android:layout_height="11dp"
                             android:background="@drawable/reddot"
                             android:textSize="10dp"
                             android:paddingLeft="4dp"
@@ -148,6 +149,7 @@
                             android:layout_toEndOf="@+id/sysText" />
                         <ImageView
                             android:id="@+id/btnVesion"
+                            android:visibility="gone"
                             app:srcCompat="@drawable/right13"
                             android:scaleType="center"
                             android:layout_centerVertical="true"
@@ -162,7 +164,9 @@
                             android:textColor="@color/textColor_low"
                             android:textSize="@dimen/text_small"
                             android:layout_centerVertical="true"
-                            android:layout_toLeftOf="@+id/btnVesion" />
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_marginRight="44dp" />
                     </RelativeLayout>
                 </LinearLayout>
             </LinearLayout>

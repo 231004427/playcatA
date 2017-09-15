@@ -70,15 +70,15 @@ public class SetQPActivity extends MyActivtiyToolBar implements RestTask.Respons
             case 3:
                 valueText.setText("QQ");
                 valueEdit.setHint(R.string.tip_qq);
-                if(user.getQq()!=null){
-                    valueEdit.setText(user.getQq());
+                if(myApp.getUser().getQq()!=null){
+                    valueEdit.setText(myApp.getUser().getQq());
                 }
                 break;
             case 4:
                 valueText.setText("手机号");
                 valueEdit.setHint(R.string.tip_phone);
-                if(user.getPhone2()!=null){
-                    valueEdit.setText(user.getPhone2());
+                if(myApp.getUser().getPhone2()!=null){
+                    valueEdit.setText(myApp.getUser().getPhone2());
                 }
                 break;
         }

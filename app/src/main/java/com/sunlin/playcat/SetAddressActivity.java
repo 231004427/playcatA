@@ -74,14 +74,14 @@ public class SetAddressActivity extends MyActivtiyToolBar implements RestTask.Re
         addressId=getIntent().getIntExtra("addressId",-1);
         //获取已有地址信息
         address=new Address();
-        addressRESTful=new AddressRESTful(user);
+        addressRESTful=new AddressRESTful(myApp.getUser());
         get();
         //getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_ADJUST_PAN);
 
     }
     private void get(){
         loadingDialog.show();
-        address.setUser_id(user.getId());
+        address.setUser_id(myApp.getUser().getId());
         address.setId(addressId);
         addressRESTful.get(address,this);
     }
@@ -109,7 +109,7 @@ public class SetAddressActivity extends MyActivtiyToolBar implements RestTask.Re
         }
         loadingDialog.show();
 
-        address.setUser_id(user.getId());
+        address.setUser_id(myApp.getUser().getId());
         address.setName(nameStr);
         address.setPhone(phoneStr);
         address.setPost_code(postCodeStr);

@@ -12,7 +12,7 @@ public class User {
     private String phone;
     private String password;
     private int sex=1;
-    private String city;
+    private String city="";
     private String photo;
     private int gold=0;
     private int zhuan=0;
