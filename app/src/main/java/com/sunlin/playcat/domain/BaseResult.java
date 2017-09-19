@@ -5,9 +5,9 @@ package com.sunlin.playcat.domain;
  */
 
 public class BaseResult {
+    private int type;
     private int errcode;
     private String errmsg;
-    private int type;
     private String text;
     private String data;
 

@@ -6,6 +6,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.google.gson.JsonPrimitive;
+import com.sunlin.playcat.common.CValues;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -50,8 +51,8 @@ public class MLMTCPClient{
         buffRead = new byte[buffSize+MyHead.size];
     }
     public MLMTCPClient(String _tag,int _userid){
-        host = "192.168.2.122";//"192.168.43.149"192.168.2.122
-        port = 8888;
+        host = CValues.MLM_HOST;//"192.168.43.149"192.168.2.122
+        port = CValues.MLM_PORT;
         tag = _tag;
         userid=_userid;
     }
@@ -83,108 +84,36 @@ public class MLMTCPClient{
                 buffWrite = new byte[buffSize+MyHead.size];
                 buffRead = new byte[buffSize+MyHead.size];
                 //用户注册
-                _sendMessage(output, new byte[]{1},10,userid,0);
+                _sendMessage(output, new byte[]{1},MLMType.ACTION_USER_REGIST,0,0,userid,0);
                 //监听返回数据
                 readMain(input);
 
             }  catch (UnknownHostException e) {
                 e.printStackTrace();
                 close();
-                delegate.MLMSocketDidConnectError(-3,"服务无响应(-3)",0,0,MLMTCPClient.this);
+                delegate.MLMSocketResultError(MLMType.ERROR_SYS_SERVER,0,"服务器错误",this);
                 return false;
             }catch (IOException e) {
                 e.printStackTrace();
                 close();
-                delegate.MLMSocketDidConnectError(-3,"服务无响应(-3)",0,0,MLMTCPClient.this);
+                delegate.MLMSocketResultError(MLMType.ERROR_SYS_SERVER,0,"服务器错误",this);
                 return false;
             }
         }
         return true;
     }
-    private void readMain(InputStream input){
-        MyHead rec_head=new MyHead();
-        int j=0,z=0;
-        int head_size=MyHead.size;
-        rec_head.l=0;
-        rec_head.from=0;
-        rec_head.to=0;
-        rec_head.t=0;
-        rec_head.v=0;
-        byte[] response=new byte[1024*10];
-
-        while (true){
-
-            try {
-                int rec=input.read(response);
-                if(rec<0){
-                    delegate.MLMSocketDidConnectError(-2,"服务器断开(-2)",0,0,MLMTCPClient.this);
-                    break;
-                }
-                for(int i=0;i<rec;i++){
-
-                    if(rec_head.l==0){
-                        buffRead[j]=response[i];
-                        j+=1;
-                        if(j==head_size){
-                            if(mlib.getDataHead(buffRead,rec_head)< 0){break;}
-                            //如果数据为空
-                            if(rec_head.l==0){
-                                //显示信息
-                                _showMessage(rec_head.from,rec_head.to,rec_head.t,null);
-                                //重置
-                                rec_head.l = 0;
-                                rec_head.from=0;
-                                rec_head.t=0;
-                                rec_head.to=0;
-                                rec_head.v=0;
-                                z=0;
-                                j=0;
-                            }
-                        }
-                    }else {
-                        buffRead[j]=response[i];
-                        j += 1;
-                        z += 1;
-                        if(z == rec_head.l)
-                        {
-                            //收取包完成
-                            //显示信息
-                            _showMessage(rec_head.from,rec_head.to,rec_head.t,Arrays.copyOfRange(buffRead,head_size,j));
-                            //重置
-                            rec_head.l = 0;
-                            rec_head.from=0;
-                            rec_head.t=0;
-                            rec_head.to=0;
-                            rec_head.v=0;
-                            z=0;
-                            j=0;
-
-                        }
-                    }
-                }
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                break;
-            }
-        }
-
-    }
     //单发使用uid：60文本,61语音，图片62,文件63,位置64,touid max uint
     public boolean sendByUserIdStr(String content,long toUid)
     {
         byte[] rawData=content.getBytes();
-        return _sendMessage(output,rawData,60,userid,toUid);
-    }
-    //视频=65
-    public boolean sendByUserIdByte(byte[] content,long toUid)
-    {
-        return _sendMessage(output,content,65,userid,toUid);
+        return _sendMessage(output,rawData,
+                MLMType.ACTION_SEND_SINGLE,
+                MLMType.MESSAGE_TEXT,0,userid,toUid);
     }
 
-    public boolean _sendMessage(OutputStream output,byte[] content,int type,int from,long to){
+    public boolean _sendMessage(OutputStream output,byte[] content,int type,int dx,int ex,int from,long to){
 
-        int size=mlib.buildData(buffWrite,type,from,to,content,content.length);
+        int size=mlib.buildData(buffWrite,type,dx,ex,from,to,content,content.length);
         try {
             output.write(buffWrite,0,size);
             output.flush();
@@ -192,19 +121,31 @@ public class MLMTCPClient{
         } catch (IOException e) {
             e.printStackTrace();
             close();
-            delegate.MLMSocketDidConnectError(-3,"发送失败(-3)",0,0,this);
+            delegate.MLMSocketResultError(MLMType.ERROR_SYS_SEND,0,"发送失败",this);
         }
 
         return  true;
     }
     //处理消息
-    private void _showMessage(long from,long to,int type,byte[] data){
+    private void _showMessage(MyHead myHead,byte[] data){
+        //反馈信息
+        if(myHead.from==userid){
+            if(myHead.d==MLMType.ACTION_ACCESS){
+                String dataStr = new String(data,Charset.forName("utf-8"));
+                delegate.MLMSocketResultAccess(myHead.t,dataStr,MLMTCPClient.this);
+            }else{
+                String dataStr = new String(data,Charset.forName("utf-8"));
+                delegate.MLMSocketResultError(myHead.t,myHead.d,dataStr,MLMTCPClient.this);
+            }
+        }else{
+            delegate.MLMGetMessage(myHead,data,MLMTCPClient.this);
+        }
+
+        /*
         if(60<=type && type<80 ){//接收数据
             delegate.MLMGetMessage(from,type,data,MLMTCPClient.this);
         }else if(type==50)//邀请加入
         {
-
-
         }else if(type==90)//拒绝加入
         {
         }
@@ -216,7 +157,6 @@ public class MLMTCPClient{
             JsonParser parser = new JsonParser();
             JsonElement root = parser.parse(message);
             JsonObject element = root.getAsJsonObject();
-
             JsonPrimitive nJson = element.getAsJsonPrimitive("n");
             JsonPrimitive tJson = element.getAsJsonPrimitive("t");
             JsonPrimitive cJson = element.getAsJsonPrimitive("c");
@@ -265,6 +205,74 @@ public class MLMTCPClient{
                 return;
             }
 
+        }*/
+    }
+    private void readMain(InputStream input){
+        MyHead rec_head=new MyHead();
+        int j=0,z=0;
+        int head_size=MyHead.size;
+        rec_head.l=0;
+        rec_head.from=0;
+        rec_head.to=0;
+        rec_head.t=0;
+        rec_head.v=0;
+        byte[] response=new byte[1024*10];
+
+        while (true){
+
+            try {
+                int rec=input.read(response);
+                if(rec<0){
+                    delegate.MLMSocketResultError(MLMType.ERROR_SYS_SERVER,0,"服务器错误",this);
+                    break;
+                }
+                for(int i=0;i<rec;i++){
+
+                    if(rec_head.l==0){
+                        buffRead[j]=response[i];
+                        j+=1;
+                        if(j==head_size){
+                            if(mlib.getDataHead(buffRead,rec_head)< 0){break;}
+                            //如果数据为空
+                            if(rec_head.l==0){
+                                //显示信息
+                                _showMessage(rec_head,null);
+                                //重置
+                                rec_head.l = 0;
+                                rec_head.from=0;
+                                rec_head.t=0;
+                                rec_head.to=0;
+                                rec_head.v=0;
+                                z=0;
+                                j=0;
+                            }
+                        }
+                    }else {
+                        buffRead[j]=response[i];
+                        j += 1;
+                        z += 1;
+                        if(z == rec_head.l)
+                        {
+                            //收取包完成
+                            //显示信息
+                            _showMessage(rec_head,Arrays.copyOfRange(buffRead,head_size,j));
+                            //重置
+                            rec_head.l = 0;
+                            rec_head.from=0;
+                            rec_head.t=0;
+                            rec_head.to=0;
+                            rec_head.v=0;
+                            z=0;
+                            j=0;
+
+                        }
+                    }
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+                break;
+            }
         }
 
     }

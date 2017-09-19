@@ -18,12 +18,12 @@ public class MLMlib {
     }
     public native String stringFromJNI();
     //public native int buildData(byte[] buffer,int t,long from,long to,byte[] data);
-    public int buildData(byte[] buff,int t,long from,long to ,byte[] data,int data_size){
+    public int buildData(byte[] buff,int t,int d,int e,long from,long to ,byte[] data,int data_size){
         buff[0]=1;
         buff[1]=(byte)t;
 
-        buff[2]=0;
-        buff[3]=0;
+        buff[2]=(byte)d;
+        buff[3]=(byte)e;
 
         buff[4]=(byte)((data_size>>>24)&0xFF);
         buff[5]=(byte)((data_size>>>16)&0xFF);
@@ -54,7 +54,8 @@ public class MLMlib {
 
         head.v=src_data[0]& 0xFF;
         head.t=src_data[1]& 0xFF;
-        head.d=byteToint_u16(src_data,2);
+        head.d=src_data[2]& 0xFF;
+        head.e=src_data[3]& 0xFF;
         head.l=byteToint_u32(src_data,4);
         head.from=byteTolong_u32(src_data,8);
         head.to=byteTolong_u32(src_data,12);

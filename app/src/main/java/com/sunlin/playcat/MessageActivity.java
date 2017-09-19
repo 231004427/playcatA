@@ -20,10 +20,15 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
 import com.google.gson.Gson;
+import com.sunlin.playcat.MLM.MLMSocketDelegate;
+import com.sunlin.playcat.MLM.MLMTCPClient;
+import com.sunlin.playcat.MLM.MLMType;
+import com.sunlin.playcat.MLM.MyHead;
 import com.sunlin.playcat.common.CValues;
 import com.sunlin.playcat.common.ImageWorker;
 import com.sunlin.playcat.common.LogC;
@@ -45,12 +50,13 @@ import com.sunlin.playcat.view.LinearLayoutView;
 import com.sunlin.playcat.view.MyDecoration;
 import com.sunlin.playcat.view.MyLinearLayout;
 
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class MessageActivity extends MyActivtiyBase implements
-        View.OnClickListener,RestTask.ResponseCallback,View.OnLayoutChangeListener {
+        View.OnClickListener,RestTask.ResponseCallback,View.OnLayoutChangeListener,MLMSocketDelegate {
     private String TAG="MessageActivity";
     private Friend friend;
     private Handler myHandle;
@@ -79,6 +85,12 @@ public class MessageActivity extends MyActivtiyBase implements
     private int screenHeight = 0;
     //软件盘弹起后所占高度阀值
     private int keyHeight = 0;
+
+    //TCP
+    private MLMTCPClient server;
+    private int buffSize=50000;
+    private boolean isConnection=false;
+    private Thread serverThread;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,8 +175,15 @@ public class MessageActivity extends MyActivtiyBase implements
 
         //初始化加载
         isLoading=false;
+
+        //连接服务器
+        startMLMThread();
     }
 
+    private void startMLMThread() {
+        serverThread = new Thread(new ServerThread());
+        serverThread.start();
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -195,6 +214,11 @@ public class MessageActivity extends MyActivtiyBase implements
         message.setCreate_time(new Date());
         messageRESTful.add(message,this);
         commentEdit.setText("");
+
+        //实时发送数据
+        if(isConnection) {
+            server.sendByUserIdStr("hello", 2);
+        }
 
     }
     //判断是否滑动到底部
@@ -427,8 +451,45 @@ public class MessageActivity extends MyActivtiyBase implements
         }else if(oldBottom != 0 && bottom != 0 &&(bottom - oldBottom > keyHeight)){
 
             ShowMessage.taskShow(this,"监听到软键盘关闭...");
+        }
+    }
+    @Override
+    public void MLMSocketResultAccess(int action, String data, MLMTCPClient sender) {
 
+        if(action== MLMType.ACTION_USER_REGIST){
 
+        }
+    }
+    @Override
+    public void MLMSocketResultError(int action, int errorNum, String data, MLMTCPClient sender) {
+        //服务器错误断开连接
+        if(action==MLMType.ERROR_SYS_SERVER||
+                action==MLMType.ERROR_SYS_SEND) {
+            isConnection = false;
+        }
+        Log.e(TAG,"action:"+action+" errorNum:"+errorNum+" data:"+data);
+    }
+    @Override
+    public void MLMGetMessage(MyHead myHead, byte[] data, MLMTCPClient sender) {
+        try {
+            String res = new String(data,"UTF-8");
+            Log.e(TAG,"From("+myHead.from+"):"+res);
+            //server.sendByUserIdStr("Hello too!",2);
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+    }
+    private class ServerThread implements Runnable {
+        @Override
+        public void run() {
+            try {
+                //decodeLoop();
+                server=new MLMTCPClient("user1",2);
+                server.delegate=MessageActivity.this;
+                server.connectServer(buffSize);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         }
     }
 }

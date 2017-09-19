@@ -126,9 +126,6 @@ public class LoginActivity extends MyActivtiyBase implements View.OnClickListene
             public void onRequestError(Exception error) {
                 loadingDialog.dismiss();
                 ShowMessage.taskShow(LoginActivity.this,getString(R.string.error_net));
-                //进入首页
-                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                startActivity(intent);
             }
         });
     }
