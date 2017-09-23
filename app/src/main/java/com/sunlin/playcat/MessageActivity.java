@@ -28,6 +28,7 @@ import com.google.gson.Gson;
 import com.sunlin.playcat.MLM.MLMSocketDelegate;
 import com.sunlin.playcat.MLM.MLMTCPClient;
 import com.sunlin.playcat.MLM.MLMType;
+import com.sunlin.playcat.MLM.MyData;
 import com.sunlin.playcat.MLM.MyHead;
 import com.sunlin.playcat.common.CValues;
 import com.sunlin.playcat.common.ImageWorker;
@@ -51,6 +52,7 @@ import com.sunlin.playcat.view.MyDecoration;
 import com.sunlin.playcat.view.MyLinearLayout;
 
 import java.io.UnsupportedEncodingException;
+import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -71,9 +73,9 @@ public class MessageActivity extends MyActivtiyBase implements
     private boolean isLoading=false;
     private LinearLayoutManager mLayoutManager;
     private int getType=1;
-    private MyApp myApp;
     private int start=0;
     private MyLinearLayout root_layout;
+    private Gson gson;
 
     //需修改
     private MessageList dataList;
@@ -91,6 +93,7 @@ public class MessageActivity extends MyActivtiyBase implements
     private int buffSize=50000;
     private boolean isConnection=false;
     private Thread serverThread;
+    private int userId=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,6 +107,8 @@ public class MessageActivity extends MyActivtiyBase implements
         commentEdit=(EditText)findViewById(R.id.commentEdit);
         commentLayout=(LinearLayout)findViewById(R.id.commentLayout);
 
+        userId=myApp.getUser().getId();
+        gson= new Gson();
         //输入框监控
         commentEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -201,23 +206,24 @@ public class MessageActivity extends MyActivtiyBase implements
         if(text.isEmpty()){
             return;
         }
-        isLoading=true;
+
+        //isLoading=true;
         //发送聊天内容
         Message message=new Message();
         message.setFrom_user(myApp.getUser().getId());
-        message.setTo_user(10013);
+        message.setTo_user(friend.getId());
         message.setVesion(1);
         message.setType(1);//文本
         message.setLength(text.length());
         message.setData(text);
         message.setStatus(1);//1=未发送2=准备发送3=已发送4=已读
         message.setCreate_time(new Date());
-        messageRESTful.add(message,this);
+        //messageRESTful.add(message,this);
         commentEdit.setText("");
 
         //实时发送数据
         if(isConnection) {
-            server.sendByUserIdStr("hello", 2);
+            server.sendByUserIdText(gson.toJson(message), userId);
         }
 
     }
@@ -327,7 +333,6 @@ public class MessageActivity extends MyActivtiyBase implements
     @Override
     public void onRequestSuccess(String response) {
         try {
-            Gson gson = new Gson();
             //处理结果
             BaseResult result=gson.fromJson(response,BaseResult.class);
             if (result.getErrcode() <= 0 && result.getType() == ActionType.MESSAGE_SEARCH)
@@ -454,37 +459,79 @@ public class MessageActivity extends MyActivtiyBase implements
         }
     }
     @Override
-    public void MLMSocketResultAccess(int action, String data, MLMTCPClient sender) {
-
-        if(action== MLMType.ACTION_USER_REGIST){
-
-        }
-    }
-    @Override
     public void MLMSocketResultError(int action, int errorNum, String data, MLMTCPClient sender) {
-        //服务器错误断开连接
+        Log.e(TAG,"action:"+action+" errorNum:"+errorNum+" data:"+data);
+        //服务器异常
         if(action==MLMType.ERROR_SYS_SERVER||
                 action==MLMType.ERROR_SYS_SEND) {
             isConnection = false;
         }
-        Log.e(TAG,"action:"+action+" errorNum:"+errorNum+" data:"+data);
     }
     @Override
-    public void MLMGetMessage(MyHead myHead, byte[] data, MLMTCPClient sender) {
-        try {
-            String res = new String(data,"UTF-8");
-            Log.e(TAG,"From("+myHead.from+"):"+res);
-            //server.sendByUserIdStr("Hello too!",2);
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
-        }
+    public void MLMGetMessage(MyData myData, MLMTCPClient sender) {
+        android.os.Message message=new android.os.Message();
+        message.obj=myData;
+        socketHandler.sendMessage(message);
     }
+    private Handler socketHandler = new Handler() {
+        @Override
+        public void handleMessage(android.os.Message msg) {
+            MyData myData=(MyData)msg.obj;
+            int type=myData.getMyHead().getT();
+            int dNum=myData.getMyHead().getD();
+            if(type==MLMType.ACTION_USER_REGIST){
+                if(dNum==MLMType.ACTION_ACCESS){
+                    ShowMessage.taskShow(MessageActivity.this,"注册成功");
+                    //请求加入对方会话
+                    server.inRoom(friend.getId());
+
+                    isConnection=true;
+                }else{
+                    ShowMessage.taskShow(MessageActivity.this,"注册失败("+dNum+")");
+                    isConnection=false;
+                }
+            }
+            if(type==MLMType.ACTION_SEND_SINGLE||type==MLMType.ACTION_SEND_MULTI){
+                //接受消息
+                if(myData.getMyHead().getD()==MLMType.MESSAGE_TEXT) {
+                    String dataStr = new String(myData.getData(), Charset.forName("utf-8"));
+                    //转换消息
+                    Message message = gson.fromJson(dataStr,Message.class);
+                    if(message !=null){
+                        ArrayList listData  =(ArrayList)dataList.getList();
+                        listData.add(0,message);
+                        listAdapter.notifyDataSetChanged();
+                        mRecyclerView.smoothScrollToPosition(0);
+                    }
+                }
+
+
+                if(dNum==MLMType.ACTION_ACCESS){
+                    //发送成功
+                }else{
+                    //发送失败
+                }
+            }
+            if(type==MLMType.ACTION_ROOM_INVITE_YES){
+
+                if(dNum==MLMType.ACTION_ACCESS){
+                    //发送成功
+                    ShowMessage.taskShow(MessageActivity.this,"加入会话成功");
+                }else{
+                    //发送失败
+                    ShowMessage.taskShow(MessageActivity.this,"加入会话失败("+dNum+")");
+                }
+            }
+            super.handleMessage(msg);
+        }
+    };
     private class ServerThread implements Runnable {
         @Override
         public void run() {
             try {
                 //decodeLoop();
-                server=new MLMTCPClient("user1",2);
+                //聊天服务器注册
+                server=new MLMTCPClient(myApp.getUser().getName(),myApp.getUser().getId());
                 server.delegate=MessageActivity.this;
                 server.connectServer(buffSize);
             } catch (Exception e) {

@@ -115,16 +115,17 @@ public class MessageListAdpter extends RecyclerView.Adapter<RecyclerView.ViewHol
                 TextView textView_l=((ListHolder)holder).textView_l;
                 TextView textTime=((ListHolder)holder).textTime;
 
+                long diff=0;
                 if(getNum!=0) {
-                    long diff=mDatas.get(getNum-1).getCreate_time().getTime()-info.getCreate_time().getTime();
-                    if(diff>(1000*60*5)) {
-                        textTime.setVisibility(View.VISIBLE);
-                        textTime.setText(Time.getTimeTalk(info.getCreate_time(), new Date()));
-                    }else{
-                        textTime.setVisibility(View.GONE);
-                    }
+                    diff=mDatas.get(getNum-1).getCreate_time().getTime()-info.getCreate_time().getTime();
                 }else{
+                    diff=new Date().getTime()-info.getCreate_time().getTime();
+                }
+                if(diff>(1000*60*5)) {
+                    textTime.setVisibility(View.VISIBLE);
                     textTime.setText(Time.getTimeTalk(info.getCreate_time(), new Date()));
+                }else{
+                    textTime.setVisibility(View.GONE);
                 }
 
                 if(info.getFrom_user()==myUser.getId()){

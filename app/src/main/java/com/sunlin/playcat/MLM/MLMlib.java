@@ -52,13 +52,13 @@ public class MLMlib {
      */
     public int getDataHead(byte[] src_data,MyHead head){
 
-        head.v=src_data[0]& 0xFF;
-        head.t=src_data[1]& 0xFF;
-        head.d=src_data[2]& 0xFF;
-        head.e=src_data[3]& 0xFF;
-        head.l=byteToint_u32(src_data,4);
-        head.from=byteTolong_u32(src_data,8);
-        head.to=byteTolong_u32(src_data,12);
+        head.setV(src_data[0]& 0xFF);
+        head.setT(src_data[1]& 0xFF);
+        head.setD(src_data[2]& 0xFF);
+        head.setE(src_data[3]& 0xFF);
+        head.setL(byteToint_u32(src_data,4));
+        head.setFrom(byteTolong_u32(src_data,8));
+        head.setTo(byteTolong_u32(src_data,12));
         return 1;
     }
     public int byteToint_u16(byte[] b,int offset) {

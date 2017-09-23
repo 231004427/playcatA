@@ -103,12 +103,15 @@ public class MLMTCPClient{
         return true;
     }
     //单发使用uid：60文本,61语音，图片62,文件63,位置64,touid max uint
-    public boolean sendByUserIdStr(String content,long toUid)
+    public boolean sendByUserIdText(String content,long toUid)
     {
         byte[] rawData=content.getBytes();
         return _sendMessage(output,rawData,
                 MLMType.ACTION_SEND_SINGLE,
                 MLMType.MESSAGE_TEXT,0,userid,toUid);
+    }
+    public boolean inRoom(long roomId){
+        return _sendMessage(output,new byte[]{0x0},MLMType.ACTION_ROOM_INVITE_YES,0,0,userid,roomId);
     }
 
     public boolean _sendMessage(OutputStream output,byte[] content,int type,int dx,int ex,int from,long to){
@@ -129,18 +132,18 @@ public class MLMTCPClient{
     //处理消息
     private void _showMessage(MyHead myHead,byte[] data){
         //反馈信息
-        if(myHead.from==userid){
-            if(myHead.d==MLMType.ACTION_ACCESS){
-                String dataStr = new String(data,Charset.forName("utf-8"));
-                delegate.MLMSocketResultAccess(myHead.t,dataStr,MLMTCPClient.this);
-            }else{
-                String dataStr = new String(data,Charset.forName("utf-8"));
-                delegate.MLMSocketResultError(myHead.t,myHead.d,dataStr,MLMTCPClient.this);
-            }
-        }else{
-            delegate.MLMGetMessage(myHead,data,MLMTCPClient.this);
-        }
-
+        MyHead headObj=new MyHead();
+        headObj.setTo(myHead.getTo());
+        headObj.setT(myHead.getT());
+        headObj.setV(myHead.getV());
+        headObj.setFrom(myHead.getFrom());
+        headObj.setL(myHead.getL());
+        headObj.setD(myHead.getD());
+        headObj.setE(myHead.getE());
+        MyData myData=new MyData();
+        myData.setMyHead(headObj);
+        myData.setData(data);
+        delegate.MLMGetMessage(myData,MLMTCPClient.this);
         /*
         if(60<=type && type<80 ){//接收数据
             delegate.MLMGetMessage(from,type,data,MLMTCPClient.this);
@@ -211,11 +214,12 @@ public class MLMTCPClient{
         MyHead rec_head=new MyHead();
         int j=0,z=0;
         int head_size=MyHead.size;
-        rec_head.l=0;
-        rec_head.from=0;
-        rec_head.to=0;
-        rec_head.t=0;
-        rec_head.v=0;
+        rec_head.setL(0);
+        rec_head.setFrom(0);
+        rec_head.setTo(0);
+        rec_head.setT(0);
+        rec_head.setD(0);
+        rec_head.setV(0);
         byte[] response=new byte[1024*10];
 
         while (true){
@@ -228,21 +232,22 @@ public class MLMTCPClient{
                 }
                 for(int i=0;i<rec;i++){
 
-                    if(rec_head.l==0){
+                    if(rec_head.getL()==0){
                         buffRead[j]=response[i];
                         j+=1;
                         if(j==head_size){
                             if(mlib.getDataHead(buffRead,rec_head)< 0){break;}
                             //如果数据为空
-                            if(rec_head.l==0){
+                            if(rec_head.getL()==0){
                                 //显示信息
                                 _showMessage(rec_head,null);
                                 //重置
-                                rec_head.l = 0;
-                                rec_head.from=0;
-                                rec_head.t=0;
-                                rec_head.to=0;
-                                rec_head.v=0;
+                                rec_head.setL(0);
+                                rec_head.setFrom(0);
+                                rec_head.setTo(0);
+                                rec_head.setT(0);
+                                rec_head.setD(0);
+                                rec_head.setV(0);
                                 z=0;
                                 j=0;
                             }
@@ -251,17 +256,18 @@ public class MLMTCPClient{
                         buffRead[j]=response[i];
                         j += 1;
                         z += 1;
-                        if(z == rec_head.l)
+                        if(z == rec_head.getL())
                         {
                             //收取包完成
                             //显示信息
                             _showMessage(rec_head,Arrays.copyOfRange(buffRead,head_size,j));
                             //重置
-                            rec_head.l = 0;
-                            rec_head.from=0;
-                            rec_head.t=0;
-                            rec_head.to=0;
-                            rec_head.v=0;
+                            rec_head.setL(0);
+                            rec_head.setFrom(0);
+                            rec_head.setTo(0);
+                            rec_head.setT(0);
+                            rec_head.setD(0);
+                            rec_head.setV(0);
                             z=0;
                             j=0;
 
