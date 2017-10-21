@@ -56,7 +56,7 @@
     android:layout_below="@+id/nameText"
     android:layout_toEndOf="@+id/imgHead"
     android:layout_toRightOf="@+id/imgHead"
-    android:text="很高兴认识你们，很高兴认识你们，很高兴认识你们很高兴认识你们" />
+    android:text="" />
 
 <TextView
     android:id="@+id/timeText"
@@ -68,5 +68,5 @@
     android:layout_above="@+id/messText"
     android:layout_alignEnd="@+id/messText"
     android:layout_alignRight="@+id/messText"
-    android:text="昨天" />
+    android:text="" />
 </RelativeLayout>

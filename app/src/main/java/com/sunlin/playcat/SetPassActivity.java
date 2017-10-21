@@ -49,7 +49,7 @@ public class SetPassActivity extends MyActivtiyToolBar implements RestTask.Respo
                     ShowMessage.taskShow(SetPassActivity.this,"密码至少需要6位");
                     return;
                 }
-                loadingDialog.show();
+                loadingDialog.show(getSupportFragmentManager(),"loading");
                 User user=new User();
                 user.setId(myApp.getUser().getId());
                 user.setPassword(MD5.getMD5(oldStr));

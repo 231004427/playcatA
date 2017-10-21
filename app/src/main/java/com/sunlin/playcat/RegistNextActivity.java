@@ -237,8 +237,8 @@ public class RegistNextActivity extends MyActivtiyToolBar implements View.OnClic
             e.printStackTrace();
         }
         //显示加载框
-        loadingDialog=new LoadingDialog(this);
-        loadingDialog.show();
+        loadingDialog=new LoadingDialog();
+        loadingDialog.show(getSupportFragmentManager(),"loading");
         //提交服务器
         Date date=new Date();
         user=new User();

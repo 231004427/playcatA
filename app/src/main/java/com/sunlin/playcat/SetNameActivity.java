@@ -44,7 +44,7 @@ public class SetNameActivity extends MyActivtiyToolBar implements RestTask.Respo
                 requestData.setId(user.getId());
                 requestData.setName(result);
                 userRESTful.updateName(requestData,SetNameActivity.this);
-                loadingDialog.show();
+                loadingDialog.show(getSupportFragmentManager(),"loading");
 
             }
         });

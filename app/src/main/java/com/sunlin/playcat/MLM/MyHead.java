@@ -1,5 +1,7 @@
 package com.sunlin.playcat.MLM;
 
+import com.sunlin.playcat.common.CValues;
+
 /**
  * Created by sunlin on 2017/5/1.
  */
@@ -12,7 +14,28 @@ public class MyHead {
     private  int l;
     private  long from;
     private  long  to;
-    public  static  int size=16;
+    private  long s;
+    private byte[] token=new byte[MLMType.TOKEN_LENGTH];
+    public  static  int size=52;
+    public long getS() {
+        return s;
+    }
+
+    public void setS(long s) {
+        this.s = s;
+    }
+
+    public byte[] getToken() {
+        return token;
+    }
+
+    public void setToken(byte[] token) {
+        this.token = token;
+    }
+
+    public static void setSize(int size) {
+        MyHead.size = size;
+    }
 
     public int getD() {
         return d;

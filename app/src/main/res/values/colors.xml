@@ -39,6 +39,7 @@
     <color name="tab_background">#f2f2f2</color>
     <color name="line">#C8C7CC</color>
     <color name="whiteApath">#Bfffffff</color>
+    <color name="blackApath">#Bf000000</color>
     <color name="text_background">#FAFAFA</color>
     <color name="talk_background">#E6E6E6</color>
 </resources>

@@ -2,6 +2,8 @@ package com.sunlin.playcat;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.support.v7.app.AppCompatActivity;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 import android.view.View;
@@ -10,6 +12,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.sunlin.playcat.MLM.MLMType;
+import com.sunlin.playcat.MLM.MLMUser;
+import com.sunlin.playcat.MLM.MyData;
 import com.sunlin.playcat.common.CValues;
 import com.sunlin.playcat.common.LogC;
 import com.sunlin.playcat.common.MD5;
@@ -19,12 +24,16 @@ import com.sunlin.playcat.common.ShowMessage;
 import com.sunlin.playcat.domain.ActionType;
 import com.sunlin.playcat.domain.BaseRequest;
 import com.sunlin.playcat.domain.BaseResult;
+import com.sunlin.playcat.domain.Message;
 import com.sunlin.playcat.domain.User;
 import com.sunlin.playcat.json.RESTfulHelp;
 import com.sunlin.playcat.json.UserRESTful;
 import com.sunlin.playcat.view.LoadingDialog;
 
-public class LoginActivity extends MyActivtiyBase implements View.OnClickListener {
+import java.nio.charset.Charset;
+import java.util.ArrayList;
+
+public class LoginActivity extends ActivityAll implements View.OnClickListener,RestTask.ResponseCallback {
     private String TAG="LoginActivity";
     private TextView registBtn,forget;
     private Button btnLogin;
@@ -37,11 +46,16 @@ public class LoginActivity extends MyActivtiyBase implements View.OnClickListene
     //提交服务器
     LoadingDialog loadingDialog;
     private UserRESTful userRESTful;
-    private BaseRequest baseRequest;
+    private MyApp myApp;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_login);
+
+        myApp=(MyApp) getApplication();
+        //绑定服务器事件
+        myApp.setServerHandler(socketHandler);
 
         registBtn=(TextView)findViewById(R.id.regist);
         forget=(TextView)findViewById(R.id.forget);
@@ -61,11 +75,6 @@ public class LoginActivity extends MyActivtiyBase implements View.OnClickListene
         forget.setOnClickListener(this);
     }
 
-    @Override
-    protected int getLayoutResId() {
-        return R.layout.activity_login;
-    }
-
     public void loginServer()
     {
         //判断数据有效性
@@ -82,52 +91,15 @@ public class LoginActivity extends MyActivtiyBase implements View.OnClickListene
         }
 
         //提交服务器
-        loadingDialog=new LoadingDialog(this);
-        loadingDialog.show();
+        loadingDialog=new LoadingDialog();
+        loadingDialog.show(getSupportFragmentManager(),"loading");
 
         User user=new User();
         user.setImei(((TelephonyManager) getSystemService(TELEPHONY_SERVICE)).getDeviceId());
         user.setPhone(phoneStr);
         user.setPassword(MD5.getMD5(passStr));
 
-        userRESTful.login(user, new RestTask.ResponseCallback() {
-            @Override
-            public void onRequestSuccess(String response) {
-                try {
-                    loadingDialog.dismiss();
-                    //处理结果
-                    Gson gson=new Gson();
-                    BaseResult result = gson.fromJson(response,BaseResult.class);
-                    if(result!=null){
-                        if (result.getErrcode() <= 0 && result.getType() == ActionType.LOGIN) {
-
-                            User user=gson.fromJson(result.getData(),User.class);
-                            //保存登入状态
-                            SharedData.saveUser(user,LoginActivity.this);
-                            //全局保存
-                            MyApp app = (MyApp) getApplicationContext();
-                            app.setUser(user);
-                            //进入首页
-                            Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-                            startActivity(intent);
-                        }
-                        if(result.getErrcode()>0&&result.getType()==ActionType.LOGIN){
-                            ShowMessage.taskShow(LoginActivity.this, result.getErrmsg());
-                        }
-                    }else{
-                        ShowMessage.taskShow(LoginActivity.this,getString(R.string.error_server));
-                    }
-                }catch (Exception e){
-                    LogC.write(e,TAG);
-                    ShowMessage.taskShow(LoginActivity.this,getString(R.string.error_server));
-                }
-            }
-            @Override
-            public void onRequestError(Exception error) {
-                loadingDialog.dismiss();
-                ShowMessage.taskShow(LoginActivity.this,getString(R.string.error_net));
-            }
-        });
+        userRESTful.login(user,this);
     }
     private void regist()
     {
@@ -162,4 +134,76 @@ public class LoginActivity extends MyActivtiyBase implements View.OnClickListene
                 break;
         }
     }
+    private Handler socketHandler = new Handler() {
+        @Override
+        public void handleMessage(android.os.Message msg) {
+            MyData myData=(MyData)msg.obj;
+            int type=myData.getMyHead().getT();
+            int dNum=myData.getMyHead().getD();
+            if(type== MLMType.ACTION_USER_REGIST){
+                if(dNum==MLMType.ACTION_ACCESS){
+                    //请求加入对方会话
+                    //server.inRoom(friend.getId());
+                    //进入首页
+                    Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }else{
+                    ShowMessage.taskShow(LoginActivity.this,"服务异常");
+                }
+            }
+            if(type==MLMType.ERROR_SYS_SERVER){
+                loadingDialog.dismiss();
+                //服务器错误
+                ShowMessage.taskShow(LoginActivity.this,"服务无响应");
+            }
+            super.handleMessage(msg);
+        }
+    };
+
+    @Override
+    public void onRequestSuccess(String response) {
+        try {
+            //处理结果
+            Gson gson=new Gson();
+            BaseResult result = gson.fromJson(response,BaseResult.class);
+            if(result!=null){
+                if (result.getErrcode() <= 0 && result.getType() == ActionType.LOGIN) {
+
+                    User user=gson.fromJson(result.getData(),User.class);
+                    //保存登入状态
+                    SharedData.saveUser(user,LoginActivity.this);
+                    //全局保存
+                    myApp.setUser(user);
+                    //消息服务注册
+                    myApp.startMLMServer();
+                    myApp.buildUser();
+                    myApp.registUser();
+                }
+                if(result.getErrcode()>0&&result.getType()==ActionType.LOGIN){
+                    loadingDialog.dismiss();
+                    ShowMessage.taskShow(LoginActivity.this, result.getErrmsg());
+                }
+            }else{
+                loadingDialog.dismiss();
+                ShowMessage.taskShow(LoginActivity.this,getString(R.string.error_server));
+            }
+        }catch (Exception e){
+            loadingDialog.dismiss();
+            LogC.write(e,TAG);
+            ShowMessage.taskShow(LoginActivity.this,getString(R.string.error_server));
+        }
+    }
+
+    @Override
+    public void onRequestError(Exception error) {
+        loadingDialog.dismiss();
+        ShowMessage.taskShow(LoginActivity.this,getString(R.string.error_net));
+    }
+    //返回键
+    @Override
+    public void onBackPressed() {
+        AtyContainer.getInstance().finishAllActivity();
+        super.onBackPressed();
+    }
 }
+

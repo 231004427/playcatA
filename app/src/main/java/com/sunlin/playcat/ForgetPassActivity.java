@@ -96,7 +96,7 @@ public class ForgetPassActivity extends MyActivtiyToolBar implements View.OnClic
             imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
         }
         //提交服务器
-        loadingDialog.show();
+        loadingDialog.show(getSupportFragmentManager(),"loading");
         User  userData=new User();
         userData.setPhone(phone);
         userData.setPhone2(code);
@@ -113,7 +113,7 @@ public class ForgetPassActivity extends MyActivtiyToolBar implements View.OnClic
             btnSendCode.setEnabled(false);
             phone=phoneEdit.getText().toString();
             //提交服务器
-            loadingDialog.show();
+            loadingDialog.show(getSupportFragmentManager(),"loading");
             userRESTful.sendCode(phone,this);
 
 

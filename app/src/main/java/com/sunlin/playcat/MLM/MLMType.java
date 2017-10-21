@@ -5,6 +5,10 @@ package com.sunlin.playcat.MLM;
  */
 
 public class MLMType {
+    //TOKEN长度
+    public static int TOKEN_LENGTH=32;
+    public static int MAX_READ_BUF=10240;
+    public static int MAX_DATA_BUF=10240;
     //用户注册
     public static int ACTION_USER_REGIST=1;
     //邀请用户加入房间
@@ -32,7 +36,7 @@ public class MLMType {
     public static int ERROR_USER_REGIST_REPEAT=51;
     public static int ERROR_USER_REGIST_MAX=52;
     public static int ERROR_USER_REGIST_SYS=53;
-    public static int ERROR_ROOM_INVITE_NOUSER=54;//用户未注册
+    public static int ERROR_INVITE_NOUSER=54;//用户未注册
     public static int ERROR_ROOM_INVITE_REPEAT=55;
     public static int ERROR_ROOM_INVITE_INSERT=56;
     public static int ERROR_ROOM_INVITE_NOROOM=57;
@@ -49,6 +53,9 @@ public class MLMType {
     public static int ERROR_SEND_MULTI_NOROOM=69;
     public static int ERROR_SYS_SEND=70;//发送服务器失败
     public static int ERROR_SYS_SERVER=71;//服务器断线
+    public static int ERROR_SYS_TOKEN=72;//服务器断线
+    public static int ERROR_SYS_DATA=73;//数据异常
+    public static int ERROR_SYS_NOREGIST=74;
     //消息内容类型
     public static int MESSAGE_TEXT=101;
     public static int MESSAGE_VOICE=102;

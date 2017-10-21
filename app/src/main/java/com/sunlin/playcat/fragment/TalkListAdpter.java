@@ -111,7 +111,9 @@ public class TalkListAdpter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
                 nameText.setText(info.getName());
                 nameText.setTag(info);
-                messText.setText(info.getLast_info());
+                if(info.getLast_info()!=null) {
+                    messText.setText(info.getLast_info());
+                }
 
                 if(info.getNo_read()>0){
                     redText.setVisibility(View.VISIBLE);
@@ -120,7 +122,9 @@ public class TalkListAdpter extends RecyclerView.Adapter<RecyclerView.ViewHolder
                     redText.setVisibility(View.GONE);
                 }
                 //
-                 timeText.setText(Time.getTimeTalk(info.getLast_time(),new Date()));
+                if(info.getLast_time()!=null) {
+                    timeText.setText(Time.getTimeTalk(info.getLast_time(), new Date()));
+                }
                 
                 //绑定头像
                 if(info.getType()==2){

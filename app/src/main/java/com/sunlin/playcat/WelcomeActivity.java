@@ -3,49 +3,64 @@ package com.sunlin.playcat;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
-import android.support.v7.app.ActionBar;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.animation.AlphaAnimation;
-import android.view.animation.Animation;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
+import com.sunlin.playcat.MLM.MLMType;
+import com.sunlin.playcat.MLM.MyData;
 import com.sunlin.playcat.common.AppHelp;
 import com.sunlin.playcat.common.RestTask;
+import com.sunlin.playcat.common.ScreenUtil;
 import com.sunlin.playcat.common.SharedData;
-import com.sunlin.playcat.common.ShowMessage;
 import com.sunlin.playcat.domain.ActionType;
-import com.sunlin.playcat.domain.BaseRequest;
 import com.sunlin.playcat.domain.BaseResult;
 import com.sunlin.playcat.domain.Config;
 import com.sunlin.playcat.domain.ConfigList;
 import com.sunlin.playcat.domain.User;
 import com.sunlin.playcat.json.ConfigRESTful;
 import com.sunlin.playcat.view.LoadingDialog;
-import com.sunlin.playcat.view.SelectCityDialog;
 import com.sunlin.playcat.view.UpdateDialog;
 
-import java.util.List;
-import java.util.Timer;
-import java.util.TimerTask;
-
-public class WelcomeActivity extends MyActivtiyBase implements RestTask.ResponseCallback,UpdateDialog.OnClickOkListener {
+public class WelcomeActivity extends ActivityAll implements RestTask.ResponseCallback,UpdateDialog.OnClickOkListener {
     private String TAG="WelcomeActivity";
     private ConfigRESTful configRESTful;
     private UpdateDialog updateDialog;
+    private LoadingDialog loadingDialog;
     private User user;
+    private MyApp myApp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_welcome);
+        //透明状态栏
+        LinearLayout statusLayout=(LinearLayout)findViewById(R.id.statusLayout);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            Window window = getWindow();
+            // Translucent status bar
+            window.setFlags(
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS,
+                    WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            if(statusLayout!=null) {
+                statusLayout.getLayoutParams().height = ScreenUtil.getStatusHeight(this);
+            }
+        }else{
+            if(statusLayout!=null){
+                statusLayout.setVisibility(View.GONE);
+            }
+        }
 
+        myApp=(MyApp) getApplication();
         user= SharedData.getUser(this);
         myApp.setUser(user);
         myApp.versionCode=AppHelp.getAppVersionCode(this);
         myApp.versionName=AppHelp.getAppVersionName(this);
+
 
         //版本检查
         configRESTful=new ConfigRESTful(user);
@@ -53,8 +68,38 @@ public class WelcomeActivity extends MyActivtiyBase implements RestTask.Response
         config.setType(1);
         configRESTful.getList(config,this);
 
-
-
+        //初始化对话框
+        loadingDialog=new LoadingDialog();
+        loadingDialog.setTitle(WelcomeActivity.this.getString(R.string.error_server));
+        loadingDialog.setIsCancel(true);
+        loadingDialog.setBtnStr("重试");
+        loadingDialog.setOnClickListener(new LoadingDialog.OnClickListener(){
+            @Override
+            public void onClick(int type) {
+            if(type==2)
+            {
+                //服务器重启
+                myApp.mlmClient.Repeat();
+                myApp.registUser();
+            }
+            if(type==1)
+            {
+                AtyContainer.getInstance().finishAllActivity();
+            }
+            }
+        });
+        /*
+        loadingDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+            @Override
+            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                if (keyCode == KeyEvent.KEYCODE_BACK )
+                {
+                    finish();
+                }
+                return false;
+            }
+        });
+        */
         /*logo=(ImageView) findViewById(R.id.imageView);
         //渐变展示启动屏
         AlphaAnimation aa = new AlphaAnimation(0.3f,1.0f);
@@ -74,32 +119,21 @@ public class WelcomeActivity extends MyActivtiyBase implements RestTask.Response
         });*/
     }
 
-    @Override
-    protected int getLayoutResId() {
-        return R.layout.activity_welcome;
-    }
-
     /**
      * 跳转到...
      */
     private void redirectTo(){
-
-        Timer timer = new Timer();
-        TimerTask tast = new TimerTask() {
-            @Override
-            public void run() {
-                //自动登入
-                if(user.getId()==0) {
-                    Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
-                    startActivity(intent);
-                }else{
-                    Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
-                    startActivity(intent);
-                }
-
-            }
-        };
-        timer.schedule(tast, 1000);
+        //自动登入
+        if(user.getId()==0) {
+            Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
+            startActivity(intent);
+        }else{
+            //开启消息服务
+            myApp.setServerHandler(socketHandler);
+            myApp.startMLMServer();
+            myApp.buildUser();
+            myApp.registUser();
+        }
     }
     @Override
     public void onRequestSuccess(String response) {
@@ -145,7 +179,7 @@ public class WelcomeActivity extends MyActivtiyBase implements RestTask.Response
     }
     @Override
     public void onRequestError(Exception error) {
-        ShowMessage.taskShow(this,getString(R.string.error_server));
+        //ShowMessage.taskShow(this,getString(R.string.error_server));
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
@@ -156,4 +190,28 @@ public class WelcomeActivity extends MyActivtiyBase implements RestTask.Response
             redirectTo();
         }
     }
+    private Handler socketHandler = new Handler() {
+        @Override
+        public void handleMessage(android.os.Message msg) {
+            MyData myData=(MyData)msg.obj;
+            int type=myData.getMyHead().getT();
+            int dNum=myData.getMyHead().getD();
+            if(type== MLMType.ACTION_USER_REGIST ||type== MLMType.ERROR_SYS_NOREGIST){
+                if(dNum==MLMType.ACTION_ACCESS){
+                    //请求加入对方会话
+                    //server.inRoom(friend.getId());
+                    //进入首页
+                    Intent intent = new Intent(WelcomeActivity.this, MainActivity.class);
+                    startActivity(intent);
+                }else{
+                    loadingDialog.show(getSupportFragmentManager(),"repeat");
+                }
+            }
+            if(type==MLMType.ACTION_SYS_BACK){
+                //服务器错误
+                loadingDialog.show(getSupportFragmentManager(),"repeat");
+            }
+            super.handleMessage(msg);
+        }
+    };
 }

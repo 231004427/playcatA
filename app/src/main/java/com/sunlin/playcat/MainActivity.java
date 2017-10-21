@@ -8,14 +8,16 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.sunlin.playcat.MLM.MLMSocketDelegate;
+import com.sunlin.playcat.MLM.MyData;
 import com.sunlin.playcat.common.LogC;
 import com.sunlin.playcat.common.RestTask;
 import com.sunlin.playcat.common.ShowMessage;
@@ -80,7 +82,9 @@ public class MainActivity extends MyActivtiyBase implements View.OnClickListener
                 redSet.setVisibility(View.VISIBLE);
             }
         }
+        //fragmentManager=getSupportFragmentManager();
 
+        setMlmSocketUdpDelegate(mlmDelegate);
     }
 
     @Override
@@ -267,5 +271,23 @@ public class MainActivity extends MyActivtiyBase implements View.OnClickListener
     @Override
     public void onRequestError(Exception error) {
 
+    }
+    private MLMSocketDelegate mlmDelegate=new MLMSocketDelegate() {
+
+        @Override
+        public void MLMSocketResultError(int action, int errorNum, String data) {
+        }
+
+        @Override
+        public void MLMGetMessage(MyData myData) {
+
+        }
+    };
+    //返回键
+    @Override
+    public void onBackPressed() {
+        Log.d(TAG, "onBackPressed()");
+        AtyContainer.getInstance().finishAllActivity();
+        super.onBackPressed();
     }
 }

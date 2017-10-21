@@ -7,7 +7,7 @@ import java.util.Date;
  * Created by sunlin on 2017/5/16.
  */
 public class User {
-    private int id=-1;
+    private int id=0;
     private String name;
     private String phone;
     private String password;

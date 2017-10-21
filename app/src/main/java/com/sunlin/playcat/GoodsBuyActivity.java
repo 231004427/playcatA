@@ -254,7 +254,7 @@ public class GoodsBuyActivity extends MyActivtiyToolBar implements View.OnClickL
         addressList.setStatus(1);
         addressList.setStart(0);
         addressList.setPageNum(1);
-        loadingDialog.show();
+        loadingDialog.show(getSupportFragmentManager(),"loading");
         addressRESTful.search(addressList,this);
 
     }
@@ -355,7 +355,7 @@ public class GoodsBuyActivity extends MyActivtiyToolBar implements View.OnClickL
 
         orderRESTful=new OrderRESTful(user);
         orderRESTful.Add(order,this);
-        loadingDialog.show();
+        loadingDialog.show(getSupportFragmentManager(),"loading");
 
     }
     //返回值
@@ -399,10 +399,12 @@ public class GoodsBuyActivity extends MyActivtiyToolBar implements View.OnClickL
                 if(result.getErrcode()<=0 && result.getType()==ActionType.ORDER_ADD){
 
                     //下单成功
-                    loadingDialog.showText("下单成功",false,ContextCompat.getDrawable(this,R.drawable.smile),"返回");
+                    loadingDialog.setTitle("下单成功");
+                    loadingDialog.setBtnStr("返回");
+                    loadingDialog.show(getSupportFragmentManager(),"repeat");
                     loadingDialog.setOnClickListener(new LoadingDialog.OnClickListener() {
                         @Override
-                        public void onClick(Dialog dialog, int type) {
+                        public void onClick(int type) {
                             if(type==2){
                                 finish();
                             }

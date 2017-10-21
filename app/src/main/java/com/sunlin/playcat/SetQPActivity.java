@@ -43,7 +43,7 @@ public class SetQPActivity extends MyActivtiyToolBar implements RestTask.Respons
         ToolbarSetListense(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                loadingDialog.show();
+                loadingDialog.show(getSupportFragmentManager(),"loading");
                 String valueStr=valueEdit.getText().toString();
                 if(valueStr.isEmpty()){
                     ShowMessage.taskShow(SetQPActivity.this,"请输入内容");

@@ -146,7 +146,6 @@ public class UpdateDialog extends DialogFragment implements DownloadUtil.OnDownl
             mListener.onItemClick(1);
         }
     }
-
     @Override
     public void onResume() {
         super.onResume();

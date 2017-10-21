@@ -27,14 +27,11 @@ import com.sunlin.playcat.view.LoadingDialog;
  * Created by sunlin on 2017/6/24.
  */
 
-public abstract class MyActivtiyToolBar extends AppCompatActivity {
+public abstract class MyActivtiyToolBar extends ActivityObj {
     public Toolbar toolbar;
     public TextView toolText;
     public ImageView toolBack;
     public ImageView toolSet;
-    public MyApp myApp;
-    //提交服务器
-    public LoadingDialog loadingDialog;
 
     //初始化导航栏
     public void ToolbarBuild(String title, boolean isBack, boolean isSet)
@@ -70,25 +67,6 @@ public abstract class MyActivtiyToolBar extends AppCompatActivity {
         toolBack=(ImageView)findViewById(R.id.btnBack);
         toolSet=(ImageView)findViewById(R.id.btnSet);
         setSupportActionBar(toolbar);
-
-        loadingDialog=new LoadingDialog(this);
-        loadingDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
-            @Override
-            public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
-                if (keyCode == KeyEvent.KEYCODE_BACK )
-                {
-                    finish();
-                }
-                return false;
-            }
-        });
-
-        //用户信息初始化
-        myApp= (MyApp)this.getApplicationContext();
-        //默认竖屏
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-
-
         /*
         //这一行注意！看本文最后的说明！！！！
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);

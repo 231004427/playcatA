@@ -43,7 +43,7 @@ public class SetSexActivity extends MyActivtiyToolBar implements RadioGroup.OnCh
                 requestData.setId(user.getId());
                 requestData.setSex(sex);
                 userRESTful.updateSex(requestData,SetSexActivity.this);
-                loadingDialog.show();
+                loadingDialog.show(getSupportFragmentManager(),"loading");
             }
         });
 

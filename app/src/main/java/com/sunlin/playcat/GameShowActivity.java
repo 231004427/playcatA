@@ -1,16 +1,12 @@
 package com.sunlin.playcat;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -26,7 +22,6 @@ import com.sunlin.playcat.common.LogC;
 import com.sunlin.playcat.common.RestTask;
 import com.sunlin.playcat.common.ScreenUtil;
 import com.sunlin.playcat.common.ShowMessage;
-import com.sunlin.playcat.domain.BaseRequest;
 import com.sunlin.playcat.domain.BaseResult;
 import com.sunlin.playcat.domain.Collect;
 import com.sunlin.playcat.domain.Comment;
@@ -169,25 +164,6 @@ public class GameShowActivity extends MyActivtiyToolBar implements View.OnClickL
 
             }
         });
-
-        //显示对话框
-        loadingDialog.setCancelable(true);
-        loadingDialog.show();
-        loadingDialog.setOnClickListener(new LoadingDialog.OnClickListener(){
-            @Override
-            public void onClick(Dialog dialog, int type) {
-                if(type==2)
-                {
-                    loadingDialog.again(false);
-                    gameRESTful.get(id,GameShowActivity.this);
-                }
-                if(type==1)
-                {
-                    loadingDialog.dismiss();
-                    finish();
-                }
-            }
-        });
         //加载数据
        gameRESTful.get(id,this);
     }
@@ -259,7 +235,7 @@ public class GameShowActivity extends MyActivtiyToolBar implements View.OnClickL
         Collect collect=new Collect();
         collect.setUid(myApp.getUser().getId());
         collect.setSid(id);
-        loadingDialog.show();
+        loadingDialog.show(getSupportFragmentManager(),"loading");
         if(isCollect){
             collectRESTful.del(collect,this);
             isCollect=false;
@@ -319,16 +295,11 @@ public class GameShowActivity extends MyActivtiyToolBar implements View.OnClickL
         }catch (Exception e){
         LogC.write(e,TAG);
         ShowMessage.taskShow(GameShowActivity.this,getString(R.string.error_server));}
-        finally {
-            loadingDialog.dismiss();
-        }
-
     }
 
     @Override
     public void onRequestError(Exception error) {
-        loadingDialog.showText(this.getString(R.string.error_net),true,null,"重新链接");
-        //ShowMessage.taskShow(getApplicationContext(), this.getString(R.string.error_net));
+        ShowMessage.taskShow(getApplicationContext(), this.getString(R.string.error_net));
     }
 
     @Override

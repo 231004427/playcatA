@@ -84,7 +84,7 @@ public class RegistActivity extends MyActivtiyToolBar implements View.OnClickLis
             imm.hideSoftInputFromWindow(getWindow().getDecorView().getWindowToken(), 0);
         }
         //提交服务器
-        loadingDialog.show();
+        loadingDialog.show(getSupportFragmentManager(),"loading");
         userRESTful.phoneCheck(phone,code,this);
 
     }
@@ -97,7 +97,7 @@ public class RegistActivity extends MyActivtiyToolBar implements View.OnClickLis
             btnSendCode.setEnabled(false);
             phone=phoneEdit.getText().toString();
             //提交服务器
-            loadingDialog.show();
+            loadingDialog.show(getSupportFragmentManager(),"loading");
             userRESTful.sendCode(phone,this);
 
 

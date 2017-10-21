@@ -7,7 +7,7 @@ package com.sunlin.playcat.MLM;
 public interface MLMSocketDelegate{
 
     //发送错误
-    public void  MLMSocketResultError(int action,int errorNum,String data,MLMTCPClient sender);
+    public void  MLMSocketResultError(int action,int errorNum,String data);
     //成功获取
-    public void MLMGetMessage(MyData myData, MLMTCPClient sender);
+    public void MLMGetMessage(MyData myData);
 }

@@ -80,7 +80,7 @@ public class SetAddressActivity extends MyActivtiyToolBar implements RestTask.Re
 
     }
     private void get(){
-        loadingDialog.show();
+        loadingDialog.show(getSupportFragmentManager(),"loading");
         address.setUser_id(myApp.getUser().getId());
         address.setId(addressId);
         addressRESTful.get(address,this);
@@ -107,7 +107,7 @@ public class SetAddressActivity extends MyActivtiyToolBar implements RestTask.Re
             ShowMessage.taskShow(this,"详细地址不能空");
             return;
         }
-        loadingDialog.show();
+        loadingDialog.show(getSupportFragmentManager(),"loading");
 
         address.setUser_id(myApp.getUser().getId());
         address.setName(nameStr);

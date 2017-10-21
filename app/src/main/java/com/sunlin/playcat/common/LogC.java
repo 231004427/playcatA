@@ -12,4 +12,9 @@ public class LogC {
             Log.d(TAG, e.toString());
         }
     }
+    public static void write(String mess,String TAG){
+        if(mess!=""){
+            Log.d(TAG,mess);
+        }
+    }
 }

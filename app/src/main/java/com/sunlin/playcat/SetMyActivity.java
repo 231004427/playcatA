@@ -206,7 +206,7 @@ public class SetMyActivity extends MyActivtiyToolBar implements SelectCityDialog
                 requestData.setId(user.getId());
                 requestData.setPhoto(ImageHelp.Bitmap2StrByBase64(photoBmp));
                 userRESTful.updatePhoto(requestData,this);
-                loadingDialog.show();
+                loadingDialog.show(getSupportFragmentManager(),"loading");
 
 
             } catch (IOException e) {
@@ -234,7 +234,7 @@ public class SetMyActivity extends MyActivtiyToolBar implements SelectCityDialog
         requestData.setId(user.getId());
         requestData.setCity(cityStr);
         userRESTful.updateCity(requestData,this);
-        loadingDialog.show();
+        loadingDialog.show(getSupportFragmentManager(),"loading");
     }
     @Override
     public void onRequestSuccess(String response) {

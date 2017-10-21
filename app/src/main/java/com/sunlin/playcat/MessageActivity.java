@@ -2,6 +2,7 @@ package com.sunlin.playcat;
 
 import android.content.Context;
 import android.content.Intent;
+import android.nfc.Tag;
 import android.os.Handler;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -13,23 +14,17 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.cjj.MaterialRefreshLayout;
-import com.cjj.MaterialRefreshListener;
 import com.google.gson.Gson;
 import com.sunlin.playcat.MLM.MLMSocketDelegate;
-import com.sunlin.playcat.MLM.MLMTCPClient;
 import com.sunlin.playcat.MLM.MLMType;
 import com.sunlin.playcat.MLM.MyData;
-import com.sunlin.playcat.MLM.MyHead;
 import com.sunlin.playcat.common.CValues;
 import com.sunlin.playcat.common.ImageWorker;
 import com.sunlin.playcat.common.LogC;
@@ -38,27 +33,25 @@ import com.sunlin.playcat.common.ScreenUtil;
 import com.sunlin.playcat.common.ShowMessage;
 import com.sunlin.playcat.domain.ActionType;
 import com.sunlin.playcat.domain.BaseResult;
+import com.sunlin.playcat.domain.Comment;
 import com.sunlin.playcat.domain.Friend;
-import com.sunlin.playcat.domain.FriendList;
 import com.sunlin.playcat.domain.Message;
 import com.sunlin.playcat.domain.MessageList;
 import com.sunlin.playcat.fragment.MessageListAdpter;
-import com.sunlin.playcat.fragment.TalkListAdpter;
+import com.sunlin.playcat.json.FriendRESTful;
 import com.sunlin.playcat.json.MessageRESTful;
 import com.sunlin.playcat.view.CircleImageView;
 import com.sunlin.playcat.view.CircleTitleView;
-import com.sunlin.playcat.view.LinearLayoutView;
-import com.sunlin.playcat.view.MyDecoration;
 import com.sunlin.playcat.view.MyLinearLayout;
 
-import java.io.UnsupportedEncodingException;
 import java.nio.charset.Charset;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.concurrent.ExecutionException;
 
 public class MessageActivity extends MyActivtiyBase implements
-        View.OnClickListener,RestTask.ResponseCallback,View.OnLayoutChangeListener,MLMSocketDelegate {
+        View.OnClickListener,RestTask.ResponseCallback,View.OnLayoutChangeListener {
     private String TAG="MessageActivity";
     private Friend friend;
     private Handler myHandle;
@@ -81,6 +74,7 @@ public class MessageActivity extends MyActivtiyBase implements
     private MessageList dataList;
     private MessageListAdpter listAdapter;
     private MessageRESTful messageRESTful;
+    private FriendRESTful friendRESTful;
     private CircleTitleView loadTextView;
 
     //屏幕高度
@@ -88,16 +82,18 @@ public class MessageActivity extends MyActivtiyBase implements
     //软件盘弹起后所占高度阀值
     private int keyHeight = 0;
 
-    //TCP
-    private MLMTCPClient server;
-    private int buffSize=50000;
-    private boolean isConnection=false;
-    private Thread serverThread;
     private int userId=0;
+    private byte[] token;
+
+    private long session=0;
+    private boolean isConnection=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        //设置远程服务监听
         super.onCreate(savedInstanceState);
+        //绑定消息服务
+        setMlmSocketUdpDelegate(mlmDelegate);
 
         imgHead=(CircleImageView)findViewById(R.id.imgHead);
         btnSet=(ImageView)findViewById(R.id.btnSet);
@@ -108,6 +104,7 @@ public class MessageActivity extends MyActivtiyBase implements
         commentLayout=(LinearLayout)findViewById(R.id.commentLayout);
 
         userId=myApp.getUser().getId();
+        token=myApp.getUser().getToken().getBytes();
         gson= new Gson();
         //输入框监控
         commentEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -146,6 +143,7 @@ public class MessageActivity extends MyActivtiyBase implements
         //初始化分页对象
         myApp=(MyApp) this.getApplication();
         messageRESTful=new MessageRESTful(myApp.getUser());
+        friendRESTful=new FriendRESTful(myApp.getUser());
         //获取对象
         mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
         loadTextView = (CircleTitleView) findViewById(R.id.netoffText);
@@ -177,23 +175,25 @@ public class MessageActivity extends MyActivtiyBase implements
         //setFooterView(mRecyclerView);
         mRecyclerView.setAdapter(listAdapter);
 
-
         //初始化加载
         isLoading=false;
 
-        //连接服务器
-        startMLMThread();
-    }
+        //创建会话
+        session=friend.getUser_id()+friend.getFriend_id();
 
-    private void startMLMThread() {
-        serverThread = new Thread(new ServerThread());
-        serverThread.start();
     }
     @Override
     protected void onResume() {
         super.onResume();
         getType=1;
         BuildData();
+        myApp.mlmUser.createRoom(session);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        myApp.mlmUser.leaveRoom(session);
     }
 
     //发送内容
@@ -211,21 +211,16 @@ public class MessageActivity extends MyActivtiyBase implements
         //发送聊天内容
         Message message=new Message();
         message.setFrom_user(myApp.getUser().getId());
-        message.setTo_user(friend.getId());
+        message.setTo_user(friend.getFriend_id());
+        message.setFrom_name(myApp.getUser().getName());
         message.setVesion(1);
         message.setType(1);//文本
         message.setLength(text.length());
         message.setData(text);
         message.setStatus(1);//1=未发送2=准备发送3=已发送4=已读
         message.setCreate_time(new Date());
-        //messageRESTful.add(message,this);
+        messageRESTful.add(message,this);
         commentEdit.setText("");
-
-        //实时发送数据
-        if(isConnection) {
-            server.sendByUserIdText(gson.toJson(message), userId);
-        }
-
     }
     //判断是否滑动到底部
     public  boolean isSlideToBottom(RecyclerView recyclerView) {
@@ -330,6 +325,7 @@ public class MessageActivity extends MyActivtiyBase implements
                 break;
         }
     }
+
     @Override
     public void onRequestSuccess(String response) {
         try {
@@ -346,6 +342,9 @@ public class MessageActivity extends MyActivtiyBase implements
                         dataList.getList().clear();
                         dataList.getList().addAll(list.getList());
                         listAdapter.notifyDataSetChanged();
+
+                        //已有消息设置为已读
+                        friendRESTful.setAllRead(friend,this);
                     }
                     //分页数据
                     if(getType==3)
@@ -369,12 +368,8 @@ public class MessageActivity extends MyActivtiyBase implements
                             }*/
                     //隐藏加载提示
                     loadTextView.setVisibility(View.GONE);
-                }else{
-                    if(getType==1 ||getType==2) {
-                        loadTextView.setVisibility(View.VISIBLE);
-                        loadTextView.setText(this.getString(R.string.nodata_r));
-                    }
                 }
+                loadTextView.setVisibility(View.GONE);
             }
             if(result.getErrcode()<=0 && result.getType()==ActionType.MESSAGE_ADD){
 
@@ -383,9 +378,21 @@ public class MessageActivity extends MyActivtiyBase implements
                 if(message !=null){
                     ArrayList listData  =(ArrayList)dataList.getList();
                     listData.add(0,message);
+                    dataList.setCount(dataList.getCount()+1);
                     listAdapter.notifyDataSetChanged();
-                    mRecyclerView.smoothScrollToPosition(dataList.getCount()-1);
+                    mRecyclerView.smoothScrollToPosition(dataList.getList().size()-1);
+
+                    //发送实时消息
+                    if(isConnection) {
+                        myApp.mlmUser.userSendText(gson.toJson(message), friend.getFriend_id());
+                    }
                 }
+            }
+            if(result.getErrcode()<=0 && result.getType()==ActionType.MESSAGE_UPDATE_STATUS){
+                //单条已读
+            }
+            if(result.getErrcode()<=0 && result.getType()==ActionType.FRIEND_SET_ALL_READ){
+                //历史记录全部设置为已读
 
             }
             if(result.getErrcode() >0){
@@ -451,92 +458,125 @@ public class MessageActivity extends MyActivtiyBase implements
     public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
         if(oldBottom != 0 && bottom != 0 &&(oldBottom - bottom > keyHeight)){
 
-            ShowMessage.taskShow(this,"监听到软键盘弹起...");
+            //ShowMessage.taskShow(this,"监听到软键盘弹起...");
 
         }else if(oldBottom != 0 && bottom != 0 &&(bottom - oldBottom > keyHeight)){
 
-            ShowMessage.taskShow(this,"监听到软键盘关闭...");
+            //ShowMessage.taskShow(this,"监听到软键盘关闭...");
         }
     }
-    @Override
-    public void MLMSocketResultError(int action, int errorNum, String data, MLMTCPClient sender) {
-        Log.e(TAG,"action:"+action+" errorNum:"+errorNum+" data:"+data);
-        //服务器异常
-        if(action==MLMType.ERROR_SYS_SERVER||
-                action==MLMType.ERROR_SYS_SEND) {
-            isConnection = false;
-        }
-    }
-    @Override
-    public void MLMGetMessage(MyData myData, MLMTCPClient sender) {
-        android.os.Message message=new android.os.Message();
-        message.obj=myData;
-        socketHandler.sendMessage(message);
-    }
-    private Handler socketHandler = new Handler() {
+    //消息处理
+    private MLMSocketDelegate mlmDelegate=new MLMSocketDelegate() {
         @Override
-        public void handleMessage(android.os.Message msg) {
-            MyData myData=(MyData)msg.obj;
+        public void MLMSocketResultError(int action, int errorNum, String data) {
+
+        }
+        @Override
+        public void MLMGetMessage(MyData myData) {
             int type=myData.getMyHead().getT();
             int dNum=myData.getMyHead().getD();
-            if(type==MLMType.ACTION_USER_REGIST){
-                if(dNum==MLMType.ACTION_ACCESS){
-                    ShowMessage.taskShow(MessageActivity.this,"注册成功");
-                    //请求加入对方会话
-                    server.inRoom(friend.getId());
-
-                    isConnection=true;
-                }else{
-                    ShowMessage.taskShow(MessageActivity.this,"注册失败("+dNum+")");
-                    isConnection=false;
+            if(type== MLMType.ACTION_USER_REGIST){
+                if(dNum>0){
+                    if(dNum==MLMType.ACTION_ACCESS){
+                        //重新链接
+                        myApp.mlmUser.createRoom(session);
+                    }
                 }
             }
             if(type==MLMType.ACTION_SEND_SINGLE||type==MLMType.ACTION_SEND_MULTI){
-                //接受消息
-                if(myData.getMyHead().getD()==MLMType.MESSAGE_TEXT) {
-                    String dataStr = new String(myData.getData(), Charset.forName("utf-8"));
-                    //转换消息
-                    Message message = gson.fromJson(dataStr,Message.class);
-                    if(message !=null){
-                        ArrayList listData  =(ArrayList)dataList.getList();
-                        listData.add(0,message);
-                        listAdapter.notifyDataSetChanged();
-                        mRecyclerView.smoothScrollToPosition(0);
+                //反馈信息
+                if(dNum>0){
+                    if(dNum==MLMType.ACTION_ACCESS){
+                        //发送成功
+                    }else{
+                        //发送失败
+                    }
+                }else {
+                    //接受消息
+                        String dataStr = new String(myData.getData(), Charset.forName("utf-8"));
+                        //转换消息
+                    try {
+                        Message message = gson.fromJson(dataStr, Message.class);
+                        //补充信息
+                        message.setFrom_sex(friend.getSex());
+                        message.setFrom_photo(friend.getPhoto());
+                        message.setFrom_name(friend.getName());
+                        if (message != null) {
+                            ArrayList listData = (ArrayList) dataList.getList();
+                            listData.add(0, message);
+                            listAdapter.notifyDataSetChanged();
+                            mRecyclerView.smoothScrollToPosition(0);
+                        }
+                        //置成已读
+                        message.setStatus(4);
+                        messageRESTful.updateStatus(message,MessageActivity.this);
+
+                    }catch (Exception e){
+                        LogC.write(e, TAG);
                     }
                 }
-
-
-                if(dNum==MLMType.ACTION_ACCESS){
-                    //发送成功
-                }else{
-                    //发送失败
+            }
+            //创建会话
+            if(type==MLMType.ACTION_ROOM_CREATE){
+                if(dNum>0){
+                    if(dNum==MLMType.ACTION_ACCESS){
+                        //加入会话
+                        myApp.mlmUser.joinRoom(session);
+                    }
                 }
             }
+            //加入会话
             if(type==MLMType.ACTION_ROOM_INVITE_YES){
-
-                if(dNum==MLMType.ACTION_ACCESS){
-                    //发送成功
-                    ShowMessage.taskShow(MessageActivity.this,"加入会话成功");
+                //反馈信息
+                if(dNum>0) {
+                    if (dNum == MLMType.ACTION_ACCESS) {
+                    }else{
+                        //加入会话失败
+                    }
                 }else{
-                    //发送失败
-                    ShowMessage.taskShow(MessageActivity.this,"加入会话失败("+dNum+")");
+                    //自己加入成功
+                    if(userId==myData.getMyHead().getFrom()){
+                        if(!isConnection){
+                            myApp.mlmUser.inviteRoom(friend.getFriend_id(),session);
+                        }
+                    }else{
+                        isConnection=true;
+                    }
                 }
             }
-            super.handleMessage(msg);
+            //邀请加入
+            if(type==MLMType.ACTION_ROOM_INVITE){
+                //反馈信息
+                if(dNum>0) {
+                    if (dNum == MLMType.ACTION_ACCESS) {
+                    }
+                }else{
+                    int toUser=(int)myData.getMyHead().getTo();
+                    if (toUser== userId) {
+                        //获取房间号
+                        try {
+                            //String dataStr = new String(myData.getData(), Charset.forName("utf-8"));
+                            //判断是否是同一个房间
+                            if(session==myData.getMyHead().getS()) {
+                                //回复邀请
+                                myApp.mlmUser.joinRoom(session);
+                            }
+                        }catch (Exception ex){
+                            LogC.write(ex,TAG);
+                            return;
+                        }
+
+                    }
+                }
+            }
+            //退出会话
+            if(type==MLMType.ACTION_ROOM_LEAVE){
+                //反馈信息
+                if(dNum>0) {
+                }else{
+                }
+                isConnection = false;
+            }
         }
     };
-    private class ServerThread implements Runnable {
-        @Override
-        public void run() {
-            try {
-                //decodeLoop();
-                //聊天服务器注册
-                server=new MLMTCPClient(myApp.getUser().getName(),myApp.getUser().getId());
-                server.delegate=MessageActivity.this;
-                server.connectServer(buffSize);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-        }
-    }
 }

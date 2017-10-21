@@ -31,7 +31,7 @@ import com.sunlin.playcat.view.CircleImageView;
 import java.util.ArrayList;
 import java.util.List;
 
-public class FriendShowActivity extends MyActivtiyToolBar {
+public class FriendShowActivity extends MyActivtiyToolBar implements RestTask.ResponseCallback {
     private String TAG="FriendShowActivity";
     private Friend friend;
     private Handler mHandler = new Handler();
@@ -75,7 +75,7 @@ public class FriendShowActivity extends MyActivtiyToolBar {
         //加载战绩数据
         myUser=((MyApp)getApplication()).getUser();
         gamePlayRESTful=new GamePlayRESTful(myUser);
-        loadingDialog.show();
+        loadingDialog.show(getSupportFragmentManager(),"loading");
         BuildData();
     }
     private void BuildData(){
@@ -88,76 +88,77 @@ public class FriendShowActivity extends MyActivtiyToolBar {
         dataList.setId(friend.getFriend_id());
         dataList.setStart(0);
         dataList.setPageNum(5);
-        gamePlayRESTful.searchUser(dataList, new RestTask.ResponseCallback() {
-            @Override
-            public void onRequestSuccess(String response) {
-                try {
-                    Gson gson = new Gson();
-                    //处理结果
-                    BaseResult result=gson.fromJson(response,BaseResult.class);
-                    if (result.getErrcode() <= 0 && result.getType() == ActionType.GAME_PLAY_SEARCH_USER)
-                    {
-                        GamePlayList gameList = gson.fromJson(result.getData(), GamePlayList.class);
-                        if (gameList != null && gameList.getGamePlays().size() > 0) {
-
-                            playTitleLayout.setVisibility(View.VISIBLE);
-                            playGameLayout.setVisibility(View.VISIBLE);
-                            for(int i=0;i<gameList.getGamePlays().size();i++){
-                                GamePlay item=gameList.getGamePlays().get(i);
-                                //绑定数据
-                                ViewGroup.LayoutParams vlp = new ViewGroup.LayoutParams(
-                                        ViewGroup.LayoutParams.MATCH_PARENT,
-                                        (int) ScreenUtil.getScreenDensity(FriendShowActivity.this)*44);
-                                LayoutInflater inflater = LayoutInflater.from(FriendShowActivity.this);
-                                View view =inflater.inflate(R.layout.listview_user_game,null);
-                                ImageView gameImg=(ImageView) view.findViewById(R.id.gameImg);
-                                TextView gameName=(TextView)view.findViewById(R.id.gameName);
-                                ImageView imgLevel=(ImageView)view.findViewById(R.id.imgLevel);
-                                TextView levelName=(TextView)view.findViewById(R.id.levelName);
-                                TextView textPoints=(TextView)view.findViewById(R.id.textPoints);
-
-                                ImageWorker.loadImage(gameImg, CValues.SERVER_IMG+item.getGame_ico(),mHandler);
-                                gameName.setText(item.getGame_name());
-                                if(0<=item.getLevel()&& item.getLevel()<=10){
-                                    imgLevel.setImageResource(R.drawable.leve1_16);
-                                    levelName.setText("青铜("+item.getLevel()+")");
-                                }else if(11<=item.getLevel()&& item.getLevel()<=20){
-                                    imgLevel.setImageResource(R.drawable.leve2_16);
-                                    levelName.setText("黄金("+item.getLevel()+")");
-                                }else if(21<=item.getLevel()&& item.getLevel()<=30){
-                                    imgLevel.setImageResource(R.drawable.leve3_16);
-                                    levelName.setText("白银("+item.getLevel()+")");
-                                }else if(31<=item.getLevel()){
-                                    imgLevel.setImageResource(R.drawable.leve4_16);
-                                    levelName.setText("铂金("+item.getLevel()+")");
-                                }
-                                textPoints.setText("积分 "+item.getPoints());
-
-                                view.setLayoutParams(vlp);
-                                playGameLayout.addView(view);
-                            }
-
-                        }
-                    }
-                    if(result.getErrcode() >0){
-                        ShowMessage.taskShow(FriendShowActivity.this, result.getErrmsg());
-                    }
-                }catch (Exception e)
-                {
-                    LogC.write(e,TAG);
-                    ShowMessage.taskShow(FriendShowActivity.this,getString(R.string.error_server));
-                }finally {
-                    loadingDialog.dismiss();
-                }
-            }
-            @Override
-            public void onRequestError(Exception error) {
-                ShowMessage.taskShow(FriendShowActivity.this,getString(R.string.error_net));
-            }
-        });
+        gamePlayRESTful.searchUser(dataList,this);
     }
     @Override
     protected int getLayoutResId() {
         return R.layout.activity_friend_show;
+    }
+
+    @Override
+    public void onRequestSuccess(String response) {
+        try {
+            Gson gson = new Gson();
+            //处理结果
+            BaseResult result=gson.fromJson(response,BaseResult.class);
+            if (result.getErrcode() <= 0 && result.getType() == ActionType.GAME_PLAY_SEARCH_USER)
+            {
+                GamePlayList gameList = gson.fromJson(result.getData(), GamePlayList.class);
+                if (gameList != null && gameList.getGamePlays().size() > 0) {
+
+                    playTitleLayout.setVisibility(View.VISIBLE);
+                    playGameLayout.setVisibility(View.VISIBLE);
+                    for(int i=0;i<gameList.getGamePlays().size();i++){
+                        GamePlay item=gameList.getGamePlays().get(i);
+                        //绑定数据
+                        ViewGroup.LayoutParams vlp = new ViewGroup.LayoutParams(
+                                ViewGroup.LayoutParams.MATCH_PARENT,
+                                (int) ScreenUtil.getScreenDensity(FriendShowActivity.this)*44);
+                        LayoutInflater inflater = LayoutInflater.from(FriendShowActivity.this);
+                        View view =inflater.inflate(R.layout.listview_user_game,null);
+                        ImageView gameImg=(ImageView) view.findViewById(R.id.gameImg);
+                        TextView gameName=(TextView)view.findViewById(R.id.gameName);
+                        ImageView imgLevel=(ImageView)view.findViewById(R.id.imgLevel);
+                        TextView levelName=(TextView)view.findViewById(R.id.levelName);
+                        TextView textPoints=(TextView)view.findViewById(R.id.textPoints);
+
+                        ImageWorker.loadImage(gameImg, CValues.SERVER_IMG+item.getGame_ico(),mHandler);
+                        gameName.setText(item.getGame_name());
+                        if(0<=item.getLevel()&& item.getLevel()<=10){
+                            imgLevel.setImageResource(R.drawable.leve1_16);
+                            levelName.setText("青铜("+item.getLevel()+")");
+                        }else if(11<=item.getLevel()&& item.getLevel()<=20){
+                            imgLevel.setImageResource(R.drawable.leve2_16);
+                            levelName.setText("黄金("+item.getLevel()+")");
+                        }else if(21<=item.getLevel()&& item.getLevel()<=30){
+                            imgLevel.setImageResource(R.drawable.leve3_16);
+                            levelName.setText("白银("+item.getLevel()+")");
+                        }else if(31<=item.getLevel()){
+                            imgLevel.setImageResource(R.drawable.leve4_16);
+                            levelName.setText("铂金("+item.getLevel()+")");
+                        }
+                        textPoints.setText("积分 "+item.getPoints());
+
+                        view.setLayoutParams(vlp);
+                        playGameLayout.addView(view);
+                    }
+
+                }
+            }
+            if(result.getErrcode() >0){
+                ShowMessage.taskShow(FriendShowActivity.this, result.getErrmsg());
+            }
+        }catch (Exception e)
+        {
+            LogC.write(e,TAG);
+            ShowMessage.taskShow(FriendShowActivity.this,getString(R.string.error_server));
+        }finally {
+            loadingDialog.dismiss();
+        }
+    }
+
+    @Override
+    public void onRequestError(Exception error) {
+        ShowMessage.taskShow(FriendShowActivity.this,getString(R.string.error_net));
     }
 }
