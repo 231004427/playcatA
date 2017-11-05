@@ -18,12 +18,15 @@ import com.sunlin.playcat.common.AppHelp;
 import com.sunlin.playcat.common.RestTask;
 import com.sunlin.playcat.common.ScreenUtil;
 import com.sunlin.playcat.common.SharedData;
+import com.sunlin.playcat.common.ShowMessage;
 import com.sunlin.playcat.domain.ActionType;
 import com.sunlin.playcat.domain.BaseResult;
 import com.sunlin.playcat.domain.Config;
 import com.sunlin.playcat.domain.ConfigList;
+import com.sunlin.playcat.domain.Token;
 import com.sunlin.playcat.domain.User;
 import com.sunlin.playcat.json.ConfigRESTful;
+import com.sunlin.playcat.json.TokenRESTful;
 import com.sunlin.playcat.view.LoadingDialog;
 import com.sunlin.playcat.view.UpdateDialog;
 
@@ -31,6 +34,7 @@ public class WelcomeActivity extends ActivityAll implements RestTask.ResponseCal
     private String TAG="WelcomeActivity";
     private ConfigRESTful configRESTful;
     private UpdateDialog updateDialog;
+    private TokenRESTful tokenRESTful;
     private LoadingDialog loadingDialog;
     private User user;
     private MyApp myApp;
@@ -61,7 +65,8 @@ public class WelcomeActivity extends ActivityAll implements RestTask.ResponseCal
         myApp.versionCode=AppHelp.getAppVersionCode(this);
         myApp.versionName=AppHelp.getAppVersionName(this);
 
-
+        //TOKEn
+        tokenRESTful=new TokenRESTful(user);
         //版本检查
         configRESTful=new ConfigRESTful(user);
         ConfigList config=new ConfigList();
@@ -78,9 +83,8 @@ public class WelcomeActivity extends ActivityAll implements RestTask.ResponseCal
             public void onClick(int type) {
             if(type==2)
             {
-                //服务器重启
-                myApp.mlmClient.Repeat();
-                myApp.registUser();
+                //开启消息服务
+                myApp.startMLMServer();
             }
             if(type==1)
             {
@@ -117,6 +121,8 @@ public class WelcomeActivity extends ActivityAll implements RestTask.ResponseCal
             public void onAnimationStart(Animation animation) {}
 
         });*/
+        //消息绑定
+        myApp.setServerHandler(socketHandler);
     }
 
     /**
@@ -124,15 +130,15 @@ public class WelcomeActivity extends ActivityAll implements RestTask.ResponseCal
      */
     private void redirectTo(){
         //自动登入
-        if(user.getId()==0) {
+        if(user.getId()<=0) {
             Intent intent = new Intent(WelcomeActivity.this, LoginActivity.class);
             startActivity(intent);
         }else{
-            //开启消息服务
-            myApp.setServerHandler(socketHandler);
-            myApp.startMLMServer();
-            myApp.buildUser();
-            myApp.registUser();
+            //获取TOKEN
+            Token token=new Token();
+            token.setPhone(user.getPhone());
+            token.setPassword(user.getPassword());
+            tokenRESTful.get(token,this);
         }
     }
     @Override
@@ -159,7 +165,7 @@ public class WelcomeActivity extends ActivityAll implements RestTask.ResponseCal
                         }
                     }
                     //版本更新1，强制，2提示更新
-                    Log.e(TAG,"code:"+myApp.update_code+"|"+myApp.versionCode);
+                    //Log.e(TAG,"code:"+myApp.update_code+"|"+myApp.versionCode);
                     if(myApp.update_code>myApp.versionCode){
                         //提醒用户更新
                         if(myApp.update_type==1||myApp.update_type==2) {
@@ -173,17 +179,32 @@ public class WelcomeActivity extends ActivityAll implements RestTask.ResponseCal
                         }
                     }
                 }
+                redirectTo();
             }
+            if(result.getErrcode()<=0&&result.getType()==ActionType.TOKEN_BUILD){
+                Token token=gson.fromJson(result.getData(),Token.class);
+                //开启消息服务
+                myApp.getUser().setToken(token.getToken_data());
+                myApp.startMLMServer();
+            }
+            if(result.getErrcode()>0){
+                //ShowMessage.taskShow(this,getString(R.string.error_server));
+                Intent intent = new Intent(this, LoginActivity.class);
+                startActivity(intent);
+            }
+        }else{
+            //ShowMessage.taskShow(this,getString(R.string.error_server));
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
         }
-        redirectTo();
+
     }
     @Override
     public void onRequestError(Exception error) {
-        //ShowMessage.taskShow(this,getString(R.string.error_server));
+        ShowMessage.taskShow(this,getString(R.string.error_server));
         Intent intent = new Intent(this, LoginActivity.class);
         startActivity(intent);
     }
-
     @Override
     public void onItemClick(int type) {
         if(type==1) {

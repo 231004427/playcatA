@@ -24,6 +24,7 @@ import com.sunlin.playcat.common.ShowMessage;
 import com.sunlin.playcat.domain.ActionType;
 import com.sunlin.playcat.domain.BaseResult;
 import com.sunlin.playcat.domain.Friend;
+import com.sunlin.playcat.domain.Message;
 import com.sunlin.playcat.domain.User;
 import com.sunlin.playcat.fragment.FriendFragment;
 import com.sunlin.playcat.fragment.IndexFragment;
@@ -91,6 +92,11 @@ public class MainActivity extends MyActivtiyBase implements View.OnClickListener
     protected void onResume() {
         super.onResume();
         showRed();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
     }
 
     private void showRed()
@@ -280,6 +286,11 @@ public class MainActivity extends MyActivtiyBase implements View.OnClickListener
 
         @Override
         public void MLMGetMessage(MyData myData) {
+
+        }
+
+        @Override
+        public void MLMShowMessage(Message message) {
 
         }
     };

@@ -15,6 +15,8 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 /**
  * Created by sunlin on 2017/4/25.
@@ -28,41 +30,57 @@ public class MLMTCPClient extends MLMClient implements MLMClientInterface {
     private OutputStream output;
     private InputStream input;
 
-    public MLMTCPClient(){
+    public MLMUser mlmUser;
+    public int liveNum=0;
+    SocketAddress address;
+    private Timer timer;
+    private boolean isConnection=false;
+
+    public MLMUser getMlmUser() {
+        return mlmUser;
+    }
+    public MLMTCPClient(int userid,String token){
         super();
+        mlmUser = new MLMUser(this, userid, token.getBytes());
+        address=new InetSocketAddress(host,port);
     }
     //启动线程链接服务器
     public void Run(){
+        liveNum=0;
         writeList.clear();
         serverThreadRead  = new Thread(new MLMTCPClient.ServerThreadRead());
         serverThreadRead.start();
     }
     //重启
     public void Repeat(){
-        close();
-        Run();
+        if(!isConnection) {
+            Run();
+        }else{
+            mlmUser.userRegist();
+        }
     }
     //关闭链接
-    public void close(){
+    public void close(boolean isResult){
         try {
-            isConnection = false;
-            if(output!=null){
-                output.close();
-                output=null;
-            }
-            if(input!=null) {
-                input.close();
-                input=null;
-            }
+            isConnection=false;
             if(client!=null) {
                 client.close();
                 client=null;
             }
-        } catch (IOException e) {
-            e.printStackTrace();
-            isConnection = false;
-        }finally {
-            if(delegate!=null) {
+            if(output!=null){
+                output.close();
+            }
+            if(input!=null){
+                input.close();
+            }
+            if(timer!=null){
+                timer.cancel();
+            }
+        }catch (Exception ex){
+
+        }
+        finally {
+            if(delegate!=null && isResult) {
                 delegate.MLMSocketResultError(MLMType.ACTION_SYS_BACK, MLMType.ERROR_SYS_SERVER, "服务关闭");
             }
         }
@@ -70,33 +88,36 @@ public class MLMTCPClient extends MLMClient implements MLMClientInterface {
 
     //链接服务器TCP
     public boolean connectServer(){
-
-        if(client==null){
-            try {
-                client=new Socket();
-                SocketAddress address=new InetSocketAddress(host,port);
-                client.connect(address,1500);
-                client.setTcpNoDelay(true);
-                output=client.getOutputStream();
-                input=client.getInputStream();
-
-                //开启写子线程
-                serverThreadWrite=new Thread(new MLMTCPClient.ServerThreadWrite());
-                serverThreadWrite.start();
-
-                //开启读线程
-                readMain();
-
-            }  catch (Exception e) {
-                close();
-                e.printStackTrace();
-                return false;
-            }
+        try {
+            client=new Socket();
+            client.setTcpNoDelay(true);
+            client.connect(address, 1500);
+            output = client.getOutputStream();
+            input = client.getInputStream();
+            isConnection=true;
+            //开启心跳
+            keepLive();
+            //开启写线程
+            mlmUser.userRegist();
+            serverThreadWrite=new Thread(new MLMTCPClient.ServerThreadWrite());
+            serverThreadWrite.start();
+            //开启读线程
+            readMain();
+        }  catch (Exception e) {
+            close(true);
+            e.printStackTrace();
+            return false;
         }
         return true;
     }
     //处理消息
     private void showMessage(MyHead myHead,byte[] buffRead){
+        if(myHead.getT()== MLMType.ACTION_KEEP_LIVE){
+            if(myHead.getD()==MLMType.ACTION_ACCESS){
+                liveNum=0;
+            }
+            return;
+        }
         //反馈信息
         if(delegate!=null) {
             MyHead headObj = new MyHead();
@@ -133,10 +154,30 @@ public class MLMTCPClient extends MLMClient implements MLMClientInterface {
 
         }*/
     }
-
+    //心跳检查
+    private void keepLive(){
+            timer = new Timer();
+            TimerTask tast = new TimerTask() {
+                @Override
+                public void run() {
+                    //检查是否断开
+                    if(client.isClosed()){
+                        timer.cancel();
+                    }
+                    if (liveNum > 2) {
+                        close(true);
+                        timer.cancel();
+                    } else {
+                        liveNum++;
+                        //发送心跳包
+                        mlmUser.keepLive();
+                    }
+                }
+            };
+            timer.schedule(tast, 3000, 3000);
+    }
     //读取数据
     private void readMain(){
-        isConnection=true;
         MyHead rec_head=new MyHead();
         int j=0,z=0;
         int head_size=MyHead.size;
@@ -154,7 +195,7 @@ public class MLMTCPClient extends MLMClient implements MLMClientInterface {
             try {
                 int rec=input.read(response);
                 if(rec<0){
-                    close();
+                    close(true);
                     break;
                 }
                 for(int i=0;i<rec;i++){
@@ -212,7 +253,7 @@ public class MLMTCPClient extends MLMClient implements MLMClientInterface {
                 Thread.sleep(500);
             } catch (Exception e) {
                 e.printStackTrace();
-                close();
+                close(true);
                 break;
             }
         }
@@ -237,11 +278,11 @@ public class MLMTCPClient extends MLMClient implements MLMClientInterface {
                         output.write(writeList.get(0),0,size);
                         output.flush();
                         writeList.remove(0);
-                        Log.e("send", "(" + size + ")");
+                        //LogC.e("send", "(" + size + ")");
                         Thread.sleep(500);
 
                     } catch (Exception e) {
-                        close();
+                        close(true);
                         e.printStackTrace();
                         if (delegate != null) {
                             delegate.MLMSocketResultError(MLMType.ACTION_SYS_BACK,MLMType.ERROR_SYS_SEND, "发送失败");

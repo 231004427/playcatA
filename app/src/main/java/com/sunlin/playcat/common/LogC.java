@@ -17,4 +17,9 @@ public class LogC {
             Log.d(TAG,mess);
         }
     }
+    public static void e(String mess,String TAG){
+        if(mess!=""){
+            Log.e(TAG,mess);
+        }
+    }
 }

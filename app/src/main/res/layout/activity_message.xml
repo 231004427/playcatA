@@ -45,7 +45,7 @@
                 android:layout_gravity="center_vertical"
                 android:layout_width="32dp"
                 android:layout_height="32dp"
-                toolbar:srcCompat="@drawable/more22"
+                android:src="@drawable/sys_m_45"
                 android:layout_centerVertical="true"
                 android:layout_toLeftOf="@+id/toolbar_title"
                 android:layout_toStartOf="@+id/toolbar_title" />

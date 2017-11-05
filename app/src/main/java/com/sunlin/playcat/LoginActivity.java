@@ -73,6 +73,9 @@ public class LoginActivity extends ActivityAll implements View.OnClickListener,R
         registBtn.setOnClickListener(this);
         btnLogin.setOnClickListener(this);
         forget.setOnClickListener(this);
+
+        //消息绑定
+        myApp.setServerHandler(socketHandler);
     }
 
     public void loginServer()
@@ -151,8 +154,10 @@ public class LoginActivity extends ActivityAll implements View.OnClickListener,R
                     ShowMessage.taskShow(LoginActivity.this,"服务异常");
                 }
             }
-            if(type==MLMType.ERROR_SYS_SERVER){
-                loadingDialog.dismiss();
+            if(type==MLMType.ACTION_SYS_BACK){
+                if(loadingDialog.isShow) {
+                    loadingDialog.dismiss();
+                }
                 //服务器错误
                 ShowMessage.taskShow(LoginActivity.this,"服务无响应");
             }
@@ -174,10 +179,9 @@ public class LoginActivity extends ActivityAll implements View.OnClickListener,R
                     SharedData.saveUser(user,LoginActivity.this);
                     //全局保存
                     myApp.setUser(user);
-                    //消息服务注册
+                    //消息服务启动
                     myApp.startMLMServer();
-                    myApp.buildUser();
-                    myApp.registUser();
+
                 }
                 if(result.getErrcode()>0&&result.getType()==ActionType.LOGIN){
                     loadingDialog.dismiss();

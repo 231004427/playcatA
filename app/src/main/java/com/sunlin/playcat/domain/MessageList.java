@@ -1,5 +1,6 @@
 package com.sunlin.playcat.domain;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -12,6 +13,7 @@ public class MessageList {
     int from_user;
     int to_user;
     int type;
+    Date create_time;
     List<Message> list;
 
     public int getFrom_user() {
@@ -68,5 +70,13 @@ public class MessageList {
 
     public List<Message> getList() {
         return list;
+    }
+
+    public Date getCreate_time() {
+        return create_time;
+    }
+
+    public void setCreate_time(Date create_time) {
+        this.create_time = create_time;
     }
 }

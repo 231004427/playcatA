@@ -37,6 +37,7 @@ import com.sunlin.playcat.domain.Comment;
 import com.sunlin.playcat.domain.Friend;
 import com.sunlin.playcat.domain.Message;
 import com.sunlin.playcat.domain.MessageList;
+import com.sunlin.playcat.domain.MessageType;
 import com.sunlin.playcat.fragment.MessageListAdpter;
 import com.sunlin.playcat.json.FriendRESTful;
 import com.sunlin.playcat.json.MessageRESTful;
@@ -68,8 +69,6 @@ public class MessageActivity extends MyActivtiyBase implements
     private int getType=1;
     private int start=0;
     private MyLinearLayout root_layout;
-    private Gson gson;
-
     //需修改
     private MessageList dataList;
     private MessageListAdpter listAdapter;
@@ -105,7 +104,6 @@ public class MessageActivity extends MyActivtiyBase implements
 
         userId=myApp.getUser().getId();
         token=myApp.getUser().getToken().getBytes();
-        gson= new Gson();
         //输入框监控
         commentEdit.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
@@ -134,7 +132,13 @@ public class MessageActivity extends MyActivtiyBase implements
         if(friend.getPhoto()!=null) {
             ImageWorker.loadImage(imgHead, CValues.SERVER_IMG + friend.getPhoto(),myHandle);
         }else{
-            imgHead.setImageResource(friend.getSex()==1?R.mipmap.boy45:R.mipmap.girl45);
+            if(friend.getFriend_id()==1){
+                imgHead.setImageResource(R.drawable.sys_m_45);
+            }else
+            {
+                imgHead.setImageResource(friend.getSex() == 1 ? R.mipmap.boy45 : R.mipmap.girl45);
+
+            }
         }
         imgHead.setVisibility(View.VISIBLE);
         btnSet.setOnClickListener(this);
@@ -159,8 +163,8 @@ public class MessageActivity extends MyActivtiyBase implements
         //判断list点击
         //viewList[i].setBackgroundColor(ContextCompat.getColor(getActivity(), CValues.color.textColor_low));
         dataList=new MessageList();
-        dataList.setFrom_user(myApp.getUser().getId());
-        dataList.setTo_user(myApp.getUser().getId());
+        dataList.setFrom_user(friend.getUser_id());
+        dataList.setTo_user(friend.getFriend_id());
         dataList.setCount(0);
         List<Message> listData = new ArrayList<Message>();
         dataList.setList(listData);
@@ -187,13 +191,13 @@ public class MessageActivity extends MyActivtiyBase implements
         super.onResume();
         getType=1;
         BuildData();
-        myApp.mlmUser.createRoom(session);
+        myApp.mlmClient.getMlmUser().createRoom(session);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        myApp.mlmUser.leaveRoom(session);
+        myApp.mlmClient.getMlmUser().leaveRoom(session);
     }
 
     //发送内容
@@ -214,7 +218,7 @@ public class MessageActivity extends MyActivtiyBase implements
         message.setTo_user(friend.getFriend_id());
         message.setFrom_name(myApp.getUser().getName());
         message.setVesion(1);
-        message.setType(1);//文本
+        message.setType(MessageType.TEXT);//文本
         message.setLength(text.length());
         message.setData(text);
         message.setStatus(1);//1=未发送2=准备发送3=已发送4=已读
@@ -378,13 +382,13 @@ public class MessageActivity extends MyActivtiyBase implements
                 if(message !=null){
                     ArrayList listData  =(ArrayList)dataList.getList();
                     listData.add(0,message);
-                    dataList.setCount(dataList.getCount()+1);
                     listAdapter.notifyDataSetChanged();
-                    mRecyclerView.smoothScrollToPosition(dataList.getList().size()-1);
+                    dataList.setCount(dataList.getCount()+1);
+                    mRecyclerView.smoothScrollToPosition(0);
 
                     //发送实时消息
                     if(isConnection) {
-                        myApp.mlmUser.userSendText(gson.toJson(message), friend.getFriend_id());
+                        myApp.mlmClient.getMlmUser().userSendRoom(gson.toJson(message),session);
                     }
                 }
             }
@@ -461,8 +465,10 @@ public class MessageActivity extends MyActivtiyBase implements
             //ShowMessage.taskShow(this,"监听到软键盘弹起...");
 
         }else if(oldBottom != 0 && bottom != 0 &&(bottom - oldBottom > keyHeight)){
-
+            //int temp=bottom- oldBottom;
+            //Log.e("close",bottom+":"+oldBottom);
             //ShowMessage.taskShow(this,"监听到软键盘关闭...");
+            //mRecyclerView.smoothScrollToPosition(dataList.getList().size()-1);
         }
     }
     //消息处理
@@ -479,40 +485,17 @@ public class MessageActivity extends MyActivtiyBase implements
                 if(dNum>0){
                     if(dNum==MLMType.ACTION_ACCESS){
                         //重新链接
-                        myApp.mlmUser.createRoom(session);
+                        myApp.mlmClient.getMlmUser().createRoom(session);
                     }
                 }
             }
-            if(type==MLMType.ACTION_SEND_SINGLE||type==MLMType.ACTION_SEND_MULTI){
+            if(type==MLMType.ACTION_SEND_SINGLE||type==MLMType.ACTION_SEND_ROOM){
                 //反馈信息
                 if(dNum>0){
                     if(dNum==MLMType.ACTION_ACCESS){
                         //发送成功
                     }else{
                         //发送失败
-                    }
-                }else {
-                    //接受消息
-                        String dataStr = new String(myData.getData(), Charset.forName("utf-8"));
-                        //转换消息
-                    try {
-                        Message message = gson.fromJson(dataStr, Message.class);
-                        //补充信息
-                        message.setFrom_sex(friend.getSex());
-                        message.setFrom_photo(friend.getPhoto());
-                        message.setFrom_name(friend.getName());
-                        if (message != null) {
-                            ArrayList listData = (ArrayList) dataList.getList();
-                            listData.add(0, message);
-                            listAdapter.notifyDataSetChanged();
-                            mRecyclerView.smoothScrollToPosition(0);
-                        }
-                        //置成已读
-                        message.setStatus(4);
-                        messageRESTful.updateStatus(message,MessageActivity.this);
-
-                    }catch (Exception e){
-                        LogC.write(e, TAG);
                     }
                 }
             }
@@ -521,7 +504,7 @@ public class MessageActivity extends MyActivtiyBase implements
                 if(dNum>0){
                     if(dNum==MLMType.ACTION_ACCESS){
                         //加入会话
-                        myApp.mlmUser.joinRoom(session);
+                        myApp.mlmClient.getMlmUser().joinRoom(session);
                     }
                 }
             }
@@ -537,7 +520,7 @@ public class MessageActivity extends MyActivtiyBase implements
                     //自己加入成功
                     if(userId==myData.getMyHead().getFrom()){
                         if(!isConnection){
-                            myApp.mlmUser.inviteRoom(friend.getFriend_id(),session);
+                            myApp.mlmClient.getMlmUser().inviteRoom(friend.getFriend_id(),session);
                         }
                     }else{
                         isConnection=true;
@@ -559,7 +542,7 @@ public class MessageActivity extends MyActivtiyBase implements
                             //判断是否是同一个房间
                             if(session==myData.getMyHead().getS()) {
                                 //回复邀请
-                                myApp.mlmUser.joinRoom(session);
+                                myApp.mlmClient.getMlmUser().joinRoom(session);
                             }
                         }catch (Exception ex){
                             LogC.write(ex,TAG);
@@ -576,6 +559,19 @@ public class MessageActivity extends MyActivtiyBase implements
                 }else{
                 }
                 isConnection = false;
+            }
+        }
+        @Override
+        public void MLMShowMessage(Message message) {
+            message.setFrom_sex(friend.getSex());
+            message.setFrom_photo(friend.getPhoto());
+            message.setFrom_name(friend.getName());
+            if (message != null) {
+                ArrayList listData = (ArrayList) dataList.getList();
+                listData.add(0, message);
+                listAdapter.notifyDataSetChanged();
+                dataList.setCount(dataList.getCount()+1);
+                mRecyclerView.smoothScrollToPosition(0);
             }
         }
     };

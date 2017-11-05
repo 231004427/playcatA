@@ -11,8 +11,8 @@ import android.content.pm.PackageManager;
 public class CValues {
     public static final String DOWN_PATH="/playcat/down/";
     public static final String DOWN_PATH_APP="/playcat/down/playcat.apk";
-    public static final String ip="10.66.20.222";
-    public static final String MLM_HOST="10.66.20.222";
+    public static final String ip="10.66.48.187";
+    public static final String MLM_HOST="10.66.48.187";
     public static final int MLM_PORT=8792;
     public static final String UPDATE_URL="http://"+ip+":8080/down/playcat.apk";
     public static final String SERVER_IMG="http://"+ip+":8080";

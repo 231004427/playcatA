@@ -1,8 +1,10 @@
 package com.sunlin.playcat.fragment;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.support.v7.widget.RecyclerView;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -138,7 +140,7 @@ public class MessageListAdpter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     //显示内容
                     textView_r.setText(info.getData());
                     //绑定头像
-                    if(info.getType()==2){
+                    if(info.getFrom_user()==1){
                         imgHead_r.setImageResource(R.drawable.sys_m_45);
                     }else{
                         if(myUser.getPhoto()!=null&&!myUser.getPhoto().isEmpty()){
@@ -156,13 +158,19 @@ public class MessageListAdpter extends RecyclerView.Adapter<RecyclerView.ViewHol
                     textView_l.setVisibility(View.VISIBLE);
 
                     //显示内容
-                    textView_l.setText(info.getData());
-
-
+                    if(info.getType()==1) {
+                        textView_l.setText(info.getData());
+                    }else if(info.getType()==2){
+                        textView_l.setText(
+                                Html.fromHtml(
+                                        "<b>邀请好友:</b>  Text with a " +
+                                                "<a href=\"http://www.google.com\">link</a> " +
+                                                "created in the Java source code using HTML."));
+                    }
 
                     //绑定头像
-                    if(info.getType()==2){
-                        imgHead_r.setImageResource(R.drawable.sys_m_45);
+                    if(info.getFrom_user()==1){
+                        imgHead_l.setImageResource(R.drawable.sys_m_45);
                     }else{
                         if(info.getFrom_photo()!=null){
                             ImageWorker.loadImage(imgHead_l,CValues.SERVER_IMG+info.getFrom_photo(),mHandler);

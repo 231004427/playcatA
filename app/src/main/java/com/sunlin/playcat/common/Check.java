@@ -1,6 +1,11 @@
 package com.sunlin.playcat.common;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.text.TextUtils;
+import android.util.Log;
+
+import java.util.List;
 
 /**
  * Created by sunlin on 2017/6/26.
@@ -24,5 +29,21 @@ public class Check {
             //matches():字符串是否在给定的正则表达式匹配
             return number.matches(num);
         }
+    }
+    public static boolean isBackground(Context context) {
+        ActivityManager activityManager = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
+        List<ActivityManager.RunningAppProcessInfo> appProcesses = activityManager.getRunningAppProcesses();
+        for (ActivityManager.RunningAppProcessInfo appProcess : appProcesses) {
+            if (appProcess.processName.equals(context.getPackageName())) {
+                if (appProcess.importance == ActivityManager.RunningAppProcessInfo.IMPORTANCE_BACKGROUND) {
+                    Log.i("后台", appProcess.processName);
+                    return true;
+                }else{
+                    Log.i("前台", appProcess.processName);
+                    return false;
+                }
+            }
+        }
+        return false;
     }
 }

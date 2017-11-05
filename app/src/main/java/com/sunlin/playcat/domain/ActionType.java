@@ -50,4 +50,7 @@ public class ActionType {
     public static final int MESSAGE_UPDATE_STATUS=42;
     public static final int MESSAGE_UPDATE_LIST_STATUS=43;
     public static final int FRIEND_SET_ALL_READ=44;
+    public static final int TOKEN_BUILD=45;
+    public static final int TOKEN_ERROR=46;
+    public static final int MESSAGE_ADD_FRIEND=47;
 }

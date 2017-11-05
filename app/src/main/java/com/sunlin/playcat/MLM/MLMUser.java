@@ -48,6 +48,24 @@ public class MLMUser extends MLMBase {
         myHead.setV(1);
         myHead.setT(MLMType.ACTION_SEND_SINGLE);
         myHead.setToken(token);
+        myHead.setS(0);
+        myHead.setD(0);
+        myHead.setE(0);
+        myHead.setL(rawData.length);
+
+        return mlmClient.sendMessage(rawData,myHead);
+    }
+    //房间发送
+    public boolean userSendRoom(String content,long roomID){
+        byte[] rawData=content.getBytes();
+
+        MyHead myHead=new MyHead();
+        myHead.setFrom(userid);
+        myHead.setTo(roomID);
+        myHead.setV(1);
+        myHead.setT(MLMType.ACTION_SEND_ROOM);
+        myHead.setS(roomID);
+        myHead.setToken(token);
         myHead.setD(0);
         myHead.setE(0);
         myHead.setL(rawData.length);

@@ -39,9 +39,12 @@ import com.sunlin.playcat.domain.ActionType;
 import com.sunlin.playcat.domain.Area;
 import com.sunlin.playcat.domain.BaseResult;
 import com.sunlin.playcat.domain.Friend;
+import com.sunlin.playcat.domain.Message;
+import com.sunlin.playcat.domain.MessageType;
 import com.sunlin.playcat.domain.User;
 import com.sunlin.playcat.fragment.FriendFragment;
 import com.sunlin.playcat.json.FriendRESTful;
+import com.sunlin.playcat.json.MessageRESTful;
 import com.sunlin.playcat.json.UserRESTful;
 
 import java.util.ArrayList;
@@ -67,7 +70,7 @@ public class AddFriendDialog extends DialogFragment implements RestTask.Response
     private User friendUser;
     private User myUser;
     private UserRESTful userRESTful;
-    private FriendRESTful friendRESTful;
+    private MessageRESTful messageRESTful;
 
     private Boolean isLoading=false;
 
@@ -105,6 +108,7 @@ public class AddFriendDialog extends DialogFragment implements RestTask.Response
                 if(isLoading)return;
                 isLoading=true;
                 messText.setVisibility(View.GONE);
+                /*
                 Friend friend=new Friend();
                 friend.setFriend_id(friendUser.getId());
                 friend.setUser_id(myUser.getId());
@@ -112,7 +116,19 @@ public class AddFriendDialog extends DialogFragment implements RestTask.Response
                 friend.setStatus(2);
                 friend.setGroup_id(-1);
                 friend.setType(-1);
-                friendRESTful.insert(friend,this);
+                friendRESTful.insert(friend,this);*/
+                Message message = new Message();
+                message.setFrom_user(1);
+                message.setTo_user(friendUser.getId());
+                message.setType(MessageType.ADD_FRIEND);
+                message.setFrom_name("");
+                message.setVesion(1);
+                message.setLength(0);
+                message.setData(String.valueOf(myUser.getId()));//邀请人
+                message.setStatus(1);//1=未发送2=准备发送3=已发送4=已读
+                message.setCreate_time(new Date());
+                messageRESTful.addFriend(message,this);
+
             }
         }
 
@@ -140,7 +156,7 @@ public class AddFriendDialog extends DialogFragment implements RestTask.Response
 
         myUser=((MyApp)getActivity().getApplication()).getUser();
         userRESTful=new UserRESTful(myUser);
-        friendRESTful=new FriendRESTful(myUser);
+        messageRESTful=new MessageRESTful(myUser);
 
         btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -259,7 +275,7 @@ public class AddFriendDialog extends DialogFragment implements RestTask.Response
                     messText.setVisibility(View.VISIBLE);
                 }
             }
-            if(result.getErrcode() <= 0 && result.getType() == ActionType.FRIEND_ADD){
+            if(result.getErrcode() <= 0 && result.getType() == ActionType.MESSAGE_ADD_FRIEND){
 
                 dismiss();
                 ShowMessage.taskShow(getContext(),result.getText());

@@ -35,4 +35,10 @@ public class MessageRESTful extends ObjRESTful {
         baseRequest.setActionType(ActionType.MESSAGE_UPDATE_STATUS);
         ServerTask.Post(gson.toJson(baseRequest),null,responseCallback);
     }
+    public void addFriend(Message obj, RestTask.ResponseCallback responseCallback){
+        String dataStr=gson.toJson(obj);
+        baseRequest.setData(dataStr);
+        baseRequest.setActionType(ActionType.MESSAGE_ADD_FRIEND);
+        ServerTask.Post(gson.toJson(baseRequest),null,responseCallback);
+    }
 }

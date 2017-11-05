@@ -25,7 +25,7 @@ public class MLMType {
     //消息单发
     public static int ACTION_SEND_SINGLE=8;
     //消息群发
-    public static int ACTION_SEND_MULTI=9;
+    public static int ACTION_SEND_ROOM=9;
     //心跳包
     public static int ACTION_KEEP_LIVE=10;
     //系统通知
