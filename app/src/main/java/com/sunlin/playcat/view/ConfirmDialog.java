@@ -31,17 +31,17 @@ public class ConfirmDialog extends DialogFragment implements View.OnClickListene
     private CircleImageView imgHead;
     private TextView nameText;
     private TextView messText;
-    private Button btnOk;
+    private ImageView btnOk;
     private ImageView btnClose;
-    private Message message;
+    private String messStr;
     private Handler mHandler = new Handler();
 
-    public void setMessage(Message message) {
-        this.message = message;
+    public void setMessStr(String messStr) {
+        this.messStr = messStr;
     }
 
-    public Message getMessage() {
-        return message;
+    public String getMessStr() {
+        return messStr;
     }
 
     @Override
@@ -49,7 +49,7 @@ public class ConfirmDialog extends DialogFragment implements View.OnClickListene
         super.onResume();
         Window dialogWindow = getDialog().getWindow();
         WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-        lp.width=(int)(ScreenUtil.getScreenWidthPixels(getActivity())*0.75);
+        lp.width=(int)(ScreenUtil.getScreenWidthPixels(getActivity())*0.55);
         dialogWindow.setAttributes(lp);
         getDialog().getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
     }
@@ -57,7 +57,6 @@ public class ConfirmDialog extends DialogFragment implements View.OnClickListene
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setCancelable(false);
         int theme = 0;
         setStyle(DialogFragment.STYLE_NO_TITLE,theme);
     }
@@ -68,31 +67,22 @@ public class ConfirmDialog extends DialogFragment implements View.OnClickListene
         getDialog().requestWindowFeature(Window.FEATURE_NO_TITLE);
         View view = inflater.inflate(R.layout.dialog_confirm, container);
 
-        imgHead=(CircleImageView)view.findViewById(R.id.imgHead);
-        nameText=(TextView)view.findViewById(R.id.nameText);
         messText=(TextView)view.findViewById(R.id.messText);
-        btnOk=(Button)view.findViewById(R.id.btnOK);
+        btnOk=(ImageView)view.findViewById(R.id.btnOk);
         btnClose=(ImageView)view.findViewById(R.id.btnClose);
 
         btnOk.setOnClickListener(this);
         btnClose.setOnClickListener(this);
-
-        if(message!=null){
-
-            ImageWorker.loadImage(imgHead, CValues.SERVER_IMG + message.getFrom_photo(), mHandler);
-            nameText.setText(message.getFrom_name());
-            if(message.getType()== MessageType.ADD_FRIEND) {
-                messText.setText("邀请您成为好友");
-            }
+        if(!messStr.equals("")) {
+            messText.setText(messStr);
         }
-
         return view;
     }
 
     @Override
     public void onClick(View v) {
         switch (v.getId()){
-            case R.id.btnOK:
+            case R.id.btnOk:
                 if(listener != null){
                     listener.onClick(2);
                 }

@@ -12,9 +12,11 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sunlin.playcat.MLM.MLMType;
 import com.sunlin.playcat.MLM.MyData;
 import com.sunlin.playcat.common.AppHelp;
+import com.sunlin.playcat.common.GsonHelp;
 import com.sunlin.playcat.common.RestTask;
 import com.sunlin.playcat.common.ScreenUtil;
 import com.sunlin.playcat.common.SharedData;
@@ -143,7 +145,7 @@ public class WelcomeActivity extends ActivityAll implements RestTask.ResponseCal
     }
     @Override
     public void onRequestSuccess(String response) {
-        Gson gson=new Gson();
+        Gson gson = GsonHelp.getGsonObj();
         BaseResult result = gson.fromJson(response,BaseResult.class);
         if(result!=null){
             if (result.getErrcode() <= 0 && result.getType() == ActionType.CONFIG_GET) {

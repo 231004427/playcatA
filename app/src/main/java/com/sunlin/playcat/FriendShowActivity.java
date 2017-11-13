@@ -8,11 +8,13 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sunlin.playcat.common.CValues;
 import com.sunlin.playcat.common.ImageWorker;
 import com.sunlin.playcat.common.LogC;
@@ -25,13 +27,16 @@ import com.sunlin.playcat.domain.Friend;
 import com.sunlin.playcat.domain.GamePlay;
 import com.sunlin.playcat.domain.GamePlayList;
 import com.sunlin.playcat.domain.User;
+import com.sunlin.playcat.json.FriendRESTful;
 import com.sunlin.playcat.json.GamePlayRESTful;
 import com.sunlin.playcat.view.CircleImageView;
+import com.sunlin.playcat.view.ConfirmDialog;
+import com.sunlin.playcat.view.LoadingDialog;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class FriendShowActivity extends MyActivtiyToolBar implements RestTask.ResponseCallback {
+public class FriendShowActivity extends MyActivtiyToolBar implements RestTask.ResponseCallback,View.OnClickListener {
     private String TAG="FriendShowActivity";
     private Friend friend;
     private Handler mHandler = new Handler();
@@ -42,6 +47,10 @@ public class FriendShowActivity extends MyActivtiyToolBar implements RestTask.Re
     private ImageView sexImg;
     private LinearLayout playTitleLayout;
     private LinearLayout playGameLayout;
+    private Button btnCancel;
+    private Button btnMessage;
+    private Button btnPlay;
+
     private GamePlayRESTful gamePlayRESTful;
     private User myUser;
     @Override
@@ -55,10 +64,17 @@ public class FriendShowActivity extends MyActivtiyToolBar implements RestTask.Re
         sexImg=(ImageView)findViewById(R.id.sexImg);
         playTitleLayout=(LinearLayout)findViewById(R.id.playTitleLayout);
         playGameLayout=(LinearLayout)findViewById(R.id.playGameLayout);
+        btnCancel=(Button)findViewById(R.id.btnCancel);
+        btnMessage=(Button)findViewById(R.id.btnMessage);
+        btnPlay=(Button)findViewById(R.id.btnPlay);
 
         friend=(Friend) getIntent().getSerializableExtra("friend");
         ToolbarBuild(friend.getName(),true,false);
         ToolbarBackListense();
+
+        btnCancel.setOnClickListener(this);
+        btnPlay.setOnClickListener(this);
+        btnMessage.setOnClickListener(this);
 
         //绑定数据
         nameText.setText(friend.getName());
@@ -98,7 +114,6 @@ public class FriendShowActivity extends MyActivtiyToolBar implements RestTask.Re
     @Override
     public void onRequestSuccess(String response) {
         try {
-            Gson gson = new Gson();
             //处理结果
             BaseResult result=gson.fromJson(response,BaseResult.class);
             if (result.getErrcode() <= 0 && result.getType() == ActionType.GAME_PLAY_SEARCH_USER)
@@ -145,6 +160,11 @@ public class FriendShowActivity extends MyActivtiyToolBar implements RestTask.Re
 
                 }
             }
+            if (result.getErrcode() <= 0 && result.getType() == ActionType.FRIEND_DEL){
+                finish();
+                ShowMessage.taskShow(FriendShowActivity.this,result.getText());
+
+            }
             if(result.getErrcode() >0){
                 ShowMessage.taskShow(FriendShowActivity.this, result.getErrmsg());
             }
@@ -160,5 +180,26 @@ public class FriendShowActivity extends MyActivtiyToolBar implements RestTask.Re
     @Override
     public void onRequestError(Exception error) {
         ShowMessage.taskShow(FriendShowActivity.this,getString(R.string.error_net));
+    }
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.btnCancel:
+                ConfirmDialog confirmDialog=new ConfirmDialog();
+                confirmDialog.setMessStr("您确认取消好友吗");
+                confirmDialog.setCancelable(true);
+                confirmDialog.show(getSupportFragmentManager(),"config");
+                confirmDialog.setOnClickListener(new LoadingDialog.OnClickListener() {
+                    @Override
+                    public void onClick(int type) {
+                        if(type==2){
+                            loadingDialog.show(getSupportFragmentManager(),"loading");
+                            FriendRESTful friendRESTful=new FriendRESTful(myUser);
+                            friendRESTful.delete(friend,FriendShowActivity.this);
+                        }
+                    }
+                });
+                break;
+        }
     }
 }

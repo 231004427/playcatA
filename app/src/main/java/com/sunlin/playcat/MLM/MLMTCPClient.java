@@ -41,7 +41,7 @@ public class MLMTCPClient extends MLMClient implements MLMClientInterface {
     }
     public MLMTCPClient(int userid,String token){
         super();
-        mlmUser = new MLMUser(this, userid, token.getBytes());
+        mlmUser = new MLMUser(this, userid,token.getBytes());
         address=new InetSocketAddress(host,port);
     }
     //启动线程链接服务器
@@ -60,8 +60,9 @@ public class MLMTCPClient extends MLMClient implements MLMClientInterface {
         }
     }
     //关闭链接
-    public void close(boolean isResult){
+    public void close(boolean isResult,int type){
         try {
+            LogC.e("链接关闭"+type,"CLOSE");
             isConnection=false;
             if(client!=null) {
                 client.close();
@@ -81,7 +82,7 @@ public class MLMTCPClient extends MLMClient implements MLMClientInterface {
         }
         finally {
             if(delegate!=null && isResult) {
-                delegate.MLMSocketResultError(MLMType.ACTION_SYS_BACK, MLMType.ERROR_SYS_SERVER, "服务关闭");
+                delegate.MLMSocketResultError(MLMType.ACTION_SYS_BACK, type, "服务关闭");
             }
         }
     }
@@ -104,7 +105,7 @@ public class MLMTCPClient extends MLMClient implements MLMClientInterface {
             //开启读线程
             readMain();
         }  catch (Exception e) {
-            close(true);
+            close(true,MLMType.ERROR_SYS_SERVER);
             e.printStackTrace();
             return false;
         }
@@ -164,8 +165,8 @@ public class MLMTCPClient extends MLMClient implements MLMClientInterface {
                     if(client.isClosed()){
                         timer.cancel();
                     }
-                    if (liveNum > 2) {
-                        close(true);
+                    if (liveNum > 10) {
+                        close(true,MLMType.ERROR_SYS_TIMEOUT);
                         timer.cancel();
                     } else {
                         liveNum++;
@@ -195,7 +196,7 @@ public class MLMTCPClient extends MLMClient implements MLMClientInterface {
             try {
                 int rec=input.read(response);
                 if(rec<0){
-                    close(true);
+                    close(true,MLMType.ERROR_SYS_SERVER);
                     break;
                 }
                 for(int i=0;i<rec;i++){
@@ -253,7 +254,7 @@ public class MLMTCPClient extends MLMClient implements MLMClientInterface {
                 Thread.sleep(500);
             } catch (Exception e) {
                 e.printStackTrace();
-                close(true);
+                close(true,MLMType.ERROR_SYS_SERVER);
                 break;
             }
         }
@@ -278,11 +279,11 @@ public class MLMTCPClient extends MLMClient implements MLMClientInterface {
                         output.write(writeList.get(0),0,size);
                         output.flush();
                         writeList.remove(0);
-                        //LogC.e("send", "(" + size + ")");
+                        LogC.e("send", "(" + size + ")");
                         Thread.sleep(500);
 
                     } catch (Exception e) {
-                        close(true);
+                        close(true,MLMType.ERROR_SYS_SEND);
                         e.printStackTrace();
                         if (delegate != null) {
                             delegate.MLMSocketResultError(MLMType.ACTION_SYS_BACK,MLMType.ERROR_SYS_SEND, "发送失败");

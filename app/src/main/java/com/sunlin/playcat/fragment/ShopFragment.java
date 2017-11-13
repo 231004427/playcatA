@@ -12,8 +12,10 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sunlin.playcat.MyApp;
 import com.sunlin.playcat.R;
+import com.sunlin.playcat.common.GsonHelp;
 import com.sunlin.playcat.common.LogC;
 import com.sunlin.playcat.common.RestTask;
 import com.sunlin.playcat.common.ShowMessage;
@@ -106,7 +108,7 @@ public class ShopFragment extends Fragment implements RestTask.ResponseCallback 
     @Override
     public void onRequestSuccess(String response) {
         //处理结果
-        Gson gson = new Gson();
+        Gson gson= GsonHelp.getGsonObj();
         BaseResult result= gson.fromJson(response,BaseResult.class);
         try {
             if(result!=null) {

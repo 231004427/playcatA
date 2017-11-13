@@ -13,10 +13,12 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sunlin.playcat.MainActivity;
 import com.sunlin.playcat.MyApp;
 import com.sunlin.playcat.R;
 import com.sunlin.playcat.common.CValues;
+import com.sunlin.playcat.common.GsonHelp;
 import com.sunlin.playcat.common.ImageWorker;
 import com.sunlin.playcat.common.LogC;
 import com.sunlin.playcat.common.RestTask;
@@ -104,7 +106,7 @@ public class IndexFragment  extends Fragment implements RestTask.ResponseCallbac
     @Override
     public void onRequestSuccess(String response) {
         //处理结果
-        Gson gson = new Gson();
+        Gson gson= GsonHelp.getGsonObj();
         BaseResult result= gson.fromJson(response,BaseResult.class);
         try {
             if(result!=null) {

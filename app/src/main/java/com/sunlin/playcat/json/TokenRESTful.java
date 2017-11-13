@@ -1,5 +1,7 @@
 package com.sunlin.playcat.json;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sunlin.playcat.common.RestTask;
 import com.sunlin.playcat.common.ServerTask;
 import com.sunlin.playcat.domain.ActionType;

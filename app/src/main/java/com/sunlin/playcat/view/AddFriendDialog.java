@@ -1,5 +1,6 @@
 package com.sunlin.playcat.view;
 
+import android.app.Application;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -26,9 +27,11 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sunlin.playcat.MyApp;
 import com.sunlin.playcat.R;
 import com.sunlin.playcat.common.CValues;
+import com.sunlin.playcat.common.GsonHelp;
 import com.sunlin.playcat.common.ImageWorker;
 import com.sunlin.playcat.common.LogC;
 import com.sunlin.playcat.common.PhoneFormatCheckUtils;
@@ -64,18 +67,28 @@ public class AddFriendDialog extends DialogFragment implements RestTask.Response
     private Button btnNext;
     private Button btnPrev;
     private TextView messText;
+    private TextView title;
+    private String titleStr;
     private Handler mHandler = new Handler();
 
     private int type=1;
     private User friendUser;
     private User myUser;
+    private MyApp myApp;
     private UserRESTful userRESTful;
     private MessageRESTful messageRESTful;
+    private FriendRESTful friendRESTful;
+
+    private Message message;
 
     private Boolean isLoading=false;
 
-    public void setUser(User _friendUser){
+    public void setFriendUser(User _friendUser){
         friendUser=_friendUser;
+    }
+
+    public void setTitleStr(String titleStr) {
+        this.titleStr = titleStr;
     }
 
     public void setType(int _type){
@@ -100,36 +113,22 @@ public class AddFriendDialog extends DialogFragment implements RestTask.Response
             //查询用户信息
             userRESTful.get(friendUser,this);
         }
-        // 提交服务器
-        if(type==3){
-            if(mListener!=null) {
-                mListener.onItemClick(friendUser);
-            }else {
-                if(isLoading)return;
-                isLoading=true;
-                messText.setVisibility(View.GONE);
-                /*
-                Friend friend=new Friend();
-                friend.setFriend_id(friendUser.getId());
-                friend.setUser_id(myUser.getId());
-                friend.setCreate_time(new Date());
-                friend.setStatus(2);
-                friend.setGroup_id(-1);
-                friend.setType(-1);
-                friendRESTful.insert(friend,this);*/
-                Message message = new Message();
-                message.setFrom_user(1);
-                message.setTo_user(friendUser.getId());
-                message.setType(MessageType.ADD_FRIEND);
-                message.setFrom_name("");
-                message.setVesion(1);
-                message.setLength(0);
-                message.setData(String.valueOf(myUser.getId()));//邀请人
-                message.setStatus(1);//1=未发送2=准备发送3=已发送4=已读
-                message.setCreate_time(new Date());
-                messageRESTful.addFriend(message,this);
+        //同意好友
+        if(type==4){
+            nameText.setVisibility(View.VISIBLE);
+            imgHead.setVisibility(View.VISIBLE);
+            inputText.setVisibility(View.GONE);
+            btnNext.setVisibility(View.GONE);
+            btnPrev.setVisibility(View.GONE);
+            btnOK.setVisibility(View.VISIBLE);
 
+            //显示好友信息
+            if(friendUser.getPhoto()!=null) {
+                ImageWorker.loadImage(imgHead, CValues.SERVER_IMG + friendUser.getPhoto(), mHandler);
+            }else{
+                imgHead.setImageResource(friendUser.getSex()==1?R.mipmap.boy45:R.mipmap.girl45);
             }
+            nameText.setText(friendUser.getName());
         }
 
     }
@@ -141,6 +140,7 @@ public class AddFriendDialog extends DialogFragment implements RestTask.Response
         closeImg=(ImageView)view.findViewById(R.id.closeImg);
         inputText=(EditText)view.findViewById(R.id.inputText);
         nameText=(TextView)view.findViewById(R.id.nameText);
+        title=(TextView)view.findViewById(R.id.title);
         imgHead=(CircleImageView)view.findViewById(R.id.imgHead);
         btnOK=(Button)view.findViewById(R.id.btnOK);
         btnNext=(Button)view.findViewById(R.id.btnNext);
@@ -154,19 +154,66 @@ public class AddFriendDialog extends DialogFragment implements RestTask.Response
             }
         });
 
-        myUser=((MyApp)getActivity().getApplication()).getUser();
+        myApp=((MyApp)getActivity().getApplication());
+        myUser=myApp.getUser();
         userRESTful=new UserRESTful(myUser);
         messageRESTful=new MessageRESTful(myUser);
+        friendRESTful=new FriendRESTful(myUser);
+        message= new Message();
+
+        if(!titleStr.equals("")){
+            title.setText(titleStr);
+        }
+
 
         btnOK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                type=3;
-                buildAction();
+                if(mListener!=null) {
+                    mListener.onItemClick(friendUser,type);
+                }
+                if(isLoading)return;
+                isLoading=true;
+                messText.setVisibility(View.GONE);
+                //申请加好友
+                if(type==2){
+
+                    message.setFrom_user(1);
+                    message.setTo_user(friendUser.getId());
+                    message.setType(MessageType.ADD_FRIEND);
+                    message.setFrom_name("");
+                    message.setVesion(1);
+                    message.setLength(0);
+
+                    String messData="";
+                    messData=String.valueOf(myUser.getId())+"|";
+                    messData+=String.valueOf(myUser.getName())+"|";
+                    if(myUser.getPhoto()!=null||!myUser.getPhoto().isEmpty()){
+                        messData+=myUser.getPhoto()+"|";
+                    }else{
+                        messData+="null|";
+                    }
+                    messData+=String.valueOf(myUser.getSex());
+                    message.setData(messData);
+
+                    message.setStatus(1);//1=未发送2=准备发送3=已发送4=已读
+                    message.setCreate_time(new Date());
+                    messageRESTful.addFriend(message,AddFriendDialog.this);
+
+                }
+                //同意加好友
+                if(type==4){
+                    Friend friend=new Friend();
+                    friend.setFriend_id(friendUser.getId());
+                    friend.setUser_id(myUser.getId());
+                    friend.setCreate_time(new Date());
+                    friend.setStatus(1);
+                    friend.setGroup_id(-1);
+                    friend.setType(1);
+                    friendRESTful.insert(friend,AddFriendDialog.this);
+                }
             }
         });
-
-        friendUser=new User();
         btnNext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -247,7 +294,7 @@ public class AddFriendDialog extends DialogFragment implements RestTask.Response
     @Override
     public void onRequestSuccess(String response) {
         try {
-            Gson gson=new Gson();
+            Gson gson= GsonHelp.getGsonObj();
             BaseResult result=gson.fromJson(response,BaseResult.class);
             if (result.getErrcode() <= 0 && result.getType() == ActionType.USER_GET){
                 User user=gson.fromJson(result.getData(),User.class);
@@ -263,8 +310,11 @@ public class AddFriendDialog extends DialogFragment implements RestTask.Response
                         btnNext.setVisibility(View.GONE);
                         nameText.setVisibility(View.VISIBLE);
                         imgHead.setVisibility(View.VISIBLE);
-
-                        ImageWorker.loadImage(imgHead, CValues.SERVER_IMG + user.getPhoto(), mHandler);
+                        if(user.getPhoto()!=null) {
+                            ImageWorker.loadImage(imgHead, CValues.SERVER_IMG + user.getPhoto(), mHandler);
+                        }else{
+                            imgHead.setImageResource(user.getSex()==1?R.mipmap.boy45:R.mipmap.girl45);
+                        }
                         nameText.setText(user.getName());
 
                         btnPrev.setVisibility(View.VISIBLE);
@@ -276,7 +326,13 @@ public class AddFriendDialog extends DialogFragment implements RestTask.Response
                 }
             }
             if(result.getErrcode() <= 0 && result.getType() == ActionType.MESSAGE_ADD_FRIEND){
+                dismiss();
+                ShowMessage.taskShow(getContext(),result.getText());
+                //TCP发送申请消息
+                myApp.mlmClient.getMlmUser().userSendText(gson.toJson(message),friendUser.getId());
 
+            }
+            if(result.getErrcode() <= 0 && result.getType() == ActionType.FRIEND_ADD){
                 dismiss();
                 ShowMessage.taskShow(getContext(),result.getText());
             }
@@ -303,8 +359,7 @@ public class AddFriendDialog extends DialogFragment implements RestTask.Response
         isLoading=false;
         LogC.write(error,TAG);
     }
-
     public interface OnClickOkListener{
-        void onItemClick(User user);
+        void onItemClick(User user,int type);
     }
 }

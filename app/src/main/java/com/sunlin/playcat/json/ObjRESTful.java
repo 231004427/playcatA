@@ -3,7 +3,9 @@ package com.sunlin.playcat.json;
 import android.content.Context;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sunlin.playcat.common.CValues;
+import com.sunlin.playcat.common.GsonHelp;
 import com.sunlin.playcat.common.RestTask;
 import com.sunlin.playcat.common.ServerTask;
 import com.sunlin.playcat.common.SharedData;
@@ -26,7 +28,9 @@ public class ObjRESTful {
     {
         baseRequest=_baseRequest;
         baseRequest.setVesion(1);
-        gson=new Gson();
+        gson= new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd HH:mm:ss")
+                .create();
     }
     public ObjRESTful(User _user){
         baseRequest=new BaseRequest();
@@ -35,7 +39,9 @@ public class ObjRESTful {
         baseRequest.setToken(_user.getToken());
         baseRequest.setVesion(_user.getVersion());
         baseRequest.setAppid(CValues.APP_ID);
-        gson=new Gson();
+        gson = new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd HH:mm:ss")
+                .create();
     }
     public void requestPost(int type,String dataStr,RestTask.ResponseCallback responseCallback){
         baseRequest.setData(dataStr);

@@ -43,7 +43,7 @@ public class MyApp extends Application implements MLMSocketDelegate {
     public void onTerminate() {
         // 程序终止的时候执行
         super.onTerminate();
-        mlmClient.close(false);
+        mlmClient.close(false,-1);
     }
     private User user;
     public int versionCode;
@@ -69,6 +69,8 @@ public class MyApp extends Application implements MLMSocketDelegate {
             mlmClient.delegate=this;
             mlmClient.Run();
         }else{
+            mlmClient.getMlmUser().setUserid(user.getId());
+            mlmClient.getMlmUser().setToken(user.getToken().getBytes());
             mlmClient.Repeat();
         }
     }

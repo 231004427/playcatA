@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sunlin.playcat.MyActivtiyToolBar;
 import com.sunlin.playcat.R;
 import com.sunlin.playcat.common.LogC;
@@ -179,7 +180,9 @@ public class MyrecordActivity extends MyActivtiyToolBar implements MyRecordAdapt
     @Override
     public void onRequestSuccess(String response) {
         try {
-            Gson gson = new Gson();
+            Gson gson =new GsonBuilder()
+                    .setDateFormat("yyyy-MM-dd HH:mm:ss")
+                    .create();
             //处理结果
             BaseResult result=gson.fromJson(response,BaseResult.class);
             if (result.getErrcode() <= 0 && result.getType() == ActionType.GAME_PLAY_SEARCH_USER)

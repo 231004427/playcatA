@@ -18,9 +18,11 @@ import android.widget.TextView;
 import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sunlin.playcat.FriendShowActivity;
 import com.sunlin.playcat.MyApp;
 import com.sunlin.playcat.R;
+import com.sunlin.playcat.common.GsonHelp;
 import com.sunlin.playcat.common.LogC;
 import com.sunlin.playcat.common.RestTask;
 import com.sunlin.playcat.common.ShowMessage;
@@ -86,6 +88,24 @@ public class FriendFragment extends Fragment implements FriendListAdpter.OnItemC
         friendRESTful=new FriendRESTful(myApp.getUser());
 
 
+    }
+    public void BaseBuild(){
+        isLoading=false;
+        getType=1;
+        BuildData();
+    }
+    @Override
+    public void onResume() {
+        super.onResume();
+        BaseBuild();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(!hidden) {
+            BaseBuild();
+        }
     }
     //判断是否滑动到底部
     public  boolean isSlideToBottom(RecyclerView recyclerView) {
@@ -156,17 +176,12 @@ public class FriendFragment extends Fragment implements FriendListAdpter.OnItemC
         mRecyclerView.setAdapter(listAdapter);
 
 
-        //初始化加载
-        isLoading=false;
-        getType=1;
-        BuildData();
-
-
         //添加朋友对话框
         addImg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addFriendDialog=new AddFriendDialog();
+                addFriendDialog.setFriendUser(new User());
                 addFriendDialog.setType(1);
                 addFriendDialog.show(getFragmentManager(),"AddFriendDialog");
 
@@ -232,6 +247,9 @@ public class FriendFragment extends Fragment implements FriendListAdpter.OnItemC
         if(getType==1){
             loadTextView.setText(myContext.getString(R.string.loading));
             loadTextView.setVisibility(View.VISIBLE);
+            dataList.setStart(0);
+            dataList.setStatus(1);
+            dataList.setPageNum(10);
             //mRecyclerView.setVisibility(View.VISIBLE);
         }
         /*
@@ -263,7 +281,7 @@ public class FriendFragment extends Fragment implements FriendListAdpter.OnItemC
     @Override
     public void onRequestSuccess(String response) {
         try {
-            Gson gson = new Gson();
+            Gson gson= GsonHelp.getGsonObj();
             //处理结果
             BaseResult result=gson.fromJson(response,BaseResult.class);
             if (result.getErrcode() <= 0 && result.getType() == ActionType.FRIEND_SEARCH)
@@ -296,6 +314,10 @@ public class FriendFragment extends Fragment implements FriendListAdpter.OnItemC
                     loadTextView.setVisibility(View.GONE);
                 }else{
                     if(getType==1 ||getType==2) {
+                        if(dataList.getList().size()>0) {
+                            dataList.getList().clear();
+                            listAdapter.notifyDataSetChanged();
+                        }
                         loadTextView.setVisibility(View.VISIBLE);
                         loadTextView.setText(myContext.getString(R.string.nodata_f));
                     }

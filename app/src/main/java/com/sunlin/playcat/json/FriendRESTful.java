@@ -53,4 +53,10 @@ public class FriendRESTful extends ObjRESTful {
         baseRequest.setActionType(ActionType.FRIEND_SET_ALL_READ);
         ServerTask.Post(gson.toJson(baseRequest),null,responseCallback);
     }
+    public void delete(Friend obj,RestTask.ResponseCallback responseCallback){
+        String dataStr=gson.toJson(obj);
+        baseRequest.setData(dataStr);
+        baseRequest.setActionType(ActionType.FRIEND_DEL);
+        ServerTask.Post(gson.toJson(baseRequest),null,responseCallback);
+    }
 }

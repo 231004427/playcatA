@@ -12,8 +12,19 @@ public class MLMBase {
         mlmClient=_mlmClient;
         userid=_userid;
         token=new byte[32];
-        for (int i=0;i<_token.length;i++){
-            token[i]=_token[i];
+        setToken(_token);
+    }
+    public void setUserid(int userid) {
+        this.userid = userid;
+    }
+
+    public void setToken(byte[] _token) {
+        for (int i=0;i<token.length;i++){
+            if(i<_token.length) {
+                token[i] = _token[i];
+            }else{
+                token[i]=0;
+            }
         }
     }
 }

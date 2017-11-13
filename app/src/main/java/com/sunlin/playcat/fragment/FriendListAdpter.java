@@ -110,13 +110,14 @@ public class FriendListAdpter extends RecyclerView.Adapter<RecyclerView.ViewHold
                 nameText.setText(info.getName());
                 nameText.setTag(info);
                 playStatus.setText(info.getPlay_status()==2?"正在玩":" 组队中");
-
+                ColorMatrix matrix = new ColorMatrix();
                 if(info.getOnline()==0) {
-                    ColorMatrix matrix = new ColorMatrix();
                     matrix.setSaturation(0);//饱和度 0灰色 100过度彩色，50正常
-                    ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
-                    imgHead.setColorFilter(filter);
+                }else{
+                    matrix.setSaturation(1);//饱和度 0灰色 100过度彩色，50正常
                 }
+                ColorMatrixColorFilter filter = new ColorMatrixColorFilter(matrix);
+                imgHead.setColorFilter(filter);
                 //绑定头像
                 if(info.getPhoto()!=null||!info.getPhoto().isEmpty()){
                     ImageWorker.loadImage(imgHead, CValues.SERVER_IMG+info.getPhoto(),mHandler);

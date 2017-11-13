@@ -71,7 +71,6 @@ public class SetPassActivity extends MyActivtiyToolBar implements RestTask.Respo
         try{
             loadingDialog.dismiss();
             //处理结果
-            Gson gson=new Gson();
             BaseResult result = gson.fromJson(response,BaseResult.class);
             if(result!=null){
 

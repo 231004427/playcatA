@@ -16,6 +16,7 @@ import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sunlin.playcat.common.CValues;
 import com.sunlin.playcat.common.ImageWorker;
 import com.sunlin.playcat.common.LogC;
@@ -355,6 +356,7 @@ public class GoodsBuyActivity extends MyActivtiyToolBar implements View.OnClickL
 
         orderRESTful=new OrderRESTful(user);
         orderRESTful.Add(order,this);
+        loadingDialog.setIsCancel(false);
         loadingDialog.show(getSupportFragmentManager(),"loading");
 
     }
@@ -375,7 +377,6 @@ public class GoodsBuyActivity extends MyActivtiyToolBar implements View.OnClickL
     public void onRequestSuccess(String response) {
 
         try{
-            Gson gson=new Gson();
             BaseResult result=gson.fromJson(response, BaseResult.class);
 
             if(result!=null) {
@@ -401,11 +402,13 @@ public class GoodsBuyActivity extends MyActivtiyToolBar implements View.OnClickL
                     //下单成功
                     loadingDialog.setTitle("下单成功");
                     loadingDialog.setBtnStr("返回");
-                    loadingDialog.show(getSupportFragmentManager(),"repeat");
+                    loadingDialog.setLoadImg(ContextCompat.getDrawable(this,R.drawable.smile));
+                    loadingDialog.showRepeat();
                     loadingDialog.setOnClickListener(new LoadingDialog.OnClickListener() {
                         @Override
                         public void onClick(int type) {
                             if(type==2){
+                                loadingDialog.dismiss();
                                 finish();
                             }
                         }

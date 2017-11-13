@@ -6,14 +6,20 @@ import android.os.Handler;
 import android.support.v4.app.FragmentManager;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sunlin.playcat.MLM.MLMSocketDelegate;
 import com.sunlin.playcat.MLM.MLMType;
 import com.sunlin.playcat.MLM.MyData;
 import com.sunlin.playcat.common.Check;
+import com.sunlin.playcat.common.GsonHelp;
 import com.sunlin.playcat.common.LogC;
 import com.sunlin.playcat.common.RestTask;
+import com.sunlin.playcat.domain.Comment;
 import com.sunlin.playcat.domain.Message;
+import com.sunlin.playcat.domain.MessageType;
+import com.sunlin.playcat.domain.User;
 import com.sunlin.playcat.json.MessageRESTful;
+import com.sunlin.playcat.view.AddFriendDialog;
 import com.sunlin.playcat.view.LoadingDialog;
 
 import java.nio.charset.Charset;
@@ -26,11 +32,12 @@ import java.util.ArrayList;
 public class ActivityObj extends ActivityAll {
     private String TAG="ActivityObj";
     public MyApp myApp;
+    public Gson gson;
     private MessageRESTful messageBaseRESTful;
     //提交服务器
     public LoadingDialog loadingDialog;
+    private AddFriendDialog addFriendDialog;
     private MLMSocketDelegate mlmSocketUdpDelegate;
-    public Gson gson;
 
     public void setMlmSocketUdpDelegate(MLMSocketDelegate _mlmSocketDelegate){
         mlmSocketUdpDelegate =_mlmSocketDelegate;
@@ -55,7 +62,7 @@ public class ActivityObj extends ActivityAll {
         //用户信息初始化
         myApp = (MyApp)this.getApplicationContext();
         messageBaseRESTful=new MessageRESTful(myApp.getUser());
-        gson=new Gson();
+        gson= GsonHelp.getGsonObj();
         //开启消息服务
 
         loadingDialog=new LoadingDialog();
@@ -72,8 +79,8 @@ public class ActivityObj extends ActivityAll {
                 }
                 if(type==1)
                 {
-                    //AtyContainer.getInstance().finishAllActivity();
-                    AtyContainer.getInstance().removeActivity(ActivityObj.this);
+                    AtyContainer.getInstance().finishAllActivity();
+                    //AtyContainer.getInstance().removeActivity(ActivityObj.this);
 
                 }
             }
@@ -93,7 +100,6 @@ public class ActivityObj extends ActivityAll {
 
                     loadingDialog.setTitle(ActivityObj.this.getString(R.string.error_server)+"["+dNum+"]");
                     loadingDialog.show(getSupportFragmentManager(),"repeat");
-
 
                     if(mlmSocketUdpDelegate!=null) {
                         mlmSocketUdpDelegate.MLMSocketResultError(type, dNum, new String(myData.getData(), Charset.forName("utf-8")));
@@ -120,8 +126,29 @@ public class ActivityObj extends ActivityAll {
                         //转换消息
                         try {
                             Message message = gson.fromJson(dataStr, Message.class);
-                            if(mlmSocketUdpDelegate!=null) {
-                                mlmSocketUdpDelegate.MLMShowMessage(message);
+
+                            //普通文本消息
+                            if(message.getType()==MessageType.TEXT) {
+
+                                if (mlmSocketUdpDelegate != null) {
+                                    mlmSocketUdpDelegate.MLMShowMessage(message);
+                                }
+                            }
+                            //邀请好友
+                            if(message.getType()== MessageType.ADD_FRIEND){
+                                String[] dataFrom=message.getData().split("\\|");
+
+                                User friendUser=new User();
+                                friendUser.setId(Integer.parseInt(dataFrom[0]));
+                                friendUser.setName(dataFrom[1]);
+                                friendUser.setPhoto(dataFrom[2]);
+                                friendUser.setSex(Integer.parseInt(dataFrom[3]));
+
+                                addFriendDialog=new AddFriendDialog();
+                                addFriendDialog.setFriendUser(friendUser);
+                                addFriendDialog.setTitleStr("邀请好友");
+                                addFriendDialog.setType(4);
+                                addFriendDialog.show(getSupportFragmentManager(),"AddFriendDialog");
                             }
                             //置成已读
                             message.setStatus(4);

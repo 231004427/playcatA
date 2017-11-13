@@ -13,6 +13,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sunlin.playcat.MyApp;
 import com.sunlin.playcat.R;
 import com.sunlin.playcat.common.CValues;
@@ -159,7 +160,9 @@ public class GameFragmentInfo extends Fragment implements View.OnClickListener,R
     public void onRequestSuccess(String response) {
         try{
             //处理结果
-            Gson gson = new Gson();
+            Gson gson= new GsonBuilder()
+                    .setDateFormat("yyyy-MM-dd HH:mm:ss")
+                    .create();
             CommentList commentList=gson.fromJson(response, CommentList.class);
             if(commentList!=null){
                 BaseResult result = commentList.getResult();

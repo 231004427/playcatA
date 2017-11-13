@@ -38,9 +38,11 @@ import com.sunlin.playcat.domain.Friend;
 import com.sunlin.playcat.domain.Message;
 import com.sunlin.playcat.domain.MessageList;
 import com.sunlin.playcat.domain.MessageType;
+import com.sunlin.playcat.domain.User;
 import com.sunlin.playcat.fragment.MessageListAdpter;
 import com.sunlin.playcat.json.FriendRESTful;
 import com.sunlin.playcat.json.MessageRESTful;
+import com.sunlin.playcat.view.AddFriendDialog;
 import com.sunlin.playcat.view.CircleImageView;
 import com.sunlin.playcat.view.CircleTitleView;
 import com.sunlin.playcat.view.MyLinearLayout;
@@ -52,7 +54,7 @@ import java.util.List;
 import java.util.concurrent.ExecutionException;
 
 public class MessageActivity extends MyActivtiyBase implements
-        View.OnClickListener,RestTask.ResponseCallback,View.OnLayoutChangeListener {
+        View.OnClickListener,RestTask.ResponseCallback,View.OnLayoutChangeListener,MessageListAdpter.OnItemClickListener {
     private String TAG="MessageActivity";
     private Friend friend;
     private Handler myHandle;
@@ -174,11 +176,11 @@ public class MessageActivity extends MyActivtiyBase implements
         mRecyclerView.setHasFixedSize(true);
         //自定义分割线
         //mRecyclerView.addItemDecoration(new MyDecoration(this));
-        listAdapter = new MessageListAdpter(dataList.getList(),myApp.getUser());
+        listAdapter = new MessageListAdpter(dataList.getList(),this,myApp.getUser());
         //listAdapter.setOnItemClickListener(this);
         //setFooterView(mRecyclerView);
         mRecyclerView.setAdapter(listAdapter);
-
+        listAdapter.setOnItemClickListener(this);
         //初始化加载
         isLoading=false;
 
@@ -575,4 +577,21 @@ public class MessageActivity extends MyActivtiyBase implements
             }
         }
     };
+    @Override
+    public void onItemClick(View view, Message data) {
+        if(data.getType()==MessageType.ADD_FRIEND){
+            String[] dataFrom=data.getData().split("\\|");
+
+            User friendUser=new User();
+            friendUser.setId(Integer.parseInt(dataFrom[0]));
+            friendUser.setName(dataFrom[1]);
+            friendUser.setPhoto(dataFrom[2]);
+            friendUser.setSex(Integer.parseInt(dataFrom[3]));
+
+            AddFriendDialog addFriendDialog=new AddFriendDialog();
+            addFriendDialog.setFriendUser(friendUser);
+            addFriendDialog.setType(4);
+            addFriendDialog.show(getSupportFragmentManager(),"AddFriendDialog");
+        }
+    }
 }

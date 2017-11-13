@@ -4,6 +4,8 @@ import android.content.Context;
 import android.support.annotation.Nullable;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.sunlin.playcat.common.GsonHelp;
 import com.sunlin.playcat.common.LogC;
 import com.sunlin.playcat.common.ShowMessage;
 import com.sunlin.playcat.domain.BaseResult;
@@ -18,7 +20,7 @@ public class RESTfulHelp {
     //处理返回结果
     @Nullable
     public static BaseResult getResult(String json){
-        Gson gson = new Gson();
+        Gson gson= GsonHelp.getGsonObj();
         BaseResult result = gson.fromJson(json, BaseResult.class);
         return result;
     }

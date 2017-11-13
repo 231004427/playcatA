@@ -17,9 +17,11 @@ import android.widget.TextView;
 import com.cjj.MaterialRefreshLayout;
 import com.cjj.MaterialRefreshListener;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sunlin.playcat.GoodsBuyActivity;
 import com.sunlin.playcat.MyApp;
 import com.sunlin.playcat.R;
+import com.sunlin.playcat.common.GsonHelp;
 import com.sunlin.playcat.common.LogC;
 import com.sunlin.playcat.common.RestTask;
 import com.sunlin.playcat.common.ShowMessage;
@@ -224,7 +226,7 @@ public class ShopFragmentList extends Fragment implements ShopListAdapter.OnItem
             @Override
             public void onRequestSuccess(String response) {
                 try {
-                    Gson gson = new Gson();
+                    Gson gson= GsonHelp.getGsonObj();
                     //处理结果
                     BaseResult result=gson.fromJson(response,BaseResult.class);
                     if (result.getErrcode() <= 0 && result.getType() == ActionType.GOODS_SEARCH)

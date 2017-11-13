@@ -6,6 +6,7 @@ import android.support.test.runner.AndroidJUnit4;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sunlin.playcat.common.RestTask;
 import com.sunlin.playcat.domain.BaseResult;
 
@@ -33,7 +34,9 @@ public class RegistActivityInstrumentedTest implements RestTask.ResponseCallback
 
         String json=response;
         Log.i(tag,json);
-        Gson gson = new Gson();
+        Gson gson =new GsonBuilder()
+                .setDateFormat("yyyy-MM-dd HH:mm:ss")
+                .create();
         BaseResult result= gson.fromJson(json,BaseResult.class);
         Log.i(tag,result.getText());
 

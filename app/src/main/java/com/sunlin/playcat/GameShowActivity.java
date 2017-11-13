@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sunlin.playcat.common.CValues;
 import com.sunlin.playcat.common.ImageWorker;
 import com.sunlin.playcat.common.LogC;
@@ -235,7 +236,7 @@ public class GameShowActivity extends MyActivtiyToolBar implements View.OnClickL
         Collect collect=new Collect();
         collect.setUid(myApp.getUser().getId());
         collect.setSid(id);
-        loadingDialog.show(getSupportFragmentManager(),"loading");
+       // loadingDialog.show(getSupportFragmentManager(),"loading");
         if(isCollect){
             collectRESTful.del(collect,this);
             isCollect=false;
@@ -252,7 +253,9 @@ public class GameShowActivity extends MyActivtiyToolBar implements View.OnClickL
 
         try {
             //处理结果
-            Gson gson = new Gson();
+            Gson gson =new GsonBuilder()
+                    .setDateFormat("yyyy-MM-dd HH:mm:ss")
+                    .create();
             BaseResult result=gson.fromJson(response, BaseResult.class);
             if(result!=null){
                 //获取游戏信息

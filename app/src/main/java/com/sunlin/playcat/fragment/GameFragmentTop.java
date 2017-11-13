@@ -9,8 +9,10 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sunlin.playcat.MyApp;
 import com.sunlin.playcat.R;
+import com.sunlin.playcat.common.GsonHelp;
 import com.sunlin.playcat.common.LogC;
 import com.sunlin.playcat.common.RestTask;
 import com.sunlin.playcat.common.ShowMessage;
@@ -119,7 +121,7 @@ public class GameFragmentTop extends Fragment implements GameTopListAdapter.OnIt
             @Override
             public void onRequestSuccess(String response) {
                 try {
-                    Gson gson = new Gson();
+                    Gson gson= GsonHelp.getGsonObj();
                     //处理结果
                     BaseResult result=gson.fromJson(response,BaseResult.class);
                     if (result.getErrcode() <= 0 && result.getType() == ActionType.GAME_PLAY_SEARCH)

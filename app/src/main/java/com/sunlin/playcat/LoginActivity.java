@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sunlin.playcat.MLM.MLMType;
 import com.sunlin.playcat.MLM.MLMUser;
 import com.sunlin.playcat.MLM.MyData;
@@ -169,7 +170,9 @@ public class LoginActivity extends ActivityAll implements View.OnClickListener,R
     public void onRequestSuccess(String response) {
         try {
             //处理结果
-            Gson gson=new Gson();
+            Gson gson = new GsonBuilder()
+                    .setDateFormat("yyyy-MM-dd HH:mm:ss")
+                    .create();
             BaseResult result = gson.fromJson(response,BaseResult.class);
             if(result!=null){
                 if (result.getErrcode() <= 0 && result.getType() == ActionType.LOGIN) {

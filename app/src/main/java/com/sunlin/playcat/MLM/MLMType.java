@@ -56,6 +56,7 @@ public class MLMType {
     public static int ERROR_SYS_TOKEN=72;//服务器断线
     public static int ERROR_SYS_DATA=73;//数据异常
     public static int ERROR_SYS_NOREGIST=74;
+    public static int ERROR_SYS_TIMEOUT=75;
     //消息内容类型
     public static int MESSAGE_TEXT=101;
     public static int MESSAGE_VOICE=102;

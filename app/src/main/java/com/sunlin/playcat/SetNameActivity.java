@@ -61,7 +61,6 @@ public class SetNameActivity extends MyActivtiyToolBar implements RestTask.Respo
     public void onRequestSuccess(String response) {
         try{
             //处理结果
-            Gson gson=new Gson();
             BaseResult result= RESTfulHelp.getResult(response);
             if(result!=null) {
 

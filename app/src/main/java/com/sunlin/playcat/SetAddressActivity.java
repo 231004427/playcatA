@@ -145,7 +145,6 @@ public class SetAddressActivity extends MyActivtiyToolBar implements RestTask.Re
     public void onRequestSuccess(String response) {
 
         try{
-            Gson gson=new Gson();
             BaseResult result=gson.fromJson(response, BaseResult.class);
 
             if(result!=null) {

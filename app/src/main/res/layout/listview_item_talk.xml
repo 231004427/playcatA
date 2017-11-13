@@ -24,19 +24,17 @@
                 app:border_color="@color/white"
                 app:border_width="0dp" />
 
-            <TextView
-                android:id="@+id/textView_l"
+            <LinearLayout
+                android:id="@+id/layout_left"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toRightOf="@+id/imgHead_l"
                 android:background="@drawable/pao_l"
                 android:paddingBottom="10dp"
-                android:layout_marginRight="80dp"
+                android:layout_marginRight="44dp"
                 android:paddingTop="10dp"
-                android:text="你好啊！"
-                android:textColor="@color/textColor"
-                android:textSize="@dimen/text_m" />
+                android:orientation="vertical" />
 
 
             <com.sunlin.playcat.view.CircleImageView
@@ -50,9 +48,8 @@
                 app:border_color="@color/white"
                 app:border_width="0dp" />
 
-            <TextView
-                android:id="@+id/textView_r"
-                android:lineSpacingExtra="2dp"
+            <LinearLayout
+                android:id="@+id/layout_right"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -60,11 +57,9 @@
                 android:layout_toStartOf="@+id/imgHead_r"
                 android:background="@drawable/pao_r"
                 android:paddingBottom="10dp"
-                android:layout_marginLeft="80dp"
+                android:layout_marginLeft="44dp"
                 android:paddingTop="10dp"
-                android:text="你好啊啊啊啊啊啊啊啊！"
-                android:textColor="@color/textColor"
-                android:textSize="@dimen/text_m" />
+                android:orientation="vertical" />
         </RelativeLayout>
     </LinearLayout>
 

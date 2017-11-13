@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sunlin.playcat.common.LogC;
 import com.sunlin.playcat.common.RestTask;
 import com.sunlin.playcat.common.ShowMessage;
@@ -201,7 +202,6 @@ public class LoveActivity extends MyActivtiyToolBar implements LoveListAdpter.On
     @Override
     public void onRequestSuccess(String response) {
         try {
-            Gson gson = new Gson();
             //处理结果
             BaseResult result=gson.fromJson(response,BaseResult.class);
             if (result.getErrcode() <= 0 && result.getType() == ActionType.COLLECT_SARCH_GAME)

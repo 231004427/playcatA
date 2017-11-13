@@ -16,6 +16,7 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.sunlin.playcat.MLM.MLMSocketDelegate;
 import com.sunlin.playcat.MLM.MyData;
 import com.sunlin.playcat.common.LogC;
@@ -255,7 +256,6 @@ public class MainActivity extends MyActivtiyBase implements View.OnClickListener
     public void onRequestSuccess(String response) {
 
         try{
-            Gson gson=new Gson();
             BaseResult result=gson.fromJson(response,BaseResult.class);
             if (result.getErrcode() <= 0 && result.getType() == ActionType.FRIEND_NO_READ){
                 Friend friend=gson.fromJson(result.getData(),Friend.class);

@@ -53,4 +53,5 @@ public class ActionType {
     public static final int TOKEN_BUILD=45;
     public static final int TOKEN_ERROR=46;
     public static final int MESSAGE_ADD_FRIEND=47;
+    public static final int FRIEND_DEL=48;
 }
